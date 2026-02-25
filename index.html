@@ -1,0 +1,3637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PharmaSalts India 2026 – Top 250 API Explorer</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body { font-family: 'Inter', sans-serif; background-color: #F1F5F9; color: #1E293B; }
+  .chart-container { position:relative; width:100%; max-width:520px; margin:auto; height:280px; }
+  @media(min-width:768px){ .chart-container{ height:320px; } }
+  .custom-scrollbar::-webkit-scrollbar{width:5px}
+  .custom-scrollbar::-webkit-scrollbar-track{background:#F1F5F9}
+  .custom-scrollbar::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:4px}
+  .card-hover{transition:all .2s ease}
+  .card-hover:hover{transform:translateY(-3px);box-shadow:0 12px 24px -6px rgba(0,0,0,.12)}
+  /* Schedule badge colours */
+  .sch-OTC{background:#E2E8F0;color:#475569}
+  .sch-C  {background:#CCFBF1;color:#0F766E}
+  .sch-H  {background:#DBEAFE;color:#1D4ED8}
+  .sch-H1 {background:#FED7AA;color:#C2410C}
+  .sch-X  {background:#FEE2E2;color:#B91C1C}
+  /* Section pill colours */
+  .sec-1{background:#DBEAFE;color:#1D4ED8}
+  .sec-2{background:#FEE2E2;color:#B91C1C}
+  .sec-3{background:#DCFCE7;color:#15803D}
+  .sec-4{background:#F3E8FF;color:#7E22CE}
+  .sec-5{background:#FEF3C7;color:#B45309}
+  .sec-6{background:#E0E7FF;color:#3730A3}
+  .filter-active{ring:2px solid currentColor;font-weight:600}
+  input[type=text]:focus{outline:none}
+</style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+<!-- ── HEADER ── -->
+<header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col md:flex-row md:items-center justify-between gap-3">
+    <div>
+      <h1 class="text-2xl font-bold text-teal-700 tracking-tight">
+        Pharma Salts<span class="text-slate-500 font-light"> India 2026</span>
+      </h1>
+      <p class="text-xs text-slate-400 mt-0.5">Interactive Index · Top 250 Active Pharmaceutical Ingredients</p>
+    </div>
+    <div class="flex-1 max-w-xl w-full">
+      <div class="relative">
+        <span class="absolute inset-y-0 left-3 flex items-center text-slate-400 text-sm">🔍</span>
+        <input type="text" id="searchInput" placeholder="Search salt name, brand, uses, formation…"
+          class="block w-full pl-9 pr-3 py-2 border border-slate-300 rounded-lg bg-slate-50 placeholder-slate-400
+                 focus:bg-white focus:border-teal-500 focus:ring-1 focus:ring-teal-500 text-sm transition">
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ── MAIN ── -->
+<main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full">
+
+  <!-- Intro -->
+  <section class="mb-6">
+    <p class="text-slate-600 max-w-3xl leading-relaxed text-sm">
+      Complete ranked analysis of 250 pharmaceutical salts dominating the Indian market in 2026.
+      Data from <strong>IQVIA/PharmaTrac</strong>, <strong>NLEM 2022</strong>, and hospital formularies.
+      Each card shows <strong>brand names</strong>, drug <strong>schedule</strong>, section, dosing, and contraindications.
+    </p>
+  </section>
+
+  <!-- Dashboard row -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-6">
+
+    <!-- Chart -->
+    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col items-center">
+      <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3 w-full text-center">Therapeutic Category Mix</h3>
+      <div class="chart-container"><canvas id="categoryChart"></canvas></div>
+      <p class="text-xs text-slate-400 text-center mt-3">Based on 250 indexed salts</p>
+    </div>
+
+    <!-- Filters panel -->
+    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm lg:col-span-2 flex flex-col gap-4">
+
+      <!-- Safety row -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div class="p-3 bg-rose-50 rounded-xl border border-rose-100">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-rose-700 font-semibold text-sm">Liver Safety</span>
+            <span>⚠️</span>
+          </div>
+          <p class="text-xs text-rose-500 mb-2">Exclude hepatotoxic agents</p>
+          <button id="btn-liver"
+            class="w-full py-1.5 bg-white border border-rose-200 text-rose-700 rounded-lg text-xs font-medium hover:bg-rose-100 transition">
+            Hide Liver-Contraindicated
+          </button>
+        </div>
+        <div class="p-3 bg-blue-50 rounded-xl border border-blue-100">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-blue-700 font-semibold text-sm">Pediatric Focus</span>
+            <span>👶</span>
+          </div>
+          <p class="text-xs text-blue-500 mb-2">Salts with defined child dosing</p>
+          <button id="btn-pediatric"
+            class="w-full py-1.5 bg-white border border-blue-200 text-blue-700 rounded-lg text-xs font-medium hover:bg-blue-100 transition">
+            Pediatric Approved Only
+          </button>
+        </div>
+      </div>
+
+      <!-- Section pills -->
+      <div>
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Book Section</p>
+        <div class="flex flex-wrap gap-1.5" id="section-pills"></div>
+      </div>
+
+      <!-- Schedule pills -->
+      <div>
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Drug Schedule (India)</p>
+        <div class="flex flex-wrap gap-1.5" id="schedule-pills"></div>
+      </div>
+
+      <!-- Category pills -->
+      <div>
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Therapeutic Category</p>
+        <div class="flex flex-wrap gap-1.5" id="category-pills"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="flex flex-col sm:flex-row justify-between items-center mb-4 border-b border-slate-200 pb-3 gap-3">
+    <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+      Salt Index
+      <span id="count-badge" class="px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 text-xs font-medium border border-slate-200">—</span>
+    </h2>
+    <div class="flex items-center gap-2 text-sm">
+      <span class="text-slate-500">Sort:</span>
+      <select id="sortSelect" class="border border-slate-300 rounded-lg px-2 py-1 bg-white focus:border-teal-500 outline-none text-sm">
+        <option value="rank">Market Rank (1–250)</option>
+        <option value="alpha">Name (A–Z)</option>
+      </select>
+      <button onclick="resetFilters()" class="ml-2 px-3 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-medium transition">
+        Reset Filters
+      </button>
+    </div>
+  </div>
+
+  <!-- Grid -->
+  <div id="saltGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5"></div>
+
+  <!-- Empty state -->
+  <div id="emptyState" class="hidden text-center py-20">
+    <div class="text-5xl mb-4">🧪</div>
+    <h3 class="text-lg font-medium text-slate-800">No salts match your filters</h3>
+    <p class="text-slate-500 text-sm mt-1">Try adjusting your search or filter criteria.</p>
+    <button onclick="resetFilters()" class="mt-4 text-teal-600 hover:text-teal-800 font-medium text-sm">Reset All Filters</button>
+  </div>
+
+</main>
+
+<footer class="bg-white border-t border-slate-200 py-6 mt-auto">
+  <div class="max-w-7xl mx-auto px-4 text-center">
+    <p class="text-sm text-slate-500">© 2026 Pharmacological Inventory of India · Data from IQVIA/PharmaTrac, NLEM 2022, CDSCO & NPPA</p>
+    <p class="text-xs text-slate-400 mt-1">For educational & reference use only. Consult CDSCO/NLEM guidelines before clinical decisions.</p>
+  </div>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════
+//  DATA
+// ═══════════════════════════════════════════════
+const saltsData = [
+  {
+    "rank": 1,
+    "name": "Amoxicillin + Potassium Clavulanate",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Antibiotics",
+    "schedule": "H",
+    "brand": "Augmentin / Clavam / Moxikind-CV",
+    "formation": "Penicillin derivative + beta-lactamase inhibitor",
+    "uses": "Community-acquired pneumonia, sinusitis, soft tissue infections",
+    "adult": "625 mg TID or 1 g Duo BID (based on severity)",
+    "child": "25–45 mg/kg/day in divided doses",
+    "avoid": "Penicillin hypersensitivity, history of cholestatic jaundice"
+  },
+  {
+    "rank": 2,
+    "name": "Metformin + Glimepiride",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Antidiabetic",
+    "schedule": "H",
+    "brand": "Glycomet-GP / Glimestar-M",
+    "formation": "Biguanide + third-generation sulfonylurea",
+    "uses": "First-line management of Type 2 Diabetes Mellitus",
+    "adult": "500 mg/1 mg to 1000 mg/2 mg BID (with meals)",
+    "child": "Not recommended for standard diabetic use",
+    "avoid": "Renal failure (eGFR < 30 mL/min), metabolic acidosis"
+  },
+  {
+    "rank": 3,
+    "name": "Pantoprazole Sodium",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Gastrointestinal",
+    "schedule": "H",
+    "brand": "Pan / Pantodac / Pantop",
+    "formation": "Substituted benzimidazole (Proton Pump Inhibitor)",
+    "uses": "GERD, peptic ulcers, NSAID-induced ulcer prophylaxis",
+    "adult": "40 mg OD, 30–60 minutes before breakfast",
+    "child": "1 mg/kg/day (usage restricted under 5 years)",
+    "avoid": "Hypersensitivity to benzimidazoles, severe hepatic impairment"
+  },
+  {
+    "rank": 4,
+    "name": "Telmisartan",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Telma / Telmikind",
+    "formation": "Non-peptide angiotensin II receptor antagonist",
+    "uses": "Hypertension, cardiovascular risk reduction",
+    "adult": "40–80 mg OD",
+    "child": "Not recommended",
+    "avoid": "Pregnancy (2nd/3rd trimester), bilateral renal artery stenosis"
+  },
+  {
+    "rank": 5,
+    "name": "Paracetamol (Acetaminophen)",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Analgesics",
+    "schedule": "OTC",
+    "brand": "Dolo-650 / Calpol / Crocin",
+    "formation": "p-aminophenol derivative",
+    "uses": "Fever (antipyretic), mild-to-moderate pain (analgesic)",
+    "adult": "500–1000 mg every 4–6 hrs (max 4 g/day)",
+    "child": "10–15 mg/kg per dose (max 60 mg/kg/day)",
+    "avoid": "Severe hepatic impairment, chronic heavy alcohol use"
+  },
+  {
+    "rank": 6,
+    "name": "Formoterol + Budesonide",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Respiratory",
+    "schedule": "H",
+    "brand": "Foracort / Symbicort",
+    "formation": "Long-acting beta2-agonist + inhaled corticosteroid",
+    "uses": "Maintenance of Asthma and COPD symptoms",
+    "adult": "12 mcg/400 mcg, 1–2 puffs BID",
+    "child": "6/100 mcg or 6/200 mcg BID (Consult specialist)",
+    "avoid": "Status asthmaticus, pulmonary tuberculosis"
+  },
+  {
+    "rank": 7,
+    "name": "Insulin Human (70/30)",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Antidiabetic",
+    "schedule": "C",
+    "brand": "Mixtard / Huminsulin 30/70",
+    "formation": "Biphasic mixture of Isophane (70%) and Soluble (30%) insulin",
+    "uses": "Type 1 and Type 2 Diabetes Mellitus",
+    "adult": "Individualized based on glucose (30 mins before meals)",
+    "child": "Weight-based titration (0.5–1.0 units/kg/day)",
+    "avoid": "During episodes of hypoglycemia"
+  },
+  {
+    "rank": 8,
+    "name": "Tirzepatide",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Antidiabetic",
+    "schedule": "H",
+    "brand": "Mounjaro",
+    "formation": "Dual GIP and GLP-1 receptor agonist (Synthetic peptide)",
+    "uses": "Advanced Type 2 Diabetes, weight management",
+    "adult": "2.5 mg/week initial, titrate to 5–15 mg/week",
+    "child": "Not recommended",
+    "avoid": "History of Medullary Thyroid Carcinoma, MEN 2 syndrome"
+  },
+  {
+    "rank": 9,
+    "name": "Pantoprazole + Domperidone",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Gastrointestinal",
+    "schedule": "H",
+    "brand": "Pan-D / Pantodac-D / Razo-D",
+    "formation": "PPI + dopamine-receptor antagonist",
+    "uses": "GERD with dyspepsia, acidity with nausea/vomiting",
+    "adult": "40 mg/30 mg OD (30 mins before breakfast)",
+    "child": "Not recommended",
+    "avoid": "Prolactinoma, GI hemorrhage, cardiac conduction delays"
+  },
+  {
+    "rank": 10,
+    "name": "Levothyroxine Sodium",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Hormonal",
+    "schedule": "H",
+    "brand": "Thyronorm / Eltroxin",
+    "formation": "Synthetic levo-isomer of thyroxine (T4)",
+    "uses": "Primary, secondary, and tertiary hypothyroidism",
+    "adult": "12.5–200 mcg OD (on empty stomach, 1 hr before breakfast)",
+    "child": "10–15 mcg/kg OD (titrate to euthyroid)",
+    "avoid": "Uncorrected adrenal insufficiency, acute myocardial infarction"
+  },
+  {
+    "rank": 11,
+    "name": "Cilnidipine",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Cilacar / Clinidipine",
+    "formation": "L-type and N-type calcium channel blocker",
+    "uses": "Essential hypertension, hypertensive nephropathy",
+    "adult": "5–20 mg OD",
+    "child": "Not recommended",
+    "avoid": "Unstable angina, cardiogenic shock"
+  },
+  {
+    "rank": 12,
+    "name": "Azithromycin",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Antibiotics",
+    "schedule": "H",
+    "brand": "Azithral / Azee / Zithromax",
+    "formation": "Azalide subclass of macrolide antibiotics",
+    "uses": "Upper/lower RTI, typhoid, skin infections",
+    "adult": "500 mg OD for 3–5 days",
+    "child": "10 mg/kg Day 1, then 5 mg/kg Day 2–5",
+    "avoid": "History of cholestatic jaundice, QT prolongation"
+  },
+  {
+    "rank": 13,
+    "name": "Atorvastatin",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Atorva / Storvas / Lipitor",
+    "formation": "Synthetic HMG-CoA reductase inhibitor",
+    "uses": "Primary hypercholesterolemia, prevention of CVD",
+    "adult": "10–80 mg OD",
+    "child": "Not recommended",
+    "avoid": "Active liver disease, pregnancy, breastfeeding"
+  },
+  {
+    "rank": 14,
+    "name": "Cefixime",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Antibiotics",
+    "schedule": "H1",
+    "brand": "Taxim-O / Zifi / Cefix",
+    "formation": "Third-generation cephalosporin",
+    "uses": "Typhoid fever, urinary tract infections, otitis media",
+    "adult": "200–400 mg daily or BID",
+    "child": "8–12 mg/kg/day in 2 divided doses",
+    "avoid": "Cephalosporin/penicillin hypersensitivity"
+  },
+  {
+    "rank": 15,
+    "name": "Metformin",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Antidiabetic",
+    "schedule": "H",
+    "brand": "Glycomet / Cetapin / Glucophage",
+    "formation": "Biguanide (dimethylbiguanide)",
+    "uses": "First-line Type 2 DM, PCOS management",
+    "adult": "500–1000 mg BID (max 2550 mg/day)",
+    "child": "500 mg BID (approved >10y for T2DM)",
+    "avoid": "Severe renal impairment (eGFR < 30), metabolic acidosis"
+  },
+  {
+    "rank": 16,
+    "name": "Ursodeoxycholic Acid",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Gastrointestinal",
+    "schedule": "H",
+    "brand": "Udiliv / Ursocol",
+    "formation": "Naturally occurring bile acid",
+    "uses": "Dissolution of cholesterol gallstones, primary biliary cirrhosis",
+    "adult": "300–600 mg daily in divided doses",
+    "child": "10–15 mg/kg/day",
+    "avoid": "Acute cholecystitis, complete biliary obstruction"
+  },
+  {
+    "rank": 17,
+    "name": "Rosuvastatin",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Rosuvas / Rozavel / Crestor",
+    "formation": "Hydrophilic HMG-CoA reductase inhibitor",
+    "uses": "Severe hyperlipidemia, atherosclerosis stabilization",
+    "adult": "5–40 mg OD",
+    "child": "Not recommended",
+    "avoid": "Active liver disease, severe renal impairment"
+  },
+  {
+    "rank": 18,
+    "name": "Ceftriaxone",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Antibiotics",
+    "schedule": "H1",
+    "brand": "Monocef / Ceftriax / Rocephin",
+    "formation": "Parenteral third-generation cephalosporin",
+    "uses": "Meningitis, sepsis, gonorrhea, surgical prophylaxis",
+    "adult": "1–2 g IV/IM daily",
+    "child": "50–100 mg/kg/day (max 4 g/day)",
+    "avoid": "Hyperbilirubinemic neonates, concomitant IV calcium"
+  },
+  {
+    "rank": 19,
+    "name": "Amlodipine",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Amlodac / Stamlo / Norvasc",
+    "formation": "Dihydropyridine calcium channel blocker",
+    "uses": "Hypertension, chronic stable angina",
+    "adult": "2.5–10 mg OD",
+    "child": "0.1–0.6 mg/kg (usually 2.5 mg initial in teens)",
+    "avoid": "Severe aortic stenosis, cardiogenic shock"
+  },
+  {
+    "rank": 20,
+    "name": "Aceclofenac + Paracetamol",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Analgesics",
+    "schedule": "H",
+    "brand": "Zerodol-P / Aceclo-P",
+    "formation": "Phenylacetic acid NSAID + p-aminophenol",
+    "uses": "Acute musculoskeletal pain, osteoarthritis flares",
+    "adult": "100 mg/325 mg BID",
+    "child": "Not recommended (under 12 years)",
+    "avoid": "Active GI ulcer, severe renal or cardiac failure"
+  },
+  {
+    "rank": 21,
+    "name": "Glimepiride",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Antidiabetic",
+    "schedule": "H",
+    "brand": "Amaryl / Glimpid / Glimy",
+    "formation": "Third-generation sulfonylurea",
+    "uses": "Glycemic control in Type 2 Diabetes",
+    "adult": "1–4 mg OD",
+    "child": "Not recommended",
+    "avoid": "Type 1 DM, diabetic ketoacidosis"
+  },
+  {
+    "rank": 22,
+    "name": "Vitamin D3 (Cholecalciferol)",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Vitamins/Minerals",
+    "schedule": "OTC",
+    "brand": "Calcirol / D-3 60K / Uprise-D3",
+    "formation": "Fat-soluble seco-steroid",
+    "uses": "Vitamin D deficiency, osteoporosis, immune support",
+    "adult": "60,000 IU once weekly for 8 weeks (deficiency)",
+    "child": "400–1000 IU/day or 60,000 IU monthly",
+    "avoid": "Hypercalcemia, hypervitaminosis D"
+  },
+  {
+    "rank": 23,
+    "name": "Diclofenac Sodium",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Analgesics",
+    "schedule": "H",
+    "brand": "Voveran / Voltaren / Reactin",
+    "formation": "Phenylacetic acid derivative",
+    "uses": "Rheumatoid arthritis, acute trauma pain, spondylitis",
+    "adult": "50–75 mg BID or 100 mg SR OD",
+    "child": "1–3 mg/kg/day in divided doses",
+    "avoid": "GI bleeding, aspirin-induced asthma, post-CABG pain"
+  },
+  {
+    "rank": 24,
+    "name": "Levocetirizine",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Antiallergic",
+    "schedule": "H",
+    "brand": "L-Cetzine / Levorid / Xyzal",
+    "formation": "Third-generation piperazine antihistamine",
+    "uses": "Allergic rhinitis, chronic idiopathic urticaria",
+    "adult": "5 mg OD (bedtime)",
+    "child": "1.25–2.5 mg OD (6mo–12y)",
+    "avoid": "End-stage renal disease (CrCl < 10 mL/min)"
+  },
+  {
+    "rank": 25,
+    "name": "Montelukast + Levocetirizine",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Respiratory",
+    "schedule": "H",
+    "brand": "Montair-LC / Telekast-L",
+    "formation": "CysLT1 antagonist + antihistamine",
+    "uses": "Chronic allergic rhinitis with bronchial asthma",
+    "adult": "10 mg/5 mg OD",
+    "child": "4 mg/2.5 mg OD",
+    "avoid": "Acute asthma attack, neuropsychiatric events history"
+  },
+  {
+    "rank": 26,
+    "name": "Rabeprazole + Domperidone",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Gastrointestinal",
+    "schedule": "H",
+    "brand": "Cyra-D / Rabeloc-D / Razo-D",
+    "formation": "PPI + prokinetic",
+    "uses": "Dyspepsia, GERD with gastric stasis",
+    "adult": "20 mg/30 mg OD (before breakfast)",
+    "child": "Not recommended",
+    "avoid": "Intestinal obstruction, cardiac arrhythmia history"
+  },
+  {
+    "rank": 27,
+    "name": "Sitagliptin + Metformin",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Antidiabetic",
+    "schedule": "H",
+    "brand": "Janumet / Sitamet",
+    "formation": "DPP-4 inhibitor + biguanide",
+    "uses": "Type 2 DM uncontrolled on Metformin monotherapy",
+    "adult": "50 mg/500 mg or 50 mg/1000 mg BID",
+    "child": "Not recommended",
+    "avoid": "Renal failure, risk of pancreatitis"
+  },
+  {
+    "rank": 28,
+    "name": "Teneligliptin",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Antidiabetic",
+    "schedule": "H",
+    "brand": "Tenglyn / Tengli / Tenepure",
+    "formation": "Synthetic DPP-4 inhibitor",
+    "uses": "Glycemic management in Type 2 Diabetes",
+    "adult": "20 mg OD",
+    "child": "Not recommended",
+    "avoid": "Patients with heart failure, severe ketoacidosis"
+  },
+  {
+    "rank": 29,
+    "name": "Salbutamol (Albuterol)",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Respiratory",
+    "schedule": "H",
+    "brand": "Asthalin / Ventolin / Derihaler",
+    "formation": "Selective beta2-adrenoceptor agonist",
+    "uses": "Bronchospasm in asthma, COPD, and exercise-induced asthma",
+    "adult": "200 mcg (2 puffs) every 4–6 hrs PRN",
+    "child": "0.1–0.15 mg/kg per dose or 1–2 puffs",
+    "avoid": "Severe cardiac disease, tachyarrhythmias"
+  },
+  {
+    "rank": 30,
+    "name": "Itraconazole",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Antifungal",
+    "schedule": "H",
+    "brand": "Canditral / Sporanox / Itaspor",
+    "formation": "Triazole antifungal",
+    "uses": "Tinea infections, vulvovaginal candidiasis, blastomycosis",
+    "adult": "100–200 mg OD or BID",
+    "child": "3–5 mg/kg/day (under specialist guidance)",
+    "avoid": "Congestive heart failure, drug-drug interactions with statins"
+  },
+  {
+    "rank": 31,
+    "name": "Iron + Folic Acid",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Vitamins/Minerals",
+    "schedule": "H",
+    "brand": "Livogen / Fefol / Feronia-XT",
+    "formation": "Ferrous salt + Vitamin B9",
+    "uses": "Prevention and treatment of iron-deficiency anemia",
+    "adult": "100 mg Fe/500 mcg FA OD",
+    "child": "20 mg Fe/100 mcg FA (peds tablets/syrup)",
+    "avoid": "Hemosiderosis, hemochromatosis"
+  },
+  {
+    "rank": 32,
+    "name": "Dapagliflozin",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Antidiabetic",
+    "schedule": "H",
+    "brand": "Forxiga / Dapaglit",
+    "formation": "SGLT2 inhibitor (glycoside)",
+    "uses": "T2DM, heart failure (HFrEF/HFpEF), chronic kidney disease",
+    "adult": "5–10 mg OD",
+    "child": "Not recommended",
+    "avoid": "Dialysis patients, history of ketoacidosis"
+  },
+  {
+    "rank": 33,
+    "name": "Vildagliptin + Metformin",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Antidiabetic",
+    "schedule": "H",
+    "brand": "Galvus Met / Vildamet",
+    "formation": "DPP-4 inhibitor + biguanide",
+    "uses": "Combination therapy for Type 2 Diabetes",
+    "adult": "50 mg/500 mg or 50 mg/1000 mg BID",
+    "child": "Not recommended",
+    "avoid": "Hepatic impairment, severe renal failure"
+  },
+  {
+    "rank": 34,
+    "name": "Sildenafil",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Urology",
+    "schedule": "H",
+    "brand": "Manforce / Penegra / Viagra",
+    "formation": "Phosphodiesterase-5 (PDE5) inhibitor",
+    "uses": "Erectile dysfunction, pulmonary arterial hypertension",
+    "adult": "25–100 mg (ED) or 20 mg TID (PAH)",
+    "child": "0.5–2 mg/kg/dose (PAH use only)",
+    "avoid": "Nitrate use, severe hypotension, retinitis pigmentosa"
+  },
+  {
+    "rank": 35,
+    "name": "Calcium + Vitamin D3",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Vitamins/Minerals",
+    "schedule": "OTC",
+    "brand": "Shelcal / Calcimax / Calcitas",
+    "formation": "Calcium carbonate + Cholecalciferol",
+    "uses": "Hypocalcemia, osteoporosis, post-menopausal health",
+    "adult": "500 mg/250 IU BID",
+    "child": "250–500 mg daily",
+    "avoid": "Nephrolithiasis (kidney stones), hypercalcemia"
+  },
+  {
+    "rank": 36,
+    "name": "Gabapentin + Nortriptyline",
+    "section": "Section 1: Foundational Molecules",
+    "category": "CNS",
+    "schedule": "H1",
+    "brand": "Gabapin-NT / Gabantin-NT",
+    "formation": "GABA analog + tricyclic antidepressant",
+    "uses": "Diabetic neuropathic pain, post-herpetic neuralgia",
+    "adult": "300 mg/10 mg BID or TID",
+    "child": "Not recommended",
+    "avoid": "Recent MI, glaucoma, urinary retention"
+  },
+  {
+    "rank": 37,
+    "name": "Clopidogrel",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Clopilet / Plavix / Deplatt",
+    "formation": "P2Y12 platelet inhibitor",
+    "uses": "Post-stent antiplatelet therapy, stroke prevention",
+    "adult": "75 mg OD",
+    "child": "0.2–1.0 mg/kg OD (Consult specialist)",
+    "avoid": "Active pathological bleeding (e.g., peptic ulcer)"
+  },
+  {
+    "rank": 38,
+    "name": "Empagliflozin",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Antidiabetic",
+    "schedule": "H",
+    "brand": "Jardiance / Empa",
+    "formation": "SGLT2 inhibitor",
+    "uses": "T2DM, reduction of CV death risk",
+    "adult": "10–25 mg OD",
+    "child": "Not recommended",
+    "avoid": "eGFR < 30 mL/min, during pregnancy"
+  },
+  {
+    "rank": 39,
+    "name": "Telmisartan + Amlodipine",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Telma-AM / Telmikind-AM",
+    "formation": "ARB + Calcium channel blocker",
+    "uses": "Moderate-to-severe hypertension",
+    "adult": "40 mg/5 mg or 80 mg/5 mg OD",
+    "child": "Not recommended",
+    "avoid": "Cardiogenic shock, biliary obstruction"
+  },
+  {
+    "rank": 40,
+    "name": "Ofloxacin",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Antibiotics",
+    "schedule": "H",
+    "brand": "Oflox / Zanocin / Oflomac",
+    "formation": "Second-generation fluoroquinolone",
+    "uses": "Typhoid, chronic bronchitis flares, UTI",
+    "adult": "200–400 mg BID",
+    "child": "7.5–15 mg/kg/day (Restrict use <18y)",
+    "avoid": "Tendinitis history, pregnancy, epilepsy"
+  },
+  {
+    "rank": 41,
+    "name": "Povidone-Iodine",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Topical",
+    "schedule": "OTC",
+    "brand": "Betadine / Wokadine",
+    "formation": "Iodophor complex",
+    "uses": "Topical antiseptic for wounds/surgery",
+    "adult": "5–10% solution/ointment PRN",
+    "child": "5% (Same as adult)",
+    "avoid": "Iodine allergy, thyroid disease (extensive use)"
+  },
+  {
+    "rank": 42,
+    "name": "Pregabalin",
+    "section": "Section 1: Foundational Molecules",
+    "category": "CNS",
+    "schedule": "H1",
+    "brand": "Maxgalin / Lyrica / Pregaba",
+    "formation": "Gabapentinoid (GABA analog)",
+    "uses": "Neuropathic pain, generalized anxiety disorder",
+    "adult": "50–150 mg BID or TID (max 600 mg/day)",
+    "child": "Not recommended (under 18 years)",
+    "avoid": "Renal impairment (reduce dose), severe angioedema"
+  },
+  {
+    "rank": 43,
+    "name": "Human Albumin",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Biologicals",
+    "schedule": "C",
+    "brand": "Alburel / Albunorm",
+    "formation": "Purified blood protein",
+    "uses": "Hypovolemic shock, hypoalbuminemia",
+    "adult": "20% solution, dose based on clinical response",
+    "child": "0.5–1 g/kg (as 5% or 20% solution)",
+    "avoid": "Severe anemia, congestive heart failure"
+  },
+  {
+    "rank": 44,
+    "name": "Cefuroxime Axetil",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Antibiotics",
+    "schedule": "H",
+    "brand": "Pulmocef / Ceftin / Zinnat",
+    "formation": "Second-generation cephalosporin ester",
+    "uses": "Tonsillitis, skin infections, pneumonia",
+    "adult": "250–500 mg BID",
+    "child": "20–30 mg/kg/day in 2 divided doses",
+    "avoid": "Cephalosporin allergy, phenylketonuria"
+  },
+  {
+    "rank": 45,
+    "name": "Alpha Ketoanalogue",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Nephrology",
+    "schedule": "H",
+    "brand": "Nefrosave / Ketosave",
+    "formation": "Essential amino acid precursors",
+    "uses": "Chronic Kidney Disease (with low protein diet)",
+    "adult": "1 tablet per 5 kg body weight/day",
+    "child": "Weight-adjusted (Consult nephrologist)",
+    "avoid": "Hypercalcemia, disturbed amino acid metabolism"
+  },
+  {
+    "rank": 46,
+    "name": "Ipratropium + Salbutamol",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Respiratory",
+    "schedule": "H",
+    "brand": "Duolin / Combivent",
+    "formation": "Anticholinergic + SABA",
+    "uses": "Acute bronchospasm in COPD and asthma",
+    "adult": "250 mcg/100 mcg (Respules) every 6 hrs",
+    "child": "0.15 mg/kg (Salbutamol) via nebulizer",
+    "avoid": "Glaucoma, bladder neck obstruction"
+  },
+  {
+    "rank": 47,
+    "name": "Ciprofloxacin",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Antibiotics",
+    "schedule": "H",
+    "brand": "Ciplox / Ciprobid / Cifran",
+    "formation": "Fluoroquinolone derivative",
+    "uses": "UTI, gastroenteritis, bone/joint infections",
+    "adult": "250–750 mg BID",
+    "child": "10–20 mg/kg per dose (Restrict use)",
+    "avoid": "Tendon disorders, concomitant tizanidine"
+  },
+  {
+    "rank": 48,
+    "name": "Semaglutide",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Antidiabetic",
+    "schedule": "H",
+    "brand": "Rybelsus / Ozempic",
+    "formation": "Human GLP-1 receptor agonist",
+    "uses": "Type 2 Diabetes, chronic weight management",
+    "adult": "3–14 mg OD (Oral) or 0.25–2.4 mg weekly (SC)",
+    "child": "Not recommended",
+    "avoid": "Family history of MTC, MEN 2 syndrome"
+  },
+  {
+    "rank": 49,
+    "name": "B-Complex + Vitamin C",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Vitamins/Minerals",
+    "schedule": "OTC",
+    "brand": "Becosules / Polybion",
+    "formation": "Water-soluble vitamin combination",
+    "uses": "Vitamin deficiency, post-viral recovery",
+    "adult": "1 capsule OD",
+    "child": "2.5–5 ml OD (syrup form)",
+    "avoid": "Megaloblastic anemia (with uncorrected B12)"
+  },
+  {
+    "rank": 50,
+    "name": "Omeprazole",
+    "section": "Section 1: Foundational Molecules",
+    "category": "Gastrointestinal",
+    "schedule": "H",
+    "brand": "Omez / Ocid / Prilosec",
+    "formation": "Substituted benzimidazole (PPI)",
+    "uses": "GERD, gastric ulcers, Zollinger-Ellison syndrome",
+    "adult": "20–40 mg OD (30 mins before breakfast)",
+    "child": "0.7–3 mg/kg/day",
+    "avoid": "Concomitant use with nelfinavir"
+  },
+  {
+    "rank": 51,
+    "name": "Losartan Potassium",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Losar / Cozaar / Losartan",
+    "formation": "Biphenyl tetrazole derivative (ARB)",
+    "uses": "Hypertension, diabetic nephropathy",
+    "adult": "25–100 mg OD or BID",
+    "child": "0.7 mg/kg initial (max 50 mg OD)",
+    "avoid": "Pregnancy, severe hepatic impairment"
+  },
+  {
+    "rank": 52,
+    "name": "Metoprolol Succinate",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Metolar XL / Lopressor / Metpure XL",
+    "formation": "Selective beta1-blocker (Extended-release)",
+    "uses": "Hypertension, chronic heart failure, angina",
+    "adult": "25–100 mg OD",
+    "child": "1–2 mg/kg OD (Consult cardiology)",
+    "avoid": "Severe bradycardia, second/third-degree AV block"
+  },
+  {
+    "rank": 53,
+    "name": "Ramipril",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Cardace / Ramace / Altace",
+    "formation": "ACE inhibitor (Pro-drug)",
+    "uses": "Hypertension, heart failure post-MI",
+    "adult": "2.5–10 mg OD",
+    "child": "Not recommended",
+    "avoid": "History of angioedema, pregnancy"
+  },
+  {
+    "rank": 54,
+    "name": "Olmesartan Medoxomil",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Olsar / Olmy / Benicar",
+    "formation": "Angiotensin II receptor antagonist",
+    "uses": "Hypertension management",
+    "adult": "20–40 mg OD",
+    "child": "Not recommended",
+    "avoid": "Biliary obstruction, severe renal failure"
+  },
+  {
+    "rank": 55,
+    "name": "Bisoprolol Fumarate",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Concor / Biselect / Bisocor",
+    "formation": "Beta1-selective adrenoceptor blocker",
+    "uses": "Hypertension, stable chronic heart failure",
+    "adult": "2.5–10 mg OD",
+    "child": "Not recommended",
+    "avoid": "Acute heart failure, bronchospastic diseases"
+  },
+  {
+    "rank": 56,
+    "name": "Furosemide",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Lasix / Frusemide",
+    "formation": "Anthranilic acid derivative (Loop diuretic)",
+    "uses": "Edema in CHF, renal disease, liver cirrhosis",
+    "adult": "20–80 mg OD or BID",
+    "child": "1–2 mg/kg per dose (max 6 mg/kg)",
+    "avoid": "Anuria, hepatic coma, severe dehydration"
+  },
+  {
+    "rank": 57,
+    "name": "Spironolactone",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Aldactone / Spiromide",
+    "formation": "Synthetic steroid (Aldosterone antagonist)",
+    "uses": "Edema, primary hyperaldosteronism, CHF",
+    "adult": "25–100 mg daily",
+    "child": "1–3.3 mg/kg/day",
+    "avoid": "Hyperkalemia, Addison's disease, acute renal failure"
+  },
+  {
+    "rank": 58,
+    "name": "Atorvastatin + Clopidogrel",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Deplatt-A / Atorva-CV",
+    "formation": "Statin + P2Y12 inhibitor",
+    "uses": "Secondary prevention of ischemic events",
+    "adult": "10/75 mg or 20/75 mg OD",
+    "child": "Not recommended",
+    "avoid": "Active GI bleed, severe liver disease"
+  },
+  {
+    "rank": 59,
+    "name": "Rosuvastatin + Fenofibrate",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Rosufeno / Rosuvas-F",
+    "formation": "Statin + fibric acid derivative",
+    "uses": "Mixed dyslipidemia (elevated LDL and TG)",
+    "adult": "10 mg/160 mg OD",
+    "child": "Not recommended",
+    "avoid": "Severe renal impairment, gallbladder disease"
+  },
+  {
+    "rank": 60,
+    "name": "Sacubitril + Valsartan",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Vymada / Entresto",
+    "formation": "Neprilysin inhibitor + ARB (Crystal complex)",
+    "uses": "Chronic heart failure (NYHA Class II-IV)",
+    "adult": "50–200 mg BID (Individualized)",
+    "child": "Consult specialist (Weight-based)",
+    "avoid": "Concomitant ACE inhibitor use, history of angioedema"
+  },
+  {
+    "rank": 61,
+    "name": "Chlorthalidone",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Hygroton / Thalitone",
+    "formation": "Monosulfonamyl diuretic",
+    "uses": "Hypertension, edema",
+    "adult": "12.5–25 mg OD",
+    "child": "2 mg/kg 3 times/week",
+    "avoid": "Anuria, hypersensitivity to sulfonamides"
+  },
+  {
+    "rank": 62,
+    "name": "Nebivolol",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Nebicard / Bystolic / Nebitop",
+    "formation": "Beta1-selective blocker with vasodilatory effects",
+    "uses": "Hypertension, chronic heart failure",
+    "adult": "5 mg OD",
+    "child": "Not recommended",
+    "avoid": "Liver impairment, severe circulatory disorders"
+  },
+  {
+    "rank": 63,
+    "name": "Atenolol",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Aten / Tenormin / Betacard",
+    "formation": "Synthetic beta1-selective blocker",
+    "uses": "Hypertension, angina pectoris, arrhythmias",
+    "adult": "25–100 mg OD",
+    "child": "0.5–1 mg/kg/dose BID",
+    "avoid": "Sinus bradycardia, pulmonary hypertension"
+  },
+  {
+    "rank": 64,
+    "name": "Nifedipine (SR)",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Adalat Retard / Depin-E",
+    "formation": "Dihydropyridine calcium channel blocker",
+    "uses": "Angina, hypertension, preterm labor (off-label)",
+    "adult": "30–60 mg OD (Extended-release)",
+    "child": "0.25–0.5 mg/kg/dose",
+    "avoid": "Cardiogenic shock, recent MI"
+  },
+  {
+    "rank": 65,
+    "name": "Valsartan",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Valzaar / Diovan",
+    "formation": "Non-peptide tetrazole derivative (ARB)",
+    "uses": "Hypertension, heart failure, post-MI",
+    "adult": "80–160 mg OD",
+    "child": "1.3 mg/kg OD (max 40 mg)",
+    "avoid": "Pregnancy, concomitant use with Aliskiren"
+  },
+  {
+    "rank": 66,
+    "name": "Carvedilol",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "C-Vadin / Coreg / Carca",
+    "formation": "Non-selective beta and alpha-1 blocker",
+    "uses": "Congestive heart failure, post-MI",
+    "adult": "3.125–25 mg BID",
+    "child": "0.05–0.4 mg/kg BID",
+    "avoid": "Bronchial asthma, severe hepatic failure"
+  },
+  {
+    "rank": 67,
+    "name": "Hydrochlorothiazide",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Esidrex / Aquazide",
+    "formation": "Benzothiadiazine (Thiazide diuretic)",
+    "uses": "Hypertension, edema",
+    "adult": "12.5–25 mg OD",
+    "child": "1–2 mg/kg/day",
+    "avoid": "Sulfa allergy, anuria"
+  },
+  {
+    "rank": 68,
+    "name": "Clonidine HCl",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Arkamin / Catapres",
+    "formation": "Imidazoline derivative (Alpha-2 agonist)",
+    "uses": "Hypertension, ADHD (extended-release), pain",
+    "adult": "0.1 mg BID (titrate based on response)",
+    "child": "0.05–0.4 mg/day (ADHD use)",
+    "avoid": "Severe bradyarrhythmia"
+  },
+  {
+    "rank": 69,
+    "name": "Enoxaparin Sodium",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "C",
+    "brand": "Clexane / Lovenox",
+    "formation": "Low molecular weight heparin (LMWH)",
+    "uses": "DVT prophylaxis, unstable angina, MI",
+    "adult": "40 mg SC OD or 1 mg/kg SC BID",
+    "child": "1 mg/kg SC BID",
+    "avoid": "Major active bleeding, heparin-induced thrombocytopenia"
+  },
+  {
+    "rank": 70,
+    "name": "Rivaroxaban",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Xarelto / Relvus",
+    "formation": "Factor Xa inhibitor",
+    "uses": "Stroke prevention in AF, treatment of DVT/PE",
+    "adult": "10–20 mg OD",
+    "child": "Weight-adjusted (Consult pediatric hematology)",
+    "avoid": "Active bleeding, severe renal/hepatic impairment"
+  },
+  {
+    "rank": 71,
+    "name": "Apixaban",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Eliquis",
+    "formation": "Selective Factor Xa inhibitor",
+    "uses": "Prophylaxis of stroke and systemic embolism in AF",
+    "adult": "2.5–5 mg BID",
+    "child": "Not recommended",
+    "avoid": "Severe hepatic impairment, significant bleeding risk"
+  },
+  {
+    "rank": 72,
+    "name": "Dabigatran Etexilate",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Pradaxa",
+    "formation": "Direct thrombin inhibitor",
+    "uses": "AF stroke prevention, post-orthopedic DVT prophylaxis",
+    "adult": "110–150 mg BID",
+    "child": "Weight-based pellets (Consult specialist)",
+    "avoid": "Mechanical prosthetic heart valve, active bleeding"
+  },
+  {
+    "rank": 73,
+    "name": "Aspirin (Enteric Coated)",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "OTC",
+    "brand": "Ecosprin / Aspirin / Disprin",
+    "formation": "Salicylic acid derivative",
+    "uses": "ACS prevention, analgesic, anti-inflammatory",
+    "adult": "75–150 mg OD (Antiplatelet)",
+    "child": "10–15 mg/kg (Analgesic)",
+    "avoid": "Viral infection in kids (Reye’s), GI ulcer"
+  },
+  {
+    "rank": 74,
+    "name": "Propranolol HCl",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Inderal / Betacap / Ciplar",
+    "formation": "Non-selective beta-adrenergic blocker",
+    "uses": "Migraine prophylaxis, portal hypertension, anxiety",
+    "adult": "20–40 mg BID or TID",
+    "child": "0.5–1 mg/kg/day in divided doses",
+    "avoid": "Bronchial asthma, cardiogenic shock"
+  },
+  {
+    "rank": 75,
+    "name": "Ezetimibe",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Ezetrol / Ezentia",
+    "formation": "Cholesterol absorption inhibitor",
+    "uses": "Primary hyperlipidemia (adjunct to statins)",
+    "adult": "10 mg OD",
+    "child": "10 mg OD (approved for >10y)",
+    "avoid": "Moderate-to-severe hepatic impairment"
+  },
+  {
+    "rank": 76,
+    "name": "Fenofibrate",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Tricor / Lipanthyl / Fenolip",
+    "formation": "Fibric acid derivative",
+    "uses": "Hypertriglyceridemia, mixed dyslipidemia",
+    "adult": "145–160 mg OD",
+    "child": "Not recommended",
+    "avoid": "Severe renal disease, gallbladder disease"
+  },
+  {
+    "rank": 77,
+    "name": "Nicorandil",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Nicoril / Ikorel / Nicoloc",
+    "formation": "Potassium channel opener + nitrate moiety",
+    "uses": "Angina pectoris prophylaxis",
+    "adult": "5–20 mg BID",
+    "child": "Not recommended",
+    "avoid": "Cardiogenic shock, severe hypotension"
+  },
+  {
+    "rank": 78,
+    "name": "Ivabradine",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Ivabrad / Corlanor / Bradia",
+    "formation": "Hyperpolarization-activated cyclic nucleotide-gated inhibitor",
+    "uses": "Chronic heart failure (to reduce hospitalizations)",
+    "adult": "5–7.5 mg BID",
+    "child": "Not recommended",
+    "avoid": "Bradycardia (HR < 60), pacemaker dependence"
+  },
+  {
+    "rank": 79,
+    "name": "Digoxin",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Lanoxin / Digoxin",
+    "formation": "Cardiac glycoside",
+    "uses": "Atrial fibrillation rate control, heart failure",
+    "adult": "0.125–0.25 mg OD",
+    "child": "5–10 mcg/kg/day (titrate carefully)",
+    "avoid": "Ventricular fibrillation, hypokalemia"
+  },
+  {
+    "rank": 80,
+    "name": "Hydralazine",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Nepresol / Apresoline",
+    "formation": "Phthalazine derivative (Vasodilator)",
+    "uses": "Essential hypertension, hypertensive crisis in pregnancy",
+    "adult": "10–50 mg TID or QID",
+    "child": "0.75 mg/kg/day (Consult specialist)",
+    "avoid": "Idiopathic Systemic Lupus Erythematosus"
+  },
+  {
+    "rank": 81,
+    "name": "Diltiazem HCl",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Dilzem / Cardizem / Dilcontin",
+    "formation": "Benzothiazepine calcium channel blocker",
+    "uses": "Angina, hypertension, AF rate control",
+    "adult": "30–120 mg TID or 120–360 mg OD (SR)",
+    "child": "1.5–2 mg/kg/day (Consult specialist)",
+    "avoid": "Sick sinus syndrome, acute MI with lung congestion"
+  },
+  {
+    "rank": 82,
+    "name": "Verapamil HCl",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Calaptin / Isoptin / Verapress",
+    "formation": "Phenylalkylamine calcium channel blocker",
+    "uses": "Supraventricular tachycardia, hypertension, migraine prophy",
+    "adult": "40–120 mg TID or 120–240 mg OD (SR)",
+    "child": "4–8 mg/kg/day (Consult cardiology)",
+    "avoid": "Heart block, severe left ventricular dysfunction"
+  },
+  {
+    "rank": 83,
+    "name": "Torsemide",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Dytor / Torasemide / Demadex",
+    "formation": "Pyridine-sulfonylurea loop diuretic",
+    "uses": "Edema associated with CHF or renal disease",
+    "adult": "10–20 mg OD",
+    "child": "Not recommended",
+    "avoid": "Anuria, hypersensitivity to sulfonylureas"
+  },
+  {
+    "rank": 84,
+    "name": "Indapamide",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Natrilix / Lorvas",
+    "formation": "Non-thiazide chlorobenzamide diuretic",
+    "uses": "Essential hypertension",
+    "adult": "1.5 mg OD (SR) or 2.5 mg OD",
+    "child": "Not recommended",
+    "avoid": "Severe renal failure, hepatic encephalopathy"
+  },
+  {
+    "rank": 85,
+    "name": "Perindopril Erbumine",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Coversyl / Acertil / Prexum",
+    "formation": "ACE inhibitor (Long-acting)",
+    "uses": "Hypertension, coronary artery disease",
+    "adult": "4–8 mg OD",
+    "child": "Not recommended",
+    "avoid": "Bilateral renal artery stenosis, pregnancy"
+  },
+  {
+    "rank": 86,
+    "name": "Enalapril Maleate",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Enam / Vasotec / Envas",
+    "formation": "ACE inhibitor pro-drug",
+    "uses": "Hypertension, heart failure management",
+    "adult": "5–40 mg OD or BID",
+    "child": "0.08 mg/kg OD (max 5 mg)",
+    "avoid": "Pregnancy, history of angioedema"
+  },
+  {
+    "rank": 87,
+    "name": "Lisinopril",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Listril / Zestril / Cipril",
+    "formation": "Lysine analog of enalaprilat (ACEI)",
+    "uses": "Hypertension, heart failure, post-MI",
+    "adult": "10–40 mg OD",
+    "child": "0.07 mg/kg OD (max 5 mg)",
+    "avoid": "Hereditary or idiopathic angioedema"
+  },
+  {
+    "rank": 88,
+    "name": "Labetalol HCl",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Normodyne / Trandate / Labetalol",
+    "formation": "Combined alpha and beta blocker",
+    "uses": "Hypertension in pregnancy, hypertensive emergency",
+    "adult": "100–400 mg BID (Oral)",
+    "child": "1–3 mg/kg/day",
+    "avoid": "Bronchial asthma, heart block"
+  },
+  {
+    "rank": 89,
+    "name": "Isosorbide Mononitrate",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Imdur / Monotrate / Ismo",
+    "formation": "Organic nitrate",
+    "uses": "Prophylaxis of angina pectoris",
+    "adult": "20 mg BID or 60 mg OD (SR)",
+    "child": "Not recommended",
+    "avoid": "Hypertrophic obstructive cardiomyopathy, nitrate allergy"
+  },
+  {
+    "rank": 90,
+    "name": "Nitroglycerin",
+    "section": "Section 2: Cardiovascular",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Nitrostat / Sorbitrate / GTN",
+    "formation": "Organic nitrate vasodilator",
+    "uses": "Acute angina pectoris, heart failure in MI",
+    "adult": "0.5 mg sublingual PRN",
+    "child": "Not recommended for routine use",
+    "avoid": "Severe anemia, increased intracranial pressure"
+  },
+  {
+    "rank": 91,
+    "name": "Vildagliptin",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Antidiabetic",
+    "schedule": "H",
+    "brand": "Galvus / Jalra / Zomelis",
+    "formation": "Synthetic DPP-4 inhibitor",
+    "uses": "Type 2 Diabetes management",
+    "adult": "50 mg OD or BID",
+    "child": "Not recommended",
+    "avoid": "Moderate-to-severe renal failure (dose adjustment)"
+  },
+  {
+    "rank": 92,
+    "name": "Sitagliptin",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Antidiabetic",
+    "schedule": "H",
+    "brand": "Januvia / Istamet",
+    "formation": "Selective DPP-4 inhibitor",
+    "uses": "Type 2 Diabetes",
+    "adult": "100 mg OD",
+    "child": "Not recommended",
+    "avoid": "History of pancreatitis, renal failure (titrate)"
+  },
+  {
+    "rank": 93,
+    "name": "Linagliptin",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Antidiabetic",
+    "schedule": "H",
+    "brand": "Trajenta / Glyxambi",
+    "formation": "Xanthine-based DPP-4 inhibitor",
+    "uses": "Type 2 Diabetes (preferred in renal impairment)",
+    "adult": "5 mg OD",
+    "child": "Not recommended",
+    "avoid": "Acute pancreatitis history"
+  },
+  {
+    "rank": 94,
+    "name": "Saxagliptin",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Antidiabetic",
+    "schedule": "H",
+    "brand": "Onglyza",
+    "formation": "Cyclopropylglycine DPP-4 inhibitor",
+    "uses": "Glycemic control in T2DM",
+    "adult": "2.5–5 mg OD",
+    "child": "Not recommended",
+    "avoid": "Heart failure history (caution)"
+  },
+  {
+    "rank": 95,
+    "name": "Pioglitazone",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Antidiabetic",
+    "schedule": "H",
+    "brand": "Pioz / Actos / Piosafe",
+    "formation": "Thiazolidinedione (PPAR-gamma agonist)",
+    "uses": "T2DM (specifically insulin resistance)",
+    "adult": "15–45 mg OD",
+    "child": "Not recommended",
+    "avoid": "Bladder cancer, active heart failure"
+  },
+  {
+    "rank": 96,
+    "name": "Voglibose",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Antidiabetic",
+    "schedule": "H",
+    "brand": "Volix / Vocarb / Volibo",
+    "formation": "Alpha-glucosidase inhibitor",
+    "uses": "Postprandial hyperglycemia in T2DM",
+    "adult": "0.2–0.3 mg TID (at start of meal)",
+    "child": "Not recommended",
+    "avoid": "Chronic intestinal disease, hernia"
+  },
+  {
+    "rank": 97,
+    "name": "Insulin Glargine",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Antidiabetic",
+    "schedule": "C",
+    "brand": "Lantus / Basalog / Glaritus",
+    "formation": "Long-acting analog insulin (rDNA origin)",
+    "uses": "Basal glycemic control in Type 1 and Type 2 DM",
+    "adult": "Individualized (SC OD at bedtime)",
+    "child": "Consult specialist (approved for >2y)",
+    "avoid": "Acute hypoglycemia"
+  },
+  {
+    "rank": 98,
+    "name": "Insulin Aspart",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Antidiabetic",
+    "schedule": "C",
+    "brand": "NovoRapid / NovoLog",
+    "formation": "Rapid-acting analog insulin",
+    "uses": "Prandial glycemic control",
+    "adult": "Individualized (SC 5–10 mins before meals)",
+    "child": "Weight-based titration",
+    "avoid": "Hypoglycemia, severe insulin allergy"
+  },
+  {
+    "rank": 99,
+    "name": "Insulin Lispro",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Antidiabetic",
+    "schedule": "C",
+    "brand": "Humalog / Rosulin-R",
+    "formation": "Rapid-acting analog insulin",
+    "uses": "Type 1 and Type 2 Diabetes",
+    "adult": "Individualized based on carbohydrate intake",
+    "child": "Weight-based",
+    "avoid": "During hypoglycemic episodes"
+  },
+  {
+    "rank": 100,
+    "name": "Dulaglutide",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Antidiabetic",
+    "schedule": "C",
+    "brand": "Trulicity",
+    "formation": "GLP-1 receptor agonist (Injectable)",
+    "uses": "T2DM management, CV risk reduction",
+    "adult": "0.75–1.5 mg once weekly SC",
+    "child": "Not recommended",
+    "avoid": "Medullary thyroid carcinoma, MEN 2"
+  },
+  {
+    "rank": 101,
+    "name": "Metformin + Sitagliptin + Dapagliflozin",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Antidiabetic",
+    "schedule": "H",
+    "brand": "Tribet / Janumet-S",
+    "formation": "Biguanide + DPP-4i + SGLT2i",
+    "uses": "Triple therapy for refractory T2DM",
+    "adult": "500/50/5 mg to 1000/50/10 mg OD/BID",
+    "child": "Not recommended",
+    "avoid": "Renal failure (CrCl < 30), metabolic acidosis"
+  },
+  {
+    "rank": 102,
+    "name": "Metformin + Vildagliptin",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Antidiabetic",
+    "schedule": "H",
+    "brand": "Vildamet / Galvus Met",
+    "formation": "Biguanide + DPP-4 inhibitor",
+    "uses": "Combination management for Type 2 Diabetes",
+    "adult": "500/50 mg to 1000/50 mg BID",
+    "child": "Not recommended",
+    "avoid": "Hepatic impairment, severe ketoacidosis"
+  },
+  {
+    "rank": 103,
+    "name": "Gliclazide",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Antidiabetic",
+    "schedule": "H",
+    "brand": "Diamicron / Glizid MR",
+    "formation": "Second-generation sulfonylurea",
+    "uses": "Type 2 Diabetes",
+    "adult": "30–120 mg OD (Modified release)",
+    "child": "Not recommended",
+    "avoid": "Type 1 DM, pregnancy, liver failure"
+  },
+  {
+    "rank": 104,
+    "name": "Remogliflozin",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Antidiabetic",
+    "schedule": "H",
+    "brand": "Remozen / Remo (Zydus)",
+    "formation": "Selective SGLT2 inhibitor",
+    "uses": "Glycemic control in T2DM",
+    "adult": "100 mg BID",
+    "child": "Not recommended",
+    "avoid": "Dialysis, severe renal impairment"
+  },
+  {
+    "rank": 105,
+    "name": "Canagliflozin",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Antidiabetic",
+    "schedule": "H",
+    "brand": "Invokana",
+    "formation": "SGLT2 inhibitor",
+    "uses": "T2DM, diabetic nephropathy",
+    "adult": "100–300 mg OD",
+    "child": "Not recommended",
+    "avoid": "eGFR < 30, prone to genital mycotic infections"
+  },
+  {
+    "rank": 106,
+    "name": "Teneligliptin + Metformin",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Antidiabetic",
+    "schedule": "H",
+    "brand": "Tengli-M / Zita-Met",
+    "formation": "DPP-4i + Biguanide",
+    "uses": "Type 2 Diabetes",
+    "adult": "20 mg/500 mg OD or BID",
+    "child": "Not recommended",
+    "avoid": "Heart failure, renal acidosis"
+  },
+  {
+    "rank": 107,
+    "name": "Glibenclamide (Glyburide)",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Antidiabetic",
+    "schedule": "H",
+    "brand": "Daonil / Euglucon / Gliben",
+    "formation": "Sulfonylurea derivative",
+    "uses": "Type 2 Diabetes",
+    "adult": "2.5–10 mg OD or BID",
+    "child": "Not recommended",
+    "avoid": "Severe elderly frailty (hypoglycemia risk)"
+  },
+  {
+    "rank": 108,
+    "name": "Repaglinide",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Antidiabetic",
+    "schedule": "H",
+    "brand": "Novonorm / Repag",
+    "formation": "Meglitinide derivative",
+    "uses": "Type 2 Diabetes (post-prandial control)",
+    "adult": "0.5–4 mg (15 mins before each meal)",
+    "child": "Not recommended",
+    "avoid": "Concomitant gemfibrozil use"
+  },
+  {
+    "rank": 109,
+    "name": "Alpha Lipoic Acid",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Vitamins/Minerals",
+    "schedule": "OTC",
+    "brand": "Thiocid / ALA-300 / Alphalipoic",
+    "formation": "Naturally occurring antioxidant",
+    "uses": "Diabetic neuropathy, cellular protection",
+    "adult": "300–600 mg daily",
+    "child": "Consult specialist",
+    "avoid": "Hypoglycemia (additive effect with OADs)"
+  },
+  {
+    "rank": 110,
+    "name": "Myo-inositol",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Vitamins/Minerals",
+    "schedule": "OTC",
+    "brand": "Inofolic / Ovabless / Myo-Inositol",
+    "formation": "Carbocyclic sugar (Vitamin-like)",
+    "uses": "PCOD/PCOS, metabolic support",
+    "adult": "2 g BID",
+    "child": "Not recommended",
+    "avoid": "Bipolar disorder (may trigger mania)"
+  },
+  {
+    "rank": 111,
+    "name": "Progesterone (Micronized)",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Hormonal",
+    "schedule": "H",
+    "brand": "Susten / Lutinus / Duphaston",
+    "formation": "Natural steroid hormone",
+    "uses": "Luteal phase support, prevention of preterm birth",
+    "adult": "200–400 mg daily (Vaginal or Oral)",
+    "child": "Not recommended",
+    "avoid": "Undiagnosed vaginal bleeding, active liver disease"
+  },
+  {
+    "rank": 112,
+    "name": "Estradiol",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Hormonal",
+    "schedule": "H",
+    "brand": "Progynova / Estradot / Estradiol",
+    "formation": "Principal endogenous human estrogen",
+    "uses": "Menopause hormone replacement therapy (HRT)",
+    "adult": "1–2 mg daily or 50 mcg/day (patch)",
+    "child": "Titrate based on puberty induction needs",
+    "avoid": "Estrogen-dependent tumors, history of DVT"
+  },
+  {
+    "rank": 113,
+    "name": "Norethisterone",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Hormonal",
+    "schedule": "H",
+    "brand": "Primolut-N / Regestrone",
+    "formation": "Synthetic progestational hormone",
+    "uses": "Dysmenorrhea, heavy menstrual bleeding",
+    "adult": "5 mg TID (for 10 days) or 10–20 mg/day",
+    "child": "Not recommended",
+    "avoid": "Porphyria, active thrombophlebitis"
+  },
+  {
+    "rank": 114,
+    "name": "Levonorgestrel",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Hormonal",
+    "schedule": "H",
+    "brand": "i-Pill / Unwanted-72 / Eziday",
+    "formation": "Second-generation synthetic progestogen",
+    "uses": "Emergency contraception, long-term contraception",
+    "adult": "1.5 mg single dose (within 72 hrs)",
+    "child": "Same as adult post-menarche",
+    "avoid": "Suspected pregnancy, severe hepatic disease"
+  },
+  {
+    "rank": 115,
+    "name": "Finasteride",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Urology",
+    "schedule": "H",
+    "brand": "Finpecia / Propecia / Finast",
+    "formation": "Type II 5-alpha-reductase inhibitor",
+    "uses": "Benign Prostatic Hyperplasia (BPH), androgenic alopecia",
+    "adult": "5 mg daily (BPH) or 1 mg daily (Alopecia)",
+    "child": "Not recommended",
+    "avoid": "Women of childbearing age, pediatric patients"
+  },
+  {
+    "rank": 116,
+    "name": "Dutasteride",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Urology",
+    "schedule": "H",
+    "brand": "Dutas / Avodart",
+    "formation": "Dual 5-alpha-reductase inhibitor",
+    "uses": "Symptomatic BPH management",
+    "adult": "0.5 mg OD",
+    "child": "Not recommended",
+    "avoid": "Hypersensitivity, severe hepatic impairment"
+  },
+  {
+    "rank": 117,
+    "name": "Cabergoline",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Hormonal",
+    "schedule": "H",
+    "brand": "Caberlin / Dostinex",
+    "formation": "Ergot-derived dopamine receptor agonist",
+    "uses": "Hyperprolactinemia, Parkinson’s disease adjunct",
+    "adult": "0.25–0.5 mg twice weekly",
+    "child": "Consult specialist",
+    "avoid": "Uncontrolled hypertension, history of valvular heart disease"
+  },
+  {
+    "rank": 118,
+    "name": "Bromocriptine",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Hormonal",
+    "schedule": "H",
+    "brand": "Parlodel / Sicriptin",
+    "formation": "Semisynthetic ergot alkaloid",
+    "uses": "Hyperprolactinemia, acromegaly, T2DM (off-label)",
+    "adult": "1.25–2.5 mg daily (titrate up)",
+    "child": "Consult pediatric endocrinology",
+    "avoid": "Preeclampsia, severe coronary artery disease"
+  },
+  {
+    "rank": 119,
+    "name": "Testosterone (Gel/Inj)",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Hormonal",
+    "schedule": "H",
+    "brand": "Androgel / Cernos / Testogel",
+    "formation": "Principal male sex hormone",
+    "uses": "Male hypogonadism, delayed puberty",
+    "adult": "50 mg OD (Gel) or 250 mg every 3 weeks (IM)",
+    "child": "Consult pediatric endocrinology",
+    "avoid": "Prostate or breast cancer in males"
+  },
+  {
+    "rank": 120,
+    "name": "Clomifene Citrate",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Hormonal",
+    "schedule": "H",
+    "brand": "Siphene / Clomid / Fertomid",
+    "formation": "Selective estrogen receptor modulator (SERM)",
+    "uses": "Ovulation induction in infertile women",
+    "adult": "50 mg daily for 5 days (starting day 3–5 of cycle)",
+    "child": "Not recommended",
+    "avoid": "Liver disease, ovarian cysts, pregnancy"
+  },
+  {
+    "rank": 121,
+    "name": "Letrozole",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Hormonal",
+    "schedule": "H",
+    "brand": "Letoval / Femara / Letroz",
+    "formation": "Nonsteroidal aromatase inhibitor",
+    "uses": "Breast cancer, infertility (off-label ovulation induction)",
+    "adult": "2.5 mg daily",
+    "child": "Not recommended",
+    "avoid": "Pre-menopausal status (unless for fertility), pregnancy"
+  },
+  {
+    "rank": 122,
+    "name": "Human Growth Hormone (Somatropin)",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Biologicals",
+    "schedule": "C",
+    "brand": "Norditropin / Humatrope / Omnitrope",
+    "formation": "rDNA-derived human growth hormone",
+    "uses": "Growth failure in children, GHD in adults",
+    "adult": "Individualized (usually 0.005–0.01 mg/kg SC)",
+    "child": "0.16–0.24 mg/kg/week (divided daily doses)",
+    "avoid": "Active malignancy, acute critical illness"
+  },
+  {
+    "rank": 123,
+    "name": "Desmopressin",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Hormonal",
+    "schedule": "H",
+    "brand": "Minirin / Desmospray",
+    "formation": "Synthetic analog of vasopressin",
+    "uses": "Diabetes insipidus, primary nocturnal enuresis",
+    "adult": "0.1–0.4 mg/day in divided doses",
+    "child": "0.2 mg at bedtime (Enuresis)",
+    "avoid": "Hyponatremia, moderate-to-severe renal failure"
+  },
+  {
+    "rank": 124,
+    "name": "Hydrocortisone",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Hormonal",
+    "schedule": "H",
+    "brand": "Cortef / Solu-Cortef / Efcortesol",
+    "formation": "Synthetic glucocorticoid steroid",
+    "uses": "Adrenal insufficiency, severe allergies, inflammation",
+    "adult": "20–30 mg daily (divided) or 100 mg IV TID",
+    "child": "0.5–2 mg/kg/dose (IV emergency)",
+    "avoid": "Systemic fungal infections, live virus vaccines"
+  },
+  {
+    "rank": 125,
+    "name": "Dexamethasone",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Hormonal",
+    "schedule": "H",
+    "brand": "Dexona / Decadron / Solurex",
+    "formation": "High-potency synthetic glucocorticoid",
+    "uses": "Cerebral edema, severe allergic states, COVID-19",
+    "adult": "0.5–8 mg/day",
+    "child": "0.02–0.3 mg/kg/day",
+    "avoid": "Systemic fungal infections, active TB"
+  },
+  {
+    "rank": 126,
+    "name": "Betamethasone",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Hormonal",
+    "schedule": "H",
+    "brand": "Betnesol / Celestone",
+    "formation": "Synthetic fluorinated glucocorticoid",
+    "uses": "Skin inflammation, fetal lung maturity (prenatal)",
+    "adult": "12 mg IM (two doses 24 hrs apart for fetal lung)",
+    "child": "Not recommended for systemic use",
+    "avoid": "Hypersensitivity, idiopathic thrombocytopenic purpura"
+  },
+  {
+    "rank": 127,
+    "name": "Methylprednisolone",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Hormonal",
+    "schedule": "H",
+    "brand": "Solu-Medrol / Medrol / Methpred",
+    "formation": "Synthetic glucocorticoid",
+    "uses": "Severe acute exacerbations of asthma/RA, organ transplant",
+    "adult": "4–48 mg/day or high-dose pulse IV therapy",
+    "child": "0.5–2 mg/kg/day",
+    "avoid": "Intrathecal administration, systemic fungal infection"
+  },
+  {
+    "rank": 128,
+    "name": "Prednisolone",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Hormonal",
+    "schedule": "H",
+    "brand": "Wysolone / Omnacortil / Deltacortril",
+    "formation": "Synthetic glucocorticoid derivative",
+    "uses": "Bronchial asthma, nephrotic syndrome, RA",
+    "adult": "5–60 mg/day",
+    "child": "1–2 mg/kg/day",
+    "avoid": "Active TB, chickenpox/measles exposure"
+  },
+  {
+    "rank": 129,
+    "name": "Deflazacort",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Hormonal",
+    "schedule": "H",
+    "brand": "Defcort / Calcort / Dezflam",
+    "formation": "Oxazoline derivative of prednisolone",
+    "uses": "Duchenne Muscular Dystrophy, RA, asthma",
+    "adult": "6–90 mg/day",
+    "child": "0.25–1.5 mg/kg/day",
+    "avoid": "Hypersensitivity, live vaccine administration"
+  },
+  {
+    "rank": 130,
+    "name": "Triamcinolone",
+    "section": "Section 3: Metabolic & Endocrine",
+    "category": "Hormonal",
+    "schedule": "H",
+    "brand": "Kenacort / Tricort",
+    "formation": "Synthetic corticosteroid",
+    "uses": "Oral ulcers, joint inflammation, skin conditions",
+    "adult": "4 mg OD or intra-articular injection (40 mg)",
+    "child": "0.1–0.5 mg/kg/day (systemic use restricted)",
+    "avoid": "Extensive plaque psoriasis, systemic fungal infection"
+  },
+  {
+    "rank": 131,
+    "name": "Cefpodoxime Proxetil",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antibiotics",
+    "schedule": "H1",
+    "brand": "Cepodem / Cefoprox / Vantin",
+    "formation": "Oral third-generation cephalosporin ester",
+    "uses": "Acute bronchitis, skin infections, tonsillitis",
+    "adult": "200 mg BID",
+    "child": "10 mg/kg/day in 2 divided doses",
+    "avoid": "Hypersensitivity to beta-lactams"
+  },
+  {
+    "rank": 132,
+    "name": "Levofloxacin",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antibiotics",
+    "schedule": "H1",
+    "brand": "Levomac / Levoflox / Tavanic",
+    "formation": "S-enantiomer of ofloxacin (Fluoroquinolone)",
+    "uses": "Community-acquired pneumonia, acute pyelonephritis",
+    "adult": "500 mg OD or BID",
+    "child": "10–20 mg/kg/day (Restrict under 18y)",
+    "avoid": "History of tendon rupture, myasthenia gravis"
+  },
+  {
+    "rank": 133,
+    "name": "Metronidazole",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antibiotics",
+    "schedule": "H",
+    "brand": "Flagyl / Metrogyl",
+    "formation": "Nitroimidazole antibiotic/antiprotozoal",
+    "uses": "Amoebiasis, giardiasis, anaerobic infections",
+    "adult": "400 mg TID",
+    "child": "30–50 mg/kg/day in 3 divided doses",
+    "avoid": "First trimester of pregnancy, alcohol consumption"
+  },
+  {
+    "rank": 134,
+    "name": "Clindamycin HCl",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antibiotics",
+    "schedule": "H",
+    "brand": "Dalacin-C / Clincin / Cleocin",
+    "formation": "Lincosamide antibiotic",
+    "uses": "Skin and soft tissue infections, MRSA, dental abscess",
+    "adult": "150–450 mg TID or QID",
+    "child": "10–30 mg/kg/day in 3–4 divided doses",
+    "avoid": "History of Pseudomembranous colitis"
+  },
+  {
+    "rank": 135,
+    "name": "Meropenem",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antibiotics",
+    "schedule": "H1",
+    "brand": "Meronem / Meromer / Merrem",
+    "formation": "Parenteral carbapenem",
+    "uses": "Complicated intra-abdominal infections, meningitis, sepsis",
+    "adult": "500 mg to 1 g IV every 8 hrs",
+    "child": "60–120 mg/kg/day in 3 divided doses",
+    "avoid": "Anaphylactic reactions to beta-lactams"
+  },
+  {
+    "rank": 136,
+    "name": "Piperacillin + Tazobactam",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antibiotics",
+    "schedule": "H1",
+    "brand": "Piptaz / Tazact / Zosyn",
+    "formation": "Ureidopenicillin + beta-lactamase inhibitor",
+    "uses": "Nosocomial pneumonia, neutropenic fever",
+    "adult": "4.5 g IV every 6–8 hrs",
+    "child": "240–300 mg/kg/day in divided doses",
+    "avoid": "Hypersensitivity to penicillins"
+  },
+  {
+    "rank": 137,
+    "name": "Linezolid",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antibiotics",
+    "schedule": "H1",
+    "brand": "Linox / Zyvox / Lizolid",
+    "formation": "Oxazolidinone subclass",
+    "uses": "Vancomycin-resistant Enterococcus (VRE), pneumonia",
+    "adult": "600 mg BID",
+    "child": "10 mg/kg TID",
+    "avoid": "Concomitant MAO inhibitor use"
+  },
+  {
+    "rank": 138,
+    "name": "Faropenem Sodium",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antibiotics",
+    "schedule": "H1",
+    "brand": "Farobact / Romenem",
+    "formation": "Oral penem subclass",
+    "uses": "RTI, UTI, gynecological infections",
+    "adult": "200–300 mg TID",
+    "child": "Not recommended",
+    "avoid": "History of seizure disorders"
+  },
+  {
+    "rank": 139,
+    "name": "Nitrofurantoin",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antibiotics",
+    "schedule": "H",
+    "brand": "Macrobid / Furadantin / Niftran",
+    "formation": "Nitrofuran derivative",
+    "uses": "Uncomplicated urinary tract infections",
+    "adult": "100 mg BID for 5 days",
+    "child": "5–7 mg/kg/day in 4 divided doses",
+    "avoid": "Renal impairment (CrCl < 30), near-term pregnancy"
+  },
+  {
+    "rank": 140,
+    "name": "Norfloxacin",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antibiotics",
+    "schedule": "H",
+    "brand": "Norflox / Uroflox",
+    "formation": "Fluoroquinolone derivative",
+    "uses": "UTI, bacterial prostatitis, gastroenteritis",
+    "adult": "400 mg BID",
+    "child": "Not recommended (under 18 years)",
+    "avoid": "Pregnancy, myasthenia gravis"
+  },
+  {
+    "rank": 141,
+    "name": "Ciprofloxacin (Eye/Ear)",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antibiotics",
+    "schedule": "H",
+    "brand": "Ciplox Eye/Ear / Ciproquin",
+    "formation": "Fluoroquinolone",
+    "uses": "Bacterial conjunctivitis, otitis externa",
+    "adult": "1–2 drops every 4 hrs",
+    "child": "Same as adult",
+    "avoid": "Viral or fungal eye/ear infections"
+  },
+  {
+    "rank": 142,
+    "name": "Tinidazole",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antibiotics",
+    "schedule": "H",
+    "brand": "Tiniba / Fasigyn",
+    "formation": "Nitroimidazole antiprotozoal",
+    "uses": "Trichomoniasis, giardiasis, amoebiasis",
+    "adult": "2 g single dose",
+    "child": "50 mg/kg single dose",
+    "avoid": "First trimester of pregnancy, blood dyscrasias"
+  },
+  {
+    "rank": 143,
+    "name": "Albendazole",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antiparasitic",
+    "schedule": "H",
+    "brand": "Zentel / Noworm",
+    "formation": "Benzimidazole anthelmintic",
+    "uses": "Pinworm, hookworm, neurocysticercosis",
+    "adult": "400 mg single dose or BID",
+    "child": "200 mg (<2y) or 400 mg (>2y)",
+    "avoid": "Pregnancy, severe liver disease"
+  },
+  {
+    "rank": 144,
+    "name": "Ivermectin",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antiparasitic",
+    "schedule": "H",
+    "brand": "Stromectol / Ivercim",
+    "formation": "Macrocyclic lactone",
+    "uses": "Scabies, strongyloidiasis, onchocerciasis",
+    "adult": "200 mcg/kg single dose",
+    "child": "200 mcg/kg (Not recommended < 15 kg)",
+    "avoid": "Pregnancy, disorders of the CNS"
+  },
+  {
+    "rank": 145,
+    "name": "Terbinafine HCl",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antifungal",
+    "schedule": "H",
+    "brand": "Terbicip / Lamisil / Terbiforce",
+    "formation": "Allylamine antifungal",
+    "uses": "Onychomycosis, tinea capitis, tinea pedis",
+    "adult": "250 mg OD for 6–12 weeks",
+    "child": "62.5–250 mg OD (Weight-based)",
+    "avoid": "Chronic or active liver disease"
+  },
+  {
+    "rank": 146,
+    "name": "Fluconazole",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antifungal",
+    "schedule": "OTC",
+    "brand": "Forcan / Zocon / Diflucan",
+    "formation": "Triazole antifungal",
+    "uses": "Vaginal candidiasis, cryptococcal meningitis",
+    "adult": "150 mg single dose or 100–400 mg daily",
+    "child": "3–12 mg/kg/day",
+    "avoid": "Concomitant QT-prolonging drugs"
+  },
+  {
+    "rank": 147,
+    "name": "Griseofulvin",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antifungal",
+    "schedule": "OTC",
+    "brand": "Grifulvin / Grisovin / Fulvicin",
+    "formation": "Penicillium-derived antifungal",
+    "uses": "Dermatophyte infections of skin/hair/nails",
+    "adult": "500 mg to 1 g daily",
+    "child": "10–20 mg/kg/day",
+    "avoid": "Porphyria, hepatocellular failure, pregnancy"
+  },
+  {
+    "rank": 148,
+    "name": "Ketoconazole (Topical)",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antifungal",
+    "schedule": "H",
+    "brand": "Nizoral / Ketozol / Ketoskin",
+    "formation": "Imidazole antifungal",
+    "uses": "Dandruff (seborrheic dermatitis), tinea versicolor",
+    "adult": "2% cream/shampoo PRN",
+    "child": "Same as adult",
+    "avoid": "Hypersensitivity"
+  },
+  {
+    "rank": 149,
+    "name": "Clotrimazole",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antifungal",
+    "schedule": "OTC",
+    "brand": "Canesten / Candid / Clotrimazole",
+    "formation": "Imidazole derivative",
+    "uses": "Candidiasis, tinea corporis, tinea cruris",
+    "adult": "1% cream/powder BID",
+    "child": "Same as adult",
+    "avoid": "Hypersensitivity"
+  },
+  {
+    "rank": 150,
+    "name": "Luliconazole",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antifungal",
+    "schedule": "H",
+    "brand": "Lulifin / Lulican",
+    "formation": "Imidazole-subclass antifungal",
+    "uses": "Tinea pedis, tinea cruris, tinea corporis",
+    "adult": "1% cream OD for 1–2 weeks",
+    "child": "Not recommended (under 12 years)",
+    "avoid": "Hypersensitivity"
+  },
+  {
+    "rank": 151,
+    "name": "Artesunate + Lumefantrine",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antimalarial",
+    "schedule": "H",
+    "brand": "Riamet / Coartem",
+    "formation": "Artemisinin derivative + fluorene",
+    "uses": "Uncomplicated P. falciparum malaria",
+    "adult": "80 mg/480 mg BID for 3 days",
+    "child": "Weight-based dosing (Consult NCVBDC)",
+    "avoid": "First trimester of pregnancy, severe malaria"
+  },
+  {
+    "rank": 152,
+    "name": "Chloroquine Phosphate",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antimalarial",
+    "schedule": "H",
+    "brand": "Lariago / Resochin",
+    "formation": "4-aminoquinoline derivative",
+    "uses": "P. vivax malaria treatment and prophylaxis",
+    "adult": "600 mg initial, then 300 mg at 6, 24, 48 hrs",
+    "child": "10 mg/kg initial, then 5 mg/kg at 6, 24, 48 hrs",
+    "avoid": "Psoriasis, retinal or visual field changes"
+  },
+  {
+    "rank": 153,
+    "name": "Primaquine",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antimalarial",
+    "schedule": "H1",
+    "brand": "Malirid / Primaquine",
+    "formation": "8-aminoquinoline derivative",
+    "uses": "Radical cure of P. vivax and P. ovale malaria",
+    "adult": "15 mg OD for 14 days",
+    "child": "0.25–0.5 mg/kg/day for 14 days",
+    "avoid": "G6PD deficiency, pregnancy"
+  },
+  {
+    "rank": 154,
+    "name": "Doxycycline HCl",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antibiotics",
+    "schedule": "H1",
+    "brand": "Doxrid / Doxy-1 / Vibramycin",
+    "formation": "Tetracycline antibiotic",
+    "uses": "Acne, malaria prophylaxis, rickettsial infections",
+    "adult": "100 mg OD or BID",
+    "child": "2.2–4.4 mg/kg/day (Avoid <8y)",
+    "avoid": "Children under 8y (tooth discoloration), pregnancy"
+  },
+  {
+    "rank": 155,
+    "name": "Tenofovir Alafenamide",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antiviral",
+    "schedule": "H1",
+    "brand": "Vemlidy",
+    "formation": "Nucleotide reverse transcriptase inhibitor",
+    "uses": "Chronic Hepatitis B, HIV-1 infection",
+    "adult": "25 mg OD",
+    "child": "Weight-based (approved >35 kg)",
+    "avoid": "End-stage renal disease (not on dialysis)"
+  },
+  {
+    "rank": 156,
+    "name": "Abacavir + Lamivudine",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antiviral",
+    "schedule": "H1",
+    "brand": "Epzicom / Kivexa / Abamune-L",
+    "formation": "NRTI + NRTI combination",
+    "uses": "Treatment of HIV-1 infection",
+    "adult": "600 mg/300 mg OD",
+    "child": "Weight-based titration",
+    "avoid": "HLA-B*5701 positive patients (hypersensitivity)"
+  },
+  {
+    "rank": 157,
+    "name": "Dolutegravir",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antiviral",
+    "schedule": "H",
+    "brand": "Tivicay / Dovato",
+    "formation": "HIV integrase strand transfer inhibitor",
+    "uses": "HIV-1 infection (in combination therapy)",
+    "adult": "50 mg OD",
+    "child": "5 mg to 50 mg OD (Weight-based)",
+    "avoid": "Concurrent dofetilide use"
+  },
+  {
+    "rank": 158,
+    "name": "Sofosbuvir",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antiviral",
+    "schedule": "H",
+    "brand": "Sovaldi / Hepcvir / Sofovir",
+    "formation": "Nucleotide analog HCV NS5B polymerase inhibitor",
+    "uses": "Chronic Hepatitis C (pangenotypic)",
+    "adult": "400 mg OD",
+    "child": "Weight-based (approved >3 years)",
+    "avoid": "Concomitant use with amiodarone"
+  },
+  {
+    "rank": 159,
+    "name": "Acyclovir",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antiviral",
+    "schedule": "H",
+    "brand": "Zovirax / Acivir / Herpex",
+    "formation": "Synthetic purine nucleoside analog",
+    "uses": "Herpes simplex, varicella-zoster (shingles)",
+    "adult": "200–800 mg 5 times/day",
+    "child": "20 mg/kg per dose QID",
+    "avoid": "Renal impairment (dose reduction required)"
+  },
+  {
+    "rank": 160,
+    "name": "Vancomycin HCl",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antibiotics",
+    "schedule": "H",
+    "brand": "Vancocin / Vancomycin",
+    "formation": "Tricyclic glycopeptide antibiotic",
+    "uses": "MRSA, pseudomembranous colitis (Oral)",
+    "adult": "500 mg to 1 g IV every 12 hrs",
+    "child": "40 mg/kg/day in divided doses",
+    "avoid": "Hypersensitivity, renal failure (titrate)"
+  },
+  {
+    "rank": 161,
+    "name": "Amikacin Sulfate",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antibiotics",
+    "schedule": "H",
+    "brand": "Amicin / Amikin",
+    "formation": "Semisynthetic aminoglycoside",
+    "uses": "Serious Gram-negative infections, MDR-TB",
+    "adult": "15 mg/kg/day in divided doses",
+    "child": "15–22.5 mg/kg/day",
+    "avoid": "Myasthenia gravis, pregnancy"
+  },
+  {
+    "rank": 162,
+    "name": "Gentamicin Sulfate",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antibiotics",
+    "schedule": "H",
+    "brand": "Garamycin / Genticin",
+    "formation": "Aminoglycoside complex",
+    "uses": "Sepsis, complicated UTI, endocarditis adjunct",
+    "adult": "3–5 mg/kg/day IV/IM",
+    "child": "2.5 mg/kg per dose every 8 hrs",
+    "avoid": "Renal failure (titrate levels), ototoxicity history"
+  },
+  {
+    "rank": 163,
+    "name": "Erythromycin Stearate",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antibiotics",
+    "schedule": "H1",
+    "brand": "Erythrocin / Erymed",
+    "formation": "Macrolide antibiotic salt",
+    "uses": "Respiratory/skin infections (penicillin-allergic)",
+    "adult": "250–500 mg QID",
+    "child": "30–50 mg/kg/day in divided doses",
+    "avoid": "Concomitant terfenadine or astemizole"
+  },
+  {
+    "rank": 164,
+    "name": "Clarithromycin",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antibiotics",
+    "schedule": "H",
+    "brand": "Claribid / Biaxin / Clarimac",
+    "formation": "Semisynthetic macrolide",
+    "uses": "H. pylori eradication, RTI, mycobacterial infections",
+    "adult": "250–500 mg BID",
+    "child": "7.5 mg/kg BID (max 1 g/day)",
+    "avoid": "Concomitant colchicine in renal impairment"
+  },
+  {
+    "rank": 165,
+    "name": "Roxithromycin",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antibiotics",
+    "schedule": "H",
+    "brand": "Rulide / Roxid / Surlid",
+    "formation": "Semisynthetic macrolide antibiotic",
+    "uses": "URTI, LRTI, skin and genital infections",
+    "adult": "150 mg BID or 300 mg OD",
+    "child": "5–8 mg/kg/day",
+    "avoid": "Concomitant ergot alkaloid use"
+  },
+  {
+    "rank": 166,
+    "name": "Cephalexin",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antibiotics",
+    "schedule": "H",
+    "brand": "Sporidex / Keflex",
+    "formation": "First-generation cephalosporin",
+    "uses": "Mild UTI, skin and soft tissue infections",
+    "adult": "250–500 mg QID",
+    "child": "25–50 mg/kg/day in 4 divided doses",
+    "avoid": "Severe penicillin allergy (cross-reactivity)"
+  },
+  {
+    "rank": 167,
+    "name": "Cefadroxil",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antibiotics",
+    "schedule": "H",
+    "brand": "Droxyl / Duricef",
+    "formation": "First-generation cephalosporin",
+    "uses": "Pharyngitis, tonsillitis, UTI",
+    "adult": "500 mg to 1 g BID",
+    "child": "30 mg/kg/day in divided doses",
+    "avoid": "Renal failure (adjust dose)"
+  },
+  {
+    "rank": 168,
+    "name": "Colistin (Polymyxin E)",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antibiotics",
+    "schedule": "H1",
+    "brand": "Colistin / Polymyxin E",
+    "formation": "Polymyxin subclass antibiotic",
+    "uses": "Multi-drug resistant Gram-negative infections",
+    "adult": "2.5–5 mg/kg/day in 2–4 divided doses",
+    "child": "2.5–5 mg/kg/day",
+    "avoid": "Myasthenia gravis, renal failure"
+  },
+  {
+    "rank": 169,
+    "name": "Fusidic Acid",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antibiotics",
+    "schedule": "H",
+    "brand": "Fucidin / Fusidate",
+    "formation": "Steroidal antibiotic",
+    "uses": "Impetigo, folliculitis, erythrasma",
+    "adult": "2% cream TID",
+    "child": "Same as adult",
+    "avoid": "Extensive viral/fungal skin infections"
+  },
+  {
+    "rank": 170,
+    "name": "Mupirocin",
+    "section": "Section 4: Anti-Infective",
+    "category": "Antibiotics",
+    "schedule": "H",
+    "brand": "Bactroban / T-Bact",
+    "formation": "Pseudomonic acid derivative",
+    "uses": "Impetigo, eradication of nasal MRSA",
+    "adult": "2% ointment TID",
+    "child": "Same as adult",
+    "avoid": "Large open wounds (polyethylene glycol risk)"
+  },
+  {
+    "rank": 171,
+    "name": "Rabeprazole Sodium",
+    "section": "Section 5: GI & Pain",
+    "category": "Gastrointestinal",
+    "schedule": "H",
+    "brand": "Razo / Rablet / Rabeloc",
+    "formation": "PPI (substituted benzimidazole)",
+    "uses": "Acid-peptic disorders, H. pylori eradication",
+    "adult": "20 mg OD (30 mins before breakfast)",
+    "child": "0.5–1 mg/kg/day",
+    "avoid": "Hypersensitivity to benzimidazoles"
+  },
+  {
+    "rank": 172,
+    "name": "Esomeprazole Magnesium",
+    "section": "Section 5: GI & Pain",
+    "category": "Gastrointestinal",
+    "schedule": "H",
+    "brand": "Nexium / Raciper / Esomac",
+    "formation": "S-isomer of omeprazole (PPI)",
+    "uses": "Severe GERD, healing of erosive esophagitis",
+    "adult": "20–40 mg OD",
+    "child": "0.7–1 mg/kg/day",
+    "avoid": "Concurrent use of clopidogrel (relative)"
+  },
+  {
+    "rank": 173,
+    "name": "Lansoprazole",
+    "section": "Section 5: GI & Pain",
+    "category": "Gastrointestinal",
+    "schedule": "H",
+    "brand": "Lanzol / Prevacid / Lancid",
+    "formation": "Substituted benzimidazole (PPI)",
+    "uses": "Duodenal ulcer, gastric ulcer, GERD",
+    "adult": "15–30 mg OD",
+    "child": "0.7–1.5 mg/kg/day",
+    "avoid": "Severe hepatic impairment"
+  },
+  {
+    "rank": 174,
+    "name": "Ondansetron HCl",
+    "section": "Section 5: GI & Pain",
+    "category": "Gastrointestinal",
+    "schedule": "H",
+    "brand": "Emeset / Zofran / Vomistop",
+    "formation": "Selective 5-HT3 receptor antagonist",
+    "uses": "Nausea and vomiting (chemo/radio/post-op)",
+    "adult": "4–8 mg TID or before chemo",
+    "child": "0.15 mg/kg per dose",
+    "avoid": "Congenital long QT syndrome, apomorphine use"
+  },
+  {
+    "rank": 175,
+    "name": "Metoclopramide HCl",
+    "section": "Section 5: GI & Pain",
+    "category": "Gastrointestinal",
+    "schedule": "H",
+    "brand": "Perinorm / Reglan / Metoclopramide",
+    "formation": "Substituted benzamide (D2 antagonist)",
+    "uses": "Nausea, gastroparesis, GERD prokinetic",
+    "adult": "5–10 mg TID",
+    "child": "0.1 mg/kg per dose (Avoid in < 1y)",
+    "avoid": "Pheochromocytoma, GI hemorrhage"
+  },
+  {
+    "rank": 176,
+    "name": "Lactulose",
+    "section": "Section 5: GI & Pain",
+    "category": "Gastrointestinal",
+    "schedule": "OTC",
+    "brand": "Duphalac / Lactoloss",
+    "formation": "Synthetic disaccharide (Osmotic laxative)",
+    "uses": "Constipation, hepatic encephalopathy",
+    "adult": "15–30 ml OD or BID",
+    "child": "2.5–10 ml/day",
+    "avoid": "Galactosemia, intestinal obstruction"
+  },
+  {
+    "rank": 177,
+    "name": "Bisacodyl",
+    "section": "Section 5: GI & Pain",
+    "category": "Gastrointestinal",
+    "schedule": "OTC",
+    "brand": "Dulcolax / Conlax",
+    "formation": "Diphenylmethane stimulant laxative",
+    "uses": "Acute constipation, bowel prep for surgery",
+    "adult": "5–10 mg (Oral) at bedtime or 10 mg (Rectal)",
+    "child": "5 mg at bedtime",
+    "avoid": "Appendicitis, severe abdominal pain"
+  },
+  {
+    "rank": 178,
+    "name": "Polyethylene Glycol (PEG 3350)",
+    "section": "Section 5: GI & Pain",
+    "category": "Gastrointestinal",
+    "schedule": "OTC",
+    "brand": "Peglec / Forlax / Moviprep",
+    "formation": "Osmotic polymer",
+    "uses": "Occasional constipation, bowel cleansing",
+    "adult": "17 g powder in 240 ml liquid daily",
+    "child": "0.2–0.8 g/kg/day",
+    "avoid": "GI perforation, toxic megacolon"
+  },
+  {
+    "rank": 179,
+    "name": "Liquid Paraffin",
+    "section": "Section 5: GI & Pain",
+    "category": "Gastrointestinal",
+    "schedule": "H",
+    "brand": "Cremaffin / Liquid Paraffin",
+    "formation": "Mineral oil (Lubricant laxative)",
+    "uses": "Short-term management of constipation",
+    "adult": "10–30 ml at bedtime",
+    "child": "5–10 ml at bedtime",
+    "avoid": "Patients with difficulty swallowing (aspiration risk)"
+  },
+  {
+    "rank": 180,
+    "name": "Sucralfate",
+    "section": "Section 5: GI & Pain",
+    "category": "Gastrointestinal",
+    "schedule": "OTC",
+    "brand": "Sucrafil / Carafate / Sucral",
+    "formation": "Aluminum hydroxide + sulfated sucrose",
+    "uses": "Duodenal ulcer, stress ulcer prophylaxis",
+    "adult": "1 g QID (1 hr before meals)",
+    "child": "40–80 mg/kg/day in 4 divided doses",
+    "avoid": "Chronic renal failure (aluminum toxicity risk)"
+  },
+  {
+    "rank": 181,
+    "name": "Megaldrate + Simethicone",
+    "section": "Section 5: GI & Pain",
+    "category": "Gastrointestinal",
+    "schedule": "OTC",
+    "brand": "Mucaine / Antacid Plus",
+    "formation": "Antacid + anti-foaming agent",
+    "uses": "Hyperacidity, bloating, flatulence",
+    "adult": "5–10 ml after meals",
+    "child": "Consult specialist",
+    "avoid": "Severe renal impairment"
+  },
+  {
+    "rank": 182,
+    "name": "Aluminium + Magnesium Hydroxide",
+    "section": "Section 5: GI & Pain",
+    "category": "Gastrointestinal",
+    "schedule": "H",
+    "brand": "Digene / Gelusil / Maalox",
+    "formation": "Mixed metal hydroxide antacid",
+    "uses": "Acid indigestion, heartburn, sour stomach",
+    "adult": "5–10 ml QID",
+    "child": "0.5 ml/kg QID",
+    "avoid": "Hypophosphatemia"
+  },
+  {
+    "rank": 183,
+    "name": "Mesalamine (5-ASA)",
+    "section": "Section 5: GI & Pain",
+    "category": "Gastrointestinal",
+    "schedule": "H",
+    "brand": "Mesacol / Asacol / Pentasa",
+    "formation": "Salicylate derivative",
+    "uses": "Ulcerative colitis, Crohn’s disease",
+    "adult": "800 mg TID or 2.4–4.8 g/day",
+    "child": "30–50 mg/kg/day",
+    "avoid": "Severe renal impairment, salicylate allergy"
+  },
+  {
+    "rank": 184,
+    "name": "Silymarin",
+    "section": "Section 5: GI & Pain",
+    "category": "Gastrointestinal",
+    "schedule": "H",
+    "brand": "Silybon / Legalon / Milk Thistle",
+    "formation": "Flavonolignan complex (Milk thistle extract)",
+    "uses": "Chronic inflammatory liver diseases, cirrhosis",
+    "adult": "70–140 mg TID",
+    "child": "Consult specialist",
+    "avoid": "Hypersensitivity to Asteraceae plants"
+  },
+  {
+    "rank": 185,
+    "name": "L-Ornithine L-Aspartate",
+    "section": "Section 5: GI & Pain",
+    "category": "Gastrointestinal",
+    "schedule": "H",
+    "brand": "Hepa-Merz / Hepacare / LOLA",
+    "formation": "Amino acid complex",
+    "uses": "Hepatic encephalopathy, fatty liver",
+    "adult": "3–6 g BID (Oral) or IV infusion",
+    "child": "Not recommended",
+    "avoid": "Severe renal impairment (CrCl < 3)"
+  },
+  {
+    "rank": 186,
+    "name": "Aceclofenac",
+    "section": "Section 5: GI & Pain",
+    "category": "Analgesics",
+    "schedule": "H",
+    "brand": "Zerodol / Hifenac / Aceclo",
+    "formation": "Phenylacetic acid derivative (NSAID)",
+    "uses": "Osteoarthritis, rheumatoid arthritis pain",
+    "adult": "100 mg BID",
+    "child": "Not recommended",
+    "avoid": "Active peptic ulcer, third trimester pregnancy"
+  },
+  {
+    "rank": 187,
+    "name": "Ibuprofen",
+    "section": "Section 5: GI & Pain",
+    "category": "Analgesics",
+    "schedule": "H",
+    "brand": "Brufen / Advil / Ibugesic",
+    "formation": "Propionic acid derivative (NSAID)",
+    "uses": "Fever, mild pain, dysmenorrhea",
+    "adult": "400 mg every 4–6 hrs",
+    "child": "5–10 mg/kg/dose (max 40 mg/kg/day)",
+    "avoid": "Aspirin triad, third trimester pregnancy"
+  },
+  {
+    "rank": 188,
+    "name": "Naproxen Sodium",
+    "section": "Section 5: GI & Pain",
+    "category": "Analgesics",
+    "schedule": "H",
+    "brand": "Naprosyn / Naprelan",
+    "formation": "Propionic acid derivative (NSAID)",
+    "uses": "RA, OA, acute gout, ankylosing spondylitis",
+    "adult": "250–500 mg BID",
+    "child": "10 mg/kg/day in 2 divided doses",
+    "avoid": "Active GI bleed, severe heart failure"
+  },
+  {
+    "rank": 189,
+    "name": "Etoricoxib",
+    "section": "Section 5: GI & Pain",
+    "category": "Analgesics",
+    "schedule": "H",
+    "brand": "Arcoxia / Nucoxia",
+    "formation": "Selective COX-2 inhibitor",
+    "uses": "Gouty arthritis, dental pain, OA",
+    "adult": "60–120 mg OD",
+    "child": "Not recommended (under 16 years)",
+    "avoid": "Uncontrolled hypertension (BP > 140/90), IHD"
+  },
+  {
+    "rank": 190,
+    "name": "Celecoxib",
+    "section": "Section 5: GI & Pain",
+    "category": "Analgesics",
+    "schedule": "H",
+    "brand": "Celebrex / Celact",
+    "formation": "Selective COX-2 inhibitor (Sulfonamide)",
+    "uses": "OA, RA, acute pain",
+    "adult": "100–200 mg BID",
+    "child": "50–100 mg BID (approved for >2y JRA)",
+    "avoid": "Sulfa allergy, post-CABG pain"
+  },
+  {
+    "rank": 191,
+    "name": "Mefenamic Acid",
+    "section": "Section 5: GI & Pain",
+    "category": "Analgesics",
+    "schedule": "H",
+    "brand": "Meftal / Ponstan",
+    "formation": "Anthranilic acid derivative",
+    "uses": "Dysmenorrhea, mild-to-moderate pain",
+    "adult": "250–500 mg TID",
+    "child": "6.5 mg/kg per dose",
+    "avoid": "Inflammatory bowel disease, GI ulcer"
+  },
+  {
+    "rank": 192,
+    "name": "Serratiopeptidase",
+    "section": "Section 5: GI & Pain",
+    "category": "Analgesics",
+    "schedule": "H",
+    "brand": "Serapeptase / Serraflam / Sermion",
+    "formation": "Proteolytic enzyme",
+    "uses": "Reducing inflammation and edema",
+    "adult": "10 mg TID",
+    "child": "0.5 mg/kg/day (Consult pediatric surgeon)",
+    "avoid": "Bleeding disorders, pregnancy"
+  },
+  {
+    "rank": 193,
+    "name": "Chymotrypsin-Trypsin",
+    "section": "Section 5: GI & Pain",
+    "category": "Analgesics",
+    "schedule": "H",
+    "brand": "Chymoral / Wobenzym",
+    "formation": "Proteolytic enzyme combination",
+    "uses": "Trauma-related swelling, surgical wounds",
+    "adult": "1–2 tablets TID",
+    "child": "Consult specialist",
+    "avoid": "Severe hepatic/renal disease, clotting issues"
+  },
+  {
+    "rank": 194,
+    "name": "Thiocolchicoside",
+    "section": "Section 5: GI & Pain",
+    "category": "Analgesics",
+    "schedule": "H1",
+    "brand": "Myoril / Muscoril",
+    "formation": "Semisynthetic sulfur-derivative colchicoside",
+    "uses": "Skeletal muscle spasm, low back pain",
+    "adult": "4–8 mg BID",
+    "child": "Not approved for pediatric use",
+    "avoid": "Pregnancy, breastfeeding, history of seizures"
+  },
+  {
+    "rank": 195,
+    "name": "Tramadol HCl",
+    "section": "Section 5: GI & Pain",
+    "category": "Analgesics",
+    "schedule": "X",
+    "brand": "Tramazac / Tramacip / Ultram",
+    "formation": "Synthetic opioid (Centrally acting)",
+    "uses": "Moderate-to-severe acute or chronic pain",
+    "adult": "50–100 mg every 4–6 hrs",
+    "child": "1–2 mg/kg per dose (Avoid in < 12y)",
+    "avoid": "Severe respiratory depression, acute alcoholism"
+  },
+  {
+    "rank": 196,
+    "name": "Morphine Sulfate",
+    "section": "Section 5: GI & Pain",
+    "category": "Opioids",
+    "schedule": "X",
+    "brand": "Morphine / MSContin / Roxanol",
+    "formation": "Phenanthrene alkaloid (Opioid)",
+    "uses": "Severe pain, palliative care, dyspnea in CHF",
+    "adult": "10–30 mg every 4 hrs or 30–60 mg SR BID",
+    "child": "0.1–0.2 mg/kg IV or 0.2–0.5 mg/kg Oral",
+    "avoid": "Paralytic ileus, severe respiratory insufficiency"
+  },
+  {
+    "rank": 197,
+    "name": "Fentanyl Citrate",
+    "section": "Section 5: GI & Pain",
+    "category": "Opioids",
+    "schedule": "H",
+    "brand": "Duragesic / Fentanyl Patch",
+    "formation": "Phenylpiperidine derivative (Opioid)",
+    "uses": "Anesthesia, chronic severe pain (Patch)",
+    "adult": "12.5–100 mcg/hr patch or 50–100 mcg IV",
+    "child": "1–2 mcg/kg IV (Consult anesthesia)",
+    "avoid": "Opioid-naive patients (for patch), acute pain"
+  },
+  {
+    "rank": 198,
+    "name": "Ketorolac Tromethamine",
+    "section": "Section 5: GI & Pain",
+    "category": "Analgesics",
+    "schedule": "H",
+    "brand": "Toradol / Ketanov / Ketrolac",
+    "formation": "Pyrrolizine carboxylic acid derivative",
+    "uses": "Short-term (max 5 days) severe pain",
+    "adult": "10 mg every 4–6 hrs or 30 mg IV/IM",
+    "child": "0.5–1 mg/kg IV (Restrict use)",
+    "avoid": "Pre-operative use, renal impairment, GI bleed"
+  },
+  {
+    "rank": 199,
+    "name": "Nimesulide",
+    "section": "Section 5: GI & Pain",
+    "category": "Analgesics",
+    "schedule": "H",
+    "brand": "Nimulid / Nise",
+    "formation": "Selective COX-2 inhibitor (Sulfonanilide)",
+    "uses": "Acute pain, primary dysmenorrhea",
+    "adult": "100 mg BID",
+    "child": "Banned in India for children < 12 years",
+    "avoid": "Liver disease, pregnancy, renal impairment"
+  },
+  {
+    "rank": 200,
+    "name": "Piroxicam",
+    "section": "Section 5: GI & Pain",
+    "category": "Analgesics",
+    "schedule": "H",
+    "brand": "Dolonex / Feldene",
+    "formation": "Enolic acid derivative (Oxicam NSAID)",
+    "uses": "RA, OA, musculoskeletal pain",
+    "adult": "20 mg OD",
+    "child": "0.2–0.3 mg/kg OD (Consult specialist)",
+    "avoid": "GI ulcers, elderly patients (high GI risk)"
+  },
+  {
+    "rank": 201,
+    "name": "Gabapentin",
+    "section": "Section 5: GI & Pain",
+    "category": "CNS",
+    "schedule": "H1",
+    "brand": "Gabapin / Gabantin / Neurontin",
+    "formation": "Cyclohexane derivative (GABA analog)",
+    "uses": "Post-herpetic neuralgia, focal seizures",
+    "adult": "300 mg initial, titrate to 900–1800 mg/day",
+    "child": "10–30 mg/kg/day",
+    "avoid": "Myasthenia gravis (caution), renal failure"
+  },
+  {
+    "rank": 202,
+    "name": "Methylcobalamin",
+    "section": "Section 5: GI & Pain",
+    "category": "Vitamins/Minerals",
+    "schedule": "OTC",
+    "brand": "Methylcobal / Mecobalamin / Neurobin",
+    "formation": "Active form of Vitamin B12 (Organometallic)",
+    "uses": "Peripheral neuropathy, B12 deficiency anemia",
+    "adult": "500–1500 mcg OD",
+    "child": "5–10 mcg/kg/day",
+    "avoid": "Leber’s optic atrophy"
+  },
+  {
+    "rank": 203,
+    "name": "Amitriptyline HCl",
+    "section": "Section 5: GI & Pain",
+    "category": "CNS",
+    "schedule": "H",
+    "brand": "Tryptomer / Elavil / Amitone",
+    "formation": "Tricyclic antidepressant (Dibenzo-cycloheptene)",
+    "uses": "Neuropathic pain, migraine prophy, depression",
+    "adult": "10–75 mg OD (bedtime)",
+    "child": "0.1 mg/kg/day (Restrict use)",
+    "avoid": "Recent MI, glaucoma, concomitant MAOIs"
+  },
+  {
+    "rank": 204,
+    "name": "Duloxetine HCl",
+    "section": "Section 5: GI & Pain",
+    "category": "CNS",
+    "schedule": "H",
+    "brand": "Duvanta / Cymbalta / Duloxetine",
+    "formation": "Serotonin-norepinephrine reuptake inhibitor",
+    "uses": "Diabetic neuropathy, fibromyalgia, GAD",
+    "adult": "30–60 mg OD",
+    "child": "30 mg OD (approved for >7y GAD)",
+    "avoid": "Chronic liver disease, severe renal failure"
+  },
+  {
+    "rank": 205,
+    "name": "Sumatriptan Succinate",
+    "section": "Section 5: GI & Pain",
+    "category": "CNS",
+    "schedule": "H",
+    "brand": "Suminat / Imitrex",
+    "formation": "Selective 5-HT1 receptor agonist",
+    "uses": "Acute treatment of migraine attacks",
+    "adult": "50–100 mg single dose (max 200 mg/day)",
+    "child": "Nasal spray only (Consult pediatric neuro)",
+    "avoid": "Ischemic heart disease, Prinzmetal's angina"
+  },
+  {
+    "rank": 206,
+    "name": "Rimegepant",
+    "section": "Section 5: GI & Pain",
+    "category": "CNS",
+    "schedule": "H",
+    "brand": "Nurtec ODT",
+    "formation": "CGRP receptor antagonist (Gepant)",
+    "uses": "Acute and preventive treatment of migraine",
+    "adult": "75 mg OD or every other day",
+    "child": "Not recommended",
+    "avoid": "Severe hepatic impairment"
+  },
+  {
+    "rank": 207,
+    "name": "Flunarizine",
+    "section": "Section 5: GI & Pain",
+    "category": "CNS",
+    "schedule": "H",
+    "brand": "Sibelium / Flunarin",
+    "formation": "Difluorinated derivative of cinnarizine",
+    "uses": "Prophylaxis of migraine, vertigo management",
+    "adult": "5–10 mg OD (bedtime)",
+    "child": "5 mg daily (Restrict use)",
+    "avoid": "History of depression, Parkinson’s disease"
+  },
+  {
+    "rank": 208,
+    "name": "Escitalopram Oxalate",
+    "section": "Section 5: GI & Pain",
+    "category": "CNS",
+    "schedule": "H",
+    "brand": "Nexito / Cipralex / Escitalopram",
+    "formation": "S-enantiomer of citalopram (SSRI)",
+    "uses": "Generalized anxiety disorder, major depression",
+    "adult": "10–20 mg OD",
+    "child": "10 mg OD (approved >12y)",
+    "avoid": "Concomitant QT-prolonging drugs, MAOIs"
+  },
+  {
+    "rank": 209,
+    "name": "Sertraline HCl",
+    "section": "Section 5: GI & Pain",
+    "category": "CNS",
+    "schedule": "H",
+    "brand": "Serta / Zoloft / Lustral",
+    "formation": "Naphthylamine-derivative SSRI",
+    "uses": "Panic disorder, OCD, PTSD",
+    "adult": "50–200 mg OD",
+    "child": "25–50 mg OD (OCD use)",
+    "avoid": "Concomitant use of pimozide"
+  },
+  {
+    "rank": 210,
+    "name": "Fluoxetine HCl",
+    "section": "Section 5: GI & Pain",
+    "category": "CNS",
+    "schedule": "H",
+    "brand": "Fludac / Prozac / Fluoxetine",
+    "formation": "Phenylpropylamine SSRI",
+    "uses": "Bulimia nervosa, OCD, depression",
+    "adult": "20–60 mg OD",
+    "child": "10–20 mg OD (approved >8y)",
+    "avoid": "Concomitant use with thioridazine"
+  },
+  {
+    "rank": 211,
+    "name": "Paroxetine HCl",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "CNS",
+    "schedule": "H",
+    "brand": "Paxidep / Paxil / Paroxetine",
+    "formation": "Phenylpiperidine SSRI",
+    "uses": "Social anxiety disorder, panic disorder",
+    "adult": "20–50 mg OD (CR)",
+    "child": "Not recommended",
+    "avoid": "Pregnancy (Category D), MAOI use"
+  },
+  {
+    "rank": 212,
+    "name": "Venlafaxine HCl",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "CNS",
+    "schedule": "H",
+    "brand": "Venlor / Effexor / Veniz XR",
+    "formation": "Phenethylamine derivative (SNRI)",
+    "uses": "Major depressive disorder, panic disorder",
+    "adult": "75–225 mg daily (ER)",
+    "child": "Not recommended",
+    "avoid": "High risk of suicidal ideation in young adults"
+  },
+  {
+    "rank": 213,
+    "name": "Desvenlafaxine",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "CNS",
+    "schedule": "H",
+    "brand": "Divaa / Pristiq / Desnax",
+    "formation": "O-desmethyl metabolite of venlafaxine (SNRI)",
+    "uses": "Major depressive disorder",
+    "adult": "50–100 mg OD",
+    "child": "Not recommended",
+    "avoid": "Concomitant use with linezolid"
+  },
+  {
+    "rank": 214,
+    "name": "Imipramine",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "CNS",
+    "schedule": "H",
+    "brand": "Antideprin / Tofranil",
+    "formation": "Dibenzazepine tricyclic antidepressant",
+    "uses": "Depression, nocturnal enuresis in children",
+    "adult": "75–150 mg/day",
+    "child": "10–25 mg at bedtime (Enuresis)",
+    "avoid": "Post-myocardial infarction, glaucoma"
+  },
+  {
+    "rank": 215,
+    "name": "Nortriptyline HCl",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "CNS",
+    "schedule": "H",
+    "brand": "Sensival / Pamelor / Nortriptyline",
+    "formation": "Secondary amine tricyclic antidepressant",
+    "uses": "Major depression, adjuvant for chronic pain",
+    "adult": "25–100 mg daily",
+    "child": "Not recommended",
+    "avoid": "Concomitant MAOI use, severe cardiac disease"
+  },
+  {
+    "rank": 216,
+    "name": "Quetiapine Fumarate",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "CNS",
+    "schedule": "H",
+    "brand": "Qutipin / Seroquel / Quetiapine",
+    "formation": "Dibenzothiazepine atypical antipsychotic",
+    "uses": "Schizophrenia, bipolar mania, depression adjunct",
+    "adult": "50–800 mg/day (titrate)",
+    "child": "50–400 mg/day (Restrict use)",
+    "avoid": "History of QT prolongation, dementia-related psychosis"
+  },
+  {
+    "rank": 217,
+    "name": "Risperidone",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "CNS",
+    "schedule": "H",
+    "brand": "Sizodon / Risperdal / Risperidone",
+    "formation": "Benzisoxazole atypical antipsychotic",
+    "uses": "Schizophrenia, irritability in autism",
+    "adult": "2–6 mg daily",
+    "child": "0.25–1 mg daily (Autism)",
+    "avoid": "Elderly with dementia, cardiac disease"
+  },
+  {
+    "rank": 218,
+    "name": "Olanzapine",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "CNS",
+    "schedule": "H",
+    "brand": "Oleanz / Zyprexa / Olanzapine",
+    "formation": "Thienobenzodiazepine atypical antipsychotic",
+    "uses": "Schizophrenia, acute bipolar mania",
+    "adult": "5–20 mg OD (bedtime)",
+    "child": "2.5–10 mg OD (Restrict under 13y)",
+    "avoid": "Severe metabolic syndrome, geriatric patients"
+  },
+  {
+    "rank": 219,
+    "name": "Haloperidol",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "CNS",
+    "schedule": "H",
+    "brand": "Serenace / Haldol / Haloperidol",
+    "formation": "Butyrophenone derivative antipsychotic",
+    "uses": "Acute psychosis, Tourette's syndrome, hiccups",
+    "adult": "0.5–5 mg BID or TID",
+    "child": "0.05–0.15 mg/kg/day",
+    "avoid": "Parkinson’s disease, CNS depression"
+  },
+  {
+    "rank": 220,
+    "name": "Aripiprazole",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "CNS",
+    "schedule": "H",
+    "brand": "Arip MT / Abilify / Aripiprazole",
+    "formation": "Quinolinone atypical antipsychotic",
+    "uses": "Schizophrenia, bipolar I disorder, Tourette’s",
+    "adult": "10–30 mg OD",
+    "child": "2–10 mg OD (Weight-based)",
+    "avoid": "Dementia-related psychosis, severe liver disease"
+  },
+  {
+    "rank": 221,
+    "name": "Clozapine",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "CNS",
+    "schedule": "H",
+    "brand": "Sizopin / Clozaril / Leponex",
+    "formation": "Dibenzodiazepine atypical antipsychotic",
+    "uses": "Treatment-resistant schizophrenia",
+    "adult": "12.5–450 mg/day (titrate slowly)",
+    "child": "Not recommended",
+    "avoid": "History of agranulocytosis, uncontrolled epilepsy"
+  },
+  {
+    "rank": 222,
+    "name": "Sodium Valproate",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "CNS",
+    "schedule": "H",
+    "brand": "Encorate / Depakote / Valprol",
+    "formation": "Fatty acid derivative (Antiepileptic)",
+    "uses": "Absence seizures, migraine prophylaxis, bipolar mania",
+    "adult": "600–2000 mg/day in divided doses",
+    "child": "20–30 mg/kg/day",
+    "avoid": "Pregnancy (Category X for migraine), urea cycle disorders"
+  },
+  {
+    "rank": 223,
+    "name": "Carbamazepine",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "CNS",
+    "schedule": "H",
+    "brand": "Tegretol / Zen / Mazetol",
+    "formation": "Dibenzazepine antiepileptic",
+    "uses": "Trigeminal neuralgia, focal seizures",
+    "adult": "200–800 mg/day in divided doses",
+    "child": "10–20 mg/kg/day",
+    "avoid": "Bone marrow depression, HLA-B*1502 positive"
+  },
+  {
+    "rank": 224,
+    "name": "Phenytoin Sodium",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "CNS",
+    "schedule": "H",
+    "brand": "Eptoin / Dilantin / Phenytek",
+    "formation": "Hydantoin derivative (Antiepileptic)",
+    "uses": "Generalized tonic-clonic seizures, status epilepticus",
+    "adult": "300–400 mg daily",
+    "child": "5–8 mg/kg/day",
+    "avoid": "Sinus bradycardia, SA block, second/third-degree AV block"
+  },
+  {
+    "rank": 225,
+    "name": "Levetiracetam",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "CNS",
+    "schedule": "H",
+    "brand": "Keppra / Levipil / Levetiracetam",
+    "formation": "Pyrrolidine derivative antiepileptic",
+    "uses": "Focal and myoclonic seizures",
+    "adult": "500–1500 mg BID",
+    "child": "20–60 mg/kg/day",
+    "avoid": "Suicidal behavior history, renal failure (titrate)"
+  },
+  {
+    "rank": 226,
+    "name": "Brivaracetam",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "CNS",
+    "schedule": "H",
+    "brand": "Briviact",
+    "formation": "Selective SV2A ligand (Antiepileptic)",
+    "uses": "Focal-onset seizures",
+    "adult": "50–100 mg BID",
+    "child": "Weight-based (approved >4 years)",
+    "avoid": "End-stage renal disease"
+  },
+  {
+    "rank": 227,
+    "name": "Lamotrigine",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "CNS",
+    "schedule": "H",
+    "brand": "Lamictal / Lametec / Lamitor",
+    "formation": "Phenyltriazine derivative antiepileptic",
+    "uses": "Bipolar I maintenance, Lennox-Gastaut syndrome",
+    "adult": "100–400 mg daily",
+    "child": "1–5 mg/kg/day (with valproate) or higher alone",
+    "avoid": "Severe skin rash (SJS/TEN risk), pregnancy"
+  },
+  {
+    "rank": 228,
+    "name": "Clobazam",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "CNS",
+    "schedule": "X",
+    "brand": "Frisium / Urban / Clobazam",
+    "formation": "1,5-benzodiazepine antiepileptic",
+    "uses": "Adjunct in LGS seizures, acute anxiety",
+    "adult": "10–40 mg daily",
+    "child": "5–20 mg/day (Weight-based)",
+    "avoid": "Severe respiratory insufficiency, sleep apnea"
+  },
+  {
+    "rank": 229,
+    "name": "Alprazolam",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "CNS",
+    "schedule": "X",
+    "brand": "Alprax / Restyl / Xanax",
+    "formation": "Triazolo-benzodiazepine (Anxiolytic)",
+    "uses": "Anxiety, panic disorder",
+    "adult": "0.25–1 mg TID",
+    "child": "Not recommended",
+    "avoid": "Concomitant use with opioids (fatal sedation risk)"
+  },
+  {
+    "rank": 230,
+    "name": "Clonazepam",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "CNS",
+    "schedule": "X",
+    "brand": "Clonaz / Rivotril / Klonopin",
+    "formation": "Nitro-benzodiazepine derivative",
+    "uses": "Panic disorder, petit mal seizures",
+    "adult": "0.25–2 mg daily (divided or bedtime)",
+    "child": "0.01–0.03 mg/kg/day",
+    "avoid": "Severe liver disease, acute narrow-angle glaucoma"
+  },
+  {
+    "rank": 231,
+    "name": "Lorazepam",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "CNS",
+    "schedule": "X",
+    "brand": "Ativan / Calmpose / Lorazepam",
+    "formation": "Benzodiazepine (Anxiolytic/Sedative)",
+    "uses": "Acute anxiety, preoperative sedation, status epilepticus",
+    "adult": "1–2 mg BID or TID",
+    "child": "0.05 mg/kg per dose",
+    "avoid": "Sleep apnea, severe respiratory insufficiency"
+  },
+  {
+    "rank": 232,
+    "name": "Diazepam",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "CNS",
+    "schedule": "X",
+    "brand": "Valium / Calmpose / Diazepam",
+    "formation": "Benzodiazepine (1,4-substituted)",
+    "uses": "Muscle spasms, seizures, alcohol withdrawal",
+    "adult": "2–10 mg 2–4 times/day",
+    "child": "0.1–0.5 mg/kg/day",
+    "avoid": "Severe hepatic insufficiency, myasthenia gravis"
+  },
+  {
+    "rank": 233,
+    "name": "Midazolam HCl",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "CNS",
+    "schedule": "X",
+    "brand": "Dormicum / Versed / Midazolam",
+    "formation": "Short-acting imidazole benzodiazepine",
+    "uses": "Procedural sedation, induction of anesthesia",
+    "adult": "1–5 mg IV/IM (titrate based on sedation)",
+    "child": "0.1–0.5 mg/kg (Oral/IV)",
+    "avoid": "Acute narrow-angle glaucoma, respiratory failure"
+  },
+  {
+    "rank": 234,
+    "name": "Zolpidem Tartrate",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "CNS",
+    "schedule": "X",
+    "brand": "Zolfresh / Ambien / Stilnox",
+    "formation": "Imidazopyridine non-benzodiazepine hypnotic",
+    "uses": "Short-term treatment of insomnia",
+    "adult": "5–10 mg at bedtime",
+    "child": "Not recommended",
+    "avoid": "Obstructive sleep apnea, complex sleep behaviors"
+  },
+  {
+    "rank": 235,
+    "name": "Melatonin",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "CNS",
+    "schedule": "OTC",
+    "brand": "Meloset / Melalong",
+    "formation": "Endogenous indole hormone analog",
+    "uses": "Jet lag, delayed sleep phase syndrome",
+    "adult": "3–10 mg (bedtime)",
+    "child": "1–3 mg (Consult specialist)",
+    "avoid": "Autoimmune disorders, concomitant anticoagulant use"
+  },
+  {
+    "rank": 236,
+    "name": "Donepezil HCl",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "CNS",
+    "schedule": "H",
+    "brand": "Donecept / Aricept / Alzil",
+    "formation": "Piperidine-based acetylcholinesterase inhibitor",
+    "uses": "Mild-to-severe Alzheimer's dementia",
+    "adult": "5–10 mg OD (bedtime)",
+    "child": "Not recommended",
+    "avoid": "Severe cardiac arrhythmias, obstructive lung disease"
+  },
+  {
+    "rank": 237,
+    "name": "Memantine HCl",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "CNS",
+    "schedule": "H",
+    "brand": "Admenta / Namenda / Ebixa",
+    "formation": "Adamantane-derivative NMDA antagonist",
+    "uses": "Moderate-to-severe Alzheimer's disease",
+    "adult": "5–20 mg OD",
+    "child": "Not recommended",
+    "avoid": "Severe renal impairment (CrCl < 5), seizures"
+  },
+  {
+    "rank": 238,
+    "name": "Levodopa + Carbidopa",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "CNS",
+    "schedule": "H",
+    "brand": "Syndopa / Sinemet / Tidomet",
+    "formation": "Dopamine precursor + decarboxylase inhibitor",
+    "uses": "Parkinson’s disease, restless legs syndrome",
+    "adult": "100 mg/25 mg TID (titrate based on mobility)",
+    "child": "Not recommended",
+    "avoid": "Concomitant non-selective MAOIs, narrow-angle glaucoma"
+  },
+  {
+    "rank": 239,
+    "name": "Pramipexole",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "CNS",
+    "schedule": "H",
+    "brand": "Pramipex / Mirapex",
+    "formation": "Non-ergot dopamine receptor agonist",
+    "uses": "Parkinson’s disease, restless legs syndrome",
+    "adult": "0.125–1.5 mg TID",
+    "child": "Not recommended",
+    "avoid": "Severe renal impairment, sudden sleep onset history"
+  },
+  {
+    "rank": 240,
+    "name": "Ropinirole",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "CNS",
+    "schedule": "H",
+    "brand": "Ropitor / Requip",
+    "formation": "Non-ergoline dopamine agonist",
+    "uses": "Idiopathic Parkinson’s disease",
+    "adult": "0.25–4 mg TID",
+    "child": "Not recommended",
+    "avoid": "Severe hepatic impairment, neuropsychiatric symptoms"
+  },
+  {
+    "rank": 241,
+    "name": "Lithium Carbonate",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "CNS",
+    "schedule": "H",
+    "brand": "Licab / Eskalith / Lithosun",
+    "formation": "Inorganic alkali metal salt",
+    "uses": "Bipolar affective disorder, acute mania",
+    "adult": "300 mg BID or TID (titrate to 0.6–1.2 mEq/L)",
+    "child": "15–30 mg/kg/day (Restrict use <12y)",
+    "avoid": "Severe renal disease, sodium depletion, dehydration"
+  },
+  {
+    "rank": 242,
+    "name": "Methylphenidate HCl",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "CNS",
+    "schedule": "X",
+    "brand": "Ritalin / Concerta / Inspiral",
+    "formation": "Piperidine-derivative CNS stimulant",
+    "uses": "ADHD, narcolepsy",
+    "adult": "10–60 mg/day (divided or extended-release)",
+    "child": "5 mg BID initial (approved >6y)",
+    "avoid": "Severe anxiety, motor tics, glaucoma"
+  },
+  {
+    "rank": 243,
+    "name": "Modafinil",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "CNS",
+    "schedule": "H",
+    "brand": "Modalert / Provigil",
+    "formation": "Benzhydryl sulfinyl acetamide (Wake-promoter)",
+    "uses": "Narcolepsy, shift-work sleep disorder",
+    "adult": "200 mg OD (morning)",
+    "child": "Not recommended",
+    "avoid": "Mitral valve prolapse, severe hypertension"
+  },
+  {
+    "rank": 244,
+    "name": "Donepezil + Memantine",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "CNS",
+    "schedule": "H",
+    "brand": "Donamem / Namzaric",
+    "formation": "AChE inhibitor + NMDA antagonist",
+    "uses": "Advanced Alzheimer’s dementia",
+    "adult": "10 mg/20 mg OD",
+    "child": "Not recommended",
+    "avoid": "Sick sinus syndrome, GI ulcer risk"
+  },
+  {
+    "rank": 245,
+    "name": "S-Adenosyl L-Methionine (SAMe)",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "Nutraceuticals",
+    "schedule": "OTC",
+    "brand": "Heptral / SAMe",
+    "formation": "Naturally occurring cosubstrate",
+    "uses": "Intrahepatic cholestasis, osteoarthritis",
+    "adult": "400–800 mg daily",
+    "child": "Consult specialist",
+    "avoid": "Bipolar disorder (mania risk)"
+  },
+  {
+    "rank": 246,
+    "name": "Coenzyme Q10",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "Nutraceuticals",
+    "schedule": "OTC",
+    "brand": "CoQ10 / Ubiquinol",
+    "formation": "Fat-soluble benzoquinone compound",
+    "uses": "Heart health, adjunct in mitochondrial disorders",
+    "adult": "100–300 mg daily",
+    "child": "1–3 mg/kg/day (Mitochondrial use)",
+    "avoid": "Concurrent use with warfarin (may reduce effect)"
+  },
+  {
+    "rank": 247,
+    "name": "Omega-3 Fatty Acids (EPA/DHA)",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "Nutraceuticals",
+    "schedule": "OTC",
+    "brand": "Maxepa / Omacor / Omega-3",
+    "formation": "Polyunsaturated fatty acids (Ethyl esters)",
+    "uses": "Severe hypertriglyceridemia, CV protection",
+    "adult": "1–4 g daily",
+    "child": "500–1000 mg/day",
+    "avoid": "Fish/shellfish allergy"
+  },
+  {
+    "rank": 248,
+    "name": "Chondroitin + Glucosamine",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "Nutraceuticals",
+    "schedule": "OTC",
+    "brand": "Glucosamine / JointFlex / Chondrogard",
+    "formation": "Glycosaminoglycan + amino sugar salt",
+    "uses": "Symptomatic relief in Osteoarthritis",
+    "adult": "1200 mg/1500 mg daily (divided)",
+    "child": "Not recommended",
+    "avoid": "Shellfish allergy, asthma flares"
+  },
+  {
+    "rank": 249,
+    "name": "Ashwagandha (Withania somnifera)",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "Nutraceuticals",
+    "schedule": "OTC",
+    "brand": "KSM-66 / Himalaya Ashwagandha",
+    "formation": "Natural withanolide glycosides",
+    "uses": "Stress management, immunomodulation, energy",
+    "adult": "300–600 mg daily (Standardized extract)",
+    "child": "Consult specialist (Herbal guidelines)",
+    "avoid": "Pregnancy (abortifacient risk), autoimmune disease"
+  },
+  {
+    "rank": 250,
+    "name": "Bacopa Monnieri (Brahmi)",
+    "section": "Section 6: Neuro-Psychiatry & CNS",
+    "category": "Nutraceuticals",
+    "schedule": "OTC",
+    "brand": "Himalaya Brahmi / Bacopa",
+    "formation": "Natural saponin complex (Bacosides)",
+    "uses": "Cognitive enhancement, memory improvement",
+    "adult": "300–450 mg daily",
+    "child": "100–200 mg daily (Restrict <12y)",
+    "avoid": "Bradycardia, GI obstruction"
+  }
+];
+
+// ═══════════════════════════════════════════════
+//  SCHEDULE META
+// ═══════════════════════════════════════════════
+const SCHED_META = {
+  "OTC": { label:"OTC",     desc:"No Rx Required",       cls:"sch-OTC" },
+  "C":   { label:"Sch. C",  desc:"Biological Product",   cls:"sch-C"   },
+  "H":   { label:"Sch. H",  desc:"Prescription Only",    cls:"sch-H"   },
+  "H1":  { label:"Sch. H1", desc:"Red Box Rx",           cls:"sch-H1"  },
+  "X":   { label:"Sch. X",  desc:"Strict Control",       cls:"sch-X"   },
+};
+
+const SECTION_CLS = {
+  "Section 1: Foundational Molecules":  "sec-1",
+  "Section 2: Cardiovascular":          "sec-2",
+  "Section 3: Metabolic & Endocrine":   "sec-3",
+  "Section 4: Anti-Infective":          "sec-4",
+  "Section 5: GI & Pain":               "sec-5",
+  "Section 6: Neuro-Psychiatry & CNS":  "sec-6",
+};
+
+// ═══════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════
+let state = { category:"All", section:"All", schedule:"All", search:"", sort:"rank", liver:false, ped:false };
+
+// ═══════════════════════════════════════════════
+//  FILTER
+// ═══════════════════════════════════════════════
+function filterData(){
+  let d = saltsData.filter(s=>{
+    const q = state.search.toLowerCase();
+    const matchSearch = !q || s.name.toLowerCase().includes(q)
+      || s.brand.toLowerCase().includes(q)
+      || s.uses.toLowerCase().includes(q)
+      || s.formation.toLowerCase().includes(q)
+      || s.category.toLowerCase().includes(q);
+    const matchCat  = state.category==="All" || s.category===state.category;
+    const matchSec  = state.section ==="All" || s.section ===state.section;
+    const matchSch  = state.schedule==="All" || s.schedule===state.schedule;
+    let ok = true;
+    if(state.liver){
+      const av=s.avoid.toLowerCase();
+      if(av.includes("liver")||av.includes("hepatic")) ok=false;
+    }
+    if(state.ped){
+      const bad=["not recommended","avoid","contraindicated","safety not established","not indicated","not approved"];
+      if(bad.some(w=>s.child.toLowerCase().includes(w))) ok=false;
+    }
+    return matchSearch&&matchCat&&matchSec&&matchSch&&ok;
+  });
+  if(state.sort==="rank")  d.sort((a,b)=>a.rank-b.rank);
+  if(state.sort==="alpha") d.sort((a,b)=>a.name.localeCompare(b.name));
+  return d;
+}
+
+// ═══════════════════════════════════════════════
+//  RENDER CARDS
+// ═══════════════════════════════════════════════
+function renderGrid(){
+  const data = filterData();
+  document.getElementById("count-badge").textContent = data.length+" salts";
+  const grid = document.getElementById("saltGrid");
+  const empty= document.getElementById("emptyState");
+  if(!data.length){ grid.classList.add("hidden"); empty.classList.remove("hidden"); return; }
+  grid.classList.remove("hidden"); empty.classList.add("hidden");
+
+  grid.innerHTML = data.map(s=>{
+    const sm = SCHED_META[s.schedule]||SCHED_META["H"];
+    const sc = SECTION_CLS[s.section]||"sec-1";
+    return `
+    <div class="bg-white rounded-2xl border border-slate-200 card-hover flex flex-col overflow-hidden shadow-sm">
+      <!-- Card header -->
+      <div class="px-4 pt-4 pb-3 border-b border-slate-100">
+        <div class="flex items-start justify-between gap-2 mb-2">
+          <span class="text-slate-400 text-xs font-bold bg-slate-100 px-2 py-0.5 rounded">#${s.rank}</span>
+          <div class="flex flex-wrap gap-1 justify-end">
+            <span class="${sm.cls} text-[10px] font-bold px-2 py-0.5 rounded-full" title="${sm.desc}">${sm.label}</span>
+            <span class="${sc} text-[10px] font-semibold px-2 py-0.5 rounded-full">${s.section.replace("Section ","S")}</span>
+            <span class="bg-teal-50 text-teal-700 text-[10px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wide">${s.category}</span>
+          </div>
+        </div>
+        <h3 class="text-base font-bold text-slate-800 leading-tight">${s.name}</h3>
+        <p class="text-[11px] text-slate-500 italic mt-0.5 leading-snug">${s.formation}</p>
+        <div class="flex items-start gap-1 mt-1.5">
+          <span class="text-[10px] font-bold text-amber-600 whitespace-nowrap mt-0.5">🏷 Brand:</span>
+          <span class="text-[11px] text-amber-700 font-medium leading-snug">${s.brand}</span>
+        </div>
+      </div>
+
+      <!-- Card body -->
+      <div class="px-4 py-3 flex flex-col gap-2.5 flex-grow">
+        <div>
+          <span class="text-[10px] font-bold text-slate-400 uppercase block mb-0.5">Indications</span>
+          <p class="text-xs text-slate-700 leading-snug">${s.uses}</p>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div class="bg-slate-50 rounded-lg p-2 border border-slate-100">
+            <span class="text-[9px] font-bold text-slate-400 uppercase block">Adult Dose</span>
+            <p class="text-[11px] text-slate-700 font-medium leading-snug mt-0.5">${s.adult}</p>
+          </div>
+          <div class="bg-slate-50 rounded-lg p-2 border border-slate-100">
+            <span class="text-[9px] font-bold text-slate-400 uppercase block">Child Dose</span>
+            <p class="text-[11px] text-slate-700 font-medium leading-snug mt-0.5">${s.child}</p>
+          </div>
+        </div>
+        <div class="bg-rose-50 rounded-lg p-2 border border-rose-100">
+          <span class="text-[9px] font-bold text-rose-400 uppercase block mb-0.5">⛔ Avoid In</span>
+          <p class="text-[11px] text-rose-700 font-medium leading-snug">${s.avoid}</p>
+        </div>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+// ═══════════════════════════════════════════════
+//  RENDER FILTER PILLS
+// ═══════════════════════════════════════════════
+function pill(label, active, onclick, extraCls=""){
+  return `<button onclick="${onclick}" class="px-2.5 py-1 rounded-full text-xs font-medium transition border
+    ${active ? "bg-teal-600 text-white border-teal-600 shadow" : "bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200"}
+    ${extraCls}">${label}</button>`;
+}
+
+function renderPills(){
+  // Categories
+  const cats = ["All", ...new Set(saltsData.map(s=>s.category))].sort((a,b)=>a==="All"?-1:a.localeCompare(b));
+  document.getElementById("category-pills").innerHTML =
+    cats.map(c=>pill(c, state.category===c, `setFilter('category','${c}')`)).join("");
+
+  // Sections
+  const secs = ["All", ...new Set(saltsData.map(s=>s.section))];
+  document.getElementById("section-pills").innerHTML =
+    secs.map(s=>pill(s.replace("Section ","S"), state.section===s, `setFilter('section','${s}')`)).join("");
+
+  // Schedules
+  const schs = ["All","OTC","C","H","H1","X"];
+  document.getElementById("schedule-pills").innerHTML =
+    schs.map(s=>{
+      const meta = s==="All"?{label:"All",cls:""}:SCHED_META[s];
+      const activeCls = state.schedule===s ? "bg-teal-600 text-white border-teal-600 shadow" : "bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200";
+      return `<button onclick="setFilter('schedule','${s}')"
+        class="px-2.5 py-1 rounded-full text-xs font-medium transition border ${activeCls}">${meta.label}</button>`;
+    }).join("");
+}
+
+window.setFilter = (key, val) => { state[key]=val; renderPills(); renderGrid(); };
+
+window.resetFilters = () => {
+  state = { category:"All", section:"All", schedule:"All", search:"", sort:state.sort, liver:false, ped:false };
+  document.getElementById("searchInput").value = "";
+  document.getElementById("btn-liver").classList.remove("bg-rose-100","ring-2","ring-rose-400");
+  document.getElementById("btn-pediatric").classList.remove("bg-blue-100","ring-2","ring-blue-400");
+  renderPills(); renderGrid();
+};
+
+// ═══════════════════════════════════════════════
+//  EVENTS
+// ═══════════════════════════════════════════════
+document.getElementById("searchInput").addEventListener("input", e=>{
+  state.search = e.target.value; renderGrid();
+});
+document.getElementById("sortSelect").addEventListener("change", e=>{
+  state.sort = e.target.value; renderGrid();
+});
+document.getElementById("btn-liver").addEventListener("click", function(){
+  state.liver = !state.liver;
+  this.classList.toggle("bg-rose-100"); this.classList.toggle("ring-2"); this.classList.toggle("ring-rose-400");
+  renderGrid();
+});
+document.getElementById("btn-pediatric").addEventListener("click", function(){
+  state.ped = !state.ped;
+  this.classList.toggle("bg-blue-100"); this.classList.toggle("ring-2"); this.classList.toggle("ring-blue-400");
+  renderGrid();
+});
+
+// ═══════════════════════════════════════════════
+//  CHART
+// ═══════════════════════════════════════════════
+function initChart(){
+  const counts = {};
+  saltsData.forEach(s=>{ counts[s.category]=(counts[s.category]||0)+1; });
+  const sorted = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+  const labels = sorted.map(e=>e[0]);
+  const data   = sorted.map(e=>e[1]);
+  const palette = [
+    "#0D9488","#2DD4BF","#3B82F6","#8B5CF6","#EC4899",
+    "#F59E0B","#10B981","#EF4444","#6366F1","#F97316",
+    "#06B6D4","#84CC16","#A855F7","#14B8A6","#FBBF24"
+  ];
+  new Chart(document.getElementById("categoryChart").getContext("2d"),{
+    type:"doughnut",
+    data:{ labels, datasets:[{ data, backgroundColor:palette, borderWidth:0, hoverOffset:6 }] },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{ position:"bottom", labels:{ boxWidth:10, font:{size:10}, padding:8 } },
+        tooltip:{ callbacks:{ label: ctx=>`${ctx.label}: ${ctx.raw} salts` } }
+      }
+    }
+  });
+}
+
+// ═══════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════
+document.addEventListener("DOMContentLoaded", ()=>{
+  renderPills();
+  renderGrid();
+  initChart();
+});
+</script>
+</body>
+</html>
