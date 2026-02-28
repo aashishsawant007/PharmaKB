@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PharmaSalts India 2026 – Top 400 API Explorer</title>
+<title>PharmaSalts India 2026 – Top 467 API Explorer</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -33,6 +33,15 @@
   .sec-8{background:#FDF4FF;color:#86198F}
   .sec-9{background:#E0F2FE;color:#0369A1}
   .sec-10{background:#ECFDF5;color:#047857}
+  .sec-11{background:#FFFBEB;color:#92400E}
+  .sec-12{background:#FFF7ED;color:#9A3412}
+  .sec-13{background:#FDF2F8;color:#9D174D}
+  .sec-14{background:#EFF6FF;color:#1E3A8A}
+  .sec-15{background:#F0FDFA;color:#065F46}
+  .sec-16{background:#F7FEE7;color:#365314}
+  .sec-17{background:#F5F3FF;color:#4C1D95}
+  .sec-18{background:#ECFEFF;color:#155E75}
+  .sec-19{background:#FFF1F2;color:#881337}
   .filter-active{ring:2px solid currentColor;font-weight:600}
   input[type=text]:focus{outline:none}
 </style>
@@ -46,7 +55,7 @@
       <h1 class="text-2xl font-bold text-teal-700 tracking-tight">
         Pharma Salts<span class="text-slate-500 font-light"> India 2026</span>
       </h1>
-      <p class="text-xs text-slate-400 mt-0.5">Interactive Index · Top 400 Active Pharmaceutical Ingredients</p>
+      <p class="text-xs text-slate-400 mt-0.5">Interactive Index · Top 467 Active Pharmaceutical Ingredients</p>
     </div>
     <div class="flex-1 max-w-xl w-full">
       <div class="relative">
@@ -65,7 +74,7 @@
   <!-- Intro -->
   <section class="mb-6">
     <p class="text-slate-600 max-w-3xl leading-relaxed text-sm">
-      Complete ranked analysis of 400 pharmaceutical salts dominating the Indian market in 2026.
+      Complete ranked analysis of 467 pharmaceutical salts dominating the Indian market in 2026.
       Data from <strong>IQVIA/PharmaTrac</strong>, <strong>NLEM 2022</strong>, and hospital formularies.
       Each card shows <strong>brand names</strong>, drug <strong>schedule</strong>, section, dosing, and contraindications.
     </p>
@@ -78,7 +87,7 @@
     <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col items-center">
       <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3 w-full text-center">Therapeutic Category Mix</h3>
       <div class="chart-container"><canvas id="categoryChart"></canvas></div>
-      <p class="text-xs text-slate-400 text-center mt-3">Based on 400 indexed salts</p>
+      <p class="text-xs text-slate-400 text-center mt-3">Based on 467 indexed salts</p>
     </div>
 
     <!-- Filters panel -->
@@ -140,7 +149,7 @@
     <div class="flex items-center gap-2 text-sm">
       <span class="text-slate-500">Sort:</span>
       <select id="sortSelect" class="border border-slate-300 rounded-lg px-2 py-1 bg-white focus:border-teal-500 outline-none text-sm">
-        <option value="rank">Market Rank (1–400)</option>
+        <option value="rank">Market Rank (1–467)</option>
         <option value="alpha">Name (A–Z)</option>
       </select>
       <button onclick="resetFilters()" class="ml-2 px-3 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-medium transition">
@@ -5373,6 +5382,877 @@ const saltsData = [
     "adult": "15–45 mg OD (bedtime; higher doses are less sedating)",
     "child": "Not recommended",
     "avoid": "Concurrent MAOI use (14-day washout), narrow-angle glaucoma, agranulocytosis history"
+  },
+  {
+    "rank": 401,
+    "name": "Rifampicin",
+    "section": "Section 11: Anti-Tuberculosis & Leprosy",
+    "category": "Anti-TB",
+    "schedule": "H",
+    "brand": "Rifacin / Rimactane / R-Cin",
+    "formation": "Rifamycin antibiotic; inhibits bacterial DNA-dependent RNA polymerase",
+    "uses": "Tuberculosis (all forms), leprosy, prophylaxis of meningococcal meningitis",
+    "adult": "10 mg/kg/day OD (max 600 mg) fasting; or 3× weekly DOTS",
+    "child": "10–20 mg/kg/day OD (max 600 mg) fasting",
+    "avoid": "Hepatic failure, concurrent saquinavir/ritonavir; potent CYP inducer – check all co-medications"
+  },
+  {
+    "rank": 402,
+    "name": "Isoniazid",
+    "section": "Section 11: Anti-Tuberculosis & Leprosy",
+    "category": "Anti-TB",
+    "schedule": "H",
+    "brand": "Isokin / INH / Stanozide",
+    "formation": "Nicotinic acid hydrazide; inhibits mycolic acid synthesis (InhA enzyme)",
+    "uses": "Tuberculosis (all forms), latent TB prophylaxis",
+    "adult": "5 mg/kg/day OD (max 300 mg) or 10 mg/kg 3× weekly DOTS; co-prescribe pyridoxine 10 mg/day",
+    "child": "10 mg/kg/day OD (max 300 mg) with pyridoxine",
+    "avoid": "Active hepatitis, previous INH hepatotoxicity; monitor LFTs; peripheral neuropathy risk – supplement B6"
+  },
+  {
+    "rank": 403,
+    "name": "Pyrazinamide",
+    "section": "Section 11: Anti-Tuberculosis & Leprosy",
+    "category": "Anti-TB",
+    "schedule": "H",
+    "brand": "Pyrafat / Tisamid / Pyzina",
+    "formation": "Pyrazine analogue pro-drug; active in acidic intracellular macrophage environment against TB",
+    "uses": "Tuberculosis (initial 2-month intensive phase)",
+    "adult": "25 mg/kg/day OD (max 2 g); or weight-banded DOTS regimen",
+    "child": "35 mg/kg/day OD (max 2 g)",
+    "avoid": "Severe hepatic disease, acute gout; causes hyperuricaemia – monitor uric acid and LFTs"
+  },
+  {
+    "rank": 404,
+    "name": "Ethambutol",
+    "section": "Section 11: Anti-Tuberculosis & Leprosy",
+    "category": "Anti-TB",
+    "schedule": "H",
+    "brand": "Myambutol / Combutol / Servambutol",
+    "formation": "Synthetic bacteriostatic; inhibits arabinosyltransferases required for mycobacterial cell wall synthesis",
+    "uses": "Tuberculosis (combination regimen), non-tuberculous mycobacterial infections",
+    "adult": "15–20 mg/kg/day OD (max 1.6 g) with food",
+    "child": "15–20 mg/kg/day OD; avoid <5y (unable to monitor vision)",
+    "avoid": "Optic neuritis, pre-existing visual impairment; monitor visual acuity and colour vision monthly"
+  },
+  {
+    "rank": 405,
+    "name": "4-FDC Anti-TB (RHZE)",
+    "section": "Section 11: Anti-Tuberculosis & Leprosy",
+    "category": "Anti-TB",
+    "schedule": "H",
+    "brand": "Forecox / Rimcure / 4FDC Tablet",
+    "formation": "Fixed-dose combination: Rifampicin 150mg + Isoniazid 75mg + Pyrazinamide 400mg + Ethambutol 275mg",
+    "uses": "New smear-positive pulmonary TB and new smear-negative pulmonary TB (intensive phase 2 months)",
+    "adult": "Weight-banded: 30–37 kg = 2 tabs; 38–54 kg = 3 tabs; 55–70 kg = 4 tabs; >70 kg = 5 tabs OD fasting",
+    "child": "Paediatric FDC tablets (dispersible) as per weight; avoid crushing adult tabs",
+    "avoid": "Jaundice, hypersensitivity to any component; DO NOT split or crush – leads to sub-therapeutic levels"
+  },
+  {
+    "rank": 406,
+    "name": "Streptomycin",
+    "section": "Section 11: Anti-Tuberculosis & Leprosy",
+    "category": "Anti-TB",
+    "schedule": "H",
+    "brand": "Streptomycin Sulphate IP / Cipstren",
+    "formation": "Aminoglycoside; inhibits 30S ribosomal subunit protein synthesis; bactericidal against TB",
+    "uses": "Drug-resistant TB (as injectable second-line), plague, tularaemia, brucellosis",
+    "adult": "15 mg/kg IM/IV OD (max 1 g); reduce to 750 mg in >60y; 2–3× weekly DOTS after 2 months",
+    "child": "20–40 mg/kg/day IM (max 1 g)",
+    "avoid": "Ototoxicity (irreversible hearing loss), nephrotoxicity; avoid in pregnancy (VIII nerve toxicity in fetus); monitor creatinine"
+  },
+  {
+    "rank": 407,
+    "name": "Bedaquiline",
+    "section": "Section 11: Anti-Tuberculosis & Leprosy",
+    "category": "Anti-TB",
+    "schedule": "H1",
+    "brand": "Sirturo / Bedaquiline (DOTS-Plus)",
+    "formation": "Diarylquinoline; inhibits mycobacterial ATP synthase – novel mechanism; MDR-TB agent",
+    "uses": "Multidrug-resistant TB (MDR-TB) and pre-XDR-TB as part of combination regimen",
+    "adult": "400 mg OD × 2 weeks, then 200 mg 3× weekly × 22 weeks (total 24 weeks); under DOTS-Plus",
+    "child": "5–<12y: weight-banded; approved down to 5 years (>15 kg)",
+    "avoid": "QTc >500 ms, concurrent QT-prolonging drugs; monitor ECG and LFTs; only prescribed at PMDT centres"
+  },
+  {
+    "rank": 408,
+    "name": "Clofazimine",
+    "section": "Section 11: Anti-Tuberculosis & Leprosy",
+    "category": "Anti-TB",
+    "schedule": "H",
+    "brand": "Clofaz / Lamprene",
+    "formation": "Riminophenazine dye; binds mycobacterial DNA and generates reactive oxygen species; bactericidal",
+    "uses": "Leprosy (multibacillary – part of MDT), MDR-TB regimen (BPaLM), Mycobacterium avium complex",
+    "adult": "Leprosy: 50 mg OD + 300 mg supervised once monthly; MDR-TB: 100 mg OD",
+    "child": "1 mg/kg/day; paediatric MDT packs available",
+    "avoid": "Causes reversible reddish-brown skin discolouration and ichthyosis; counsel patient; avoid severe hepatic disease"
+  },
+  {
+    "rank": 409,
+    "name": "Epinephrine (Adrenaline)",
+    "section": "Section 12: Emergency, Critical Care & Haematology",
+    "category": "Emergency",
+    "schedule": "H",
+    "brand": "Adrenaline IP / EpiPen / Anapen",
+    "formation": "Endogenous catecholamine; α1+β1+β2 agonist; primary vasopressor and cardiac stimulant",
+    "uses": "Anaphylaxis (first-line), cardiac arrest (ACLS), severe bronchospasm, croup (nebulised)",
+    "adult": "Anaphylaxis: 0.5 mg (0.5 mL of 1:1000) IM anterolateral thigh; repeat every 5–15 min PRN; ACLS: 1 mg IV every 3–5 min",
+    "child": "Anaphylaxis: 0.01 mg/kg IM (max 0.5 mg); ACLS: 0.01 mg/kg IV every 3–5 min",
+    "avoid": "No absolute contraindication in anaphylaxis or cardiac arrest; use with caution in hypertensive/ischaemic heart disease"
+  },
+  {
+    "rank": 410,
+    "name": "Atropine Sulphate",
+    "section": "Section 12: Emergency, Critical Care & Haematology",
+    "category": "Emergency",
+    "schedule": "H",
+    "brand": "Atropine Sulphate IP / Atropair",
+    "formation": "Anticholinergic (muscarinic antagonist); blocks parasympathetic tone on heart, secretions, and smooth muscle",
+    "uses": "Symptomatic bradycardia, organophosphate poisoning, pre-anaesthetic drying agent, ophthalmology (mydriasis)",
+    "adult": "Bradycardia: 0.5–1 mg IV every 3–5 min (max 3 mg); OP poisoning: 2–4 mg IV every 5–10 min until secretions dry",
+    "child": "0.02 mg/kg IV (min 0.1 mg, max 0.5 mg per dose); OP poisoning: 0.05 mg/kg IV titrated",
+    "avoid": "Angle-closure glaucoma, myasthenia gravis, obstructive uropathy; use caution in febrile children (impairs sweating)"
+  },
+  {
+    "rank": 411,
+    "name": "Norepinephrine (Noradrenaline)",
+    "section": "Section 12: Emergency, Critical Care & Haematology",
+    "category": "Emergency",
+    "schedule": "H",
+    "brand": "Levophed / Noradrenaline Bitartrate IP",
+    "formation": "Endogenous catecholamine; primarily α1-adrenergic agonist causing vasoconstriction; mild β1 inotropic effect",
+    "uses": "Septic shock (vasopressor of choice), cardiogenic shock, other distributive shock states",
+    "adult": "0.01–3 mcg/kg/min IV infusion; titrate to MAP ≥65 mmHg; via central venous catheter preferred",
+    "child": "0.01–2 mcg/kg/min IV infusion, titrated",
+    "avoid": "Hypovolaemia (correct before starting), mesenteric/peripheral vascular thrombosis; avoid peripheral IV if possible (extravasation necrosis)"
+  },
+  {
+    "rank": 412,
+    "name": "Dopamine",
+    "section": "Section 12: Emergency, Critical Care & Haematology",
+    "category": "Emergency",
+    "schedule": "H",
+    "brand": "Intropin / Dopamine HCl IP / Revimine",
+    "formation": "Catecholamine; dose-dependent: low-dose = DA1 renal vasodilation; medium = β1 inotropic; high-dose = α1 vasoconstriction",
+    "uses": "Cardiogenic shock, bradycardia refractory to atropine, acute decompensated heart failure with hypotension",
+    "adult": "2–20 mcg/kg/min IV infusion via central line; titrate to response",
+    "child": "2–20 mcg/kg/min IV infusion, titrated",
+    "avoid": "Uncorrected tachyarrhythmias, phaeochromocytoma, VF; 'renal-dose dopamine' no longer recommended for renal protection"
+  },
+  {
+    "rank": 413,
+    "name": "Dobutamine",
+    "section": "Section 12: Emergency, Critical Care & Haematology",
+    "category": "Emergency",
+    "schedule": "H",
+    "brand": "Dobutrex / Dobutamine HCl IP",
+    "formation": "Synthetic catecholamine; β1-selective inotropic agent; increases cardiac contractility and CO",
+    "uses": "Acute decompensated heart failure with low cardiac output (cardiogenic shock adjunct), cardiac stress testing",
+    "adult": "2–20 mcg/kg/min IV infusion, titrated to haemodynamics; stress test: 5–40 mcg/kg/min incremental",
+    "child": "2–20 mcg/kg/min IV infusion",
+    "avoid": "HOCM (outflow tract obstruction worsens), atrial fibrillation with rapid rate (increases ventricular response); not a vasopressor"
+  },
+  {
+    "rank": 414,
+    "name": "Ketamine",
+    "section": "Section 12: Emergency, Critical Care & Haematology",
+    "category": "Emergency",
+    "schedule": "H1",
+    "brand": "Ketalar / Aneket / Ketoject",
+    "formation": "Phencyclidine-class NMDA receptor antagonist; dissociative anaesthetic with bronchodilation and sympathomimetic properties",
+    "uses": "Induction of anaesthesia, procedural sedation in ED, RSI in haemodynamically unstable patients, ketamine infusion for pain",
+    "adult": "IV induction: 1–2 mg/kg; IM: 4–6 mg/kg; procedural sedation: 0.5–1 mg/kg IV; analgesic: 0.1–0.5 mg/kg IV",
+    "child": "IV induction: 1–2 mg/kg; IM: 4–6 mg/kg (excellent IM bioavailability, useful in paediatric emergencies)",
+    "avoid": "Ischaemic heart disease, uncontrolled hypertension, conditions where raised ICP is a concern (use cautiously – evidence evolving); pre-medicate with benzodiazepine to reduce emergence phenomena"
+  },
+  {
+    "rank": 415,
+    "name": "Propofol",
+    "section": "Section 12: Emergency, Critical Care & Haematology",
+    "category": "Emergency",
+    "schedule": "H",
+    "brand": "Diprivan / Propofol-Lipuro / Fresofol",
+    "formation": "Alkylphenol; GABA-A potentiator; ultra-short acting IV anaesthetic and sedative",
+    "uses": "Induction and maintenance of anaesthesia, ICU sedation, procedural sedation, status epilepticus (refractory)",
+    "adult": "Induction: 1–2.5 mg/kg IV (1–1.5 mg/kg in elderly); ICU sedation: 0.3–4 mg/kg/h infusion",
+    "child": "Induction: 2.5–3.5 mg/kg IV; NOT recommended for long-term ICU sedation in children (propofol infusion syndrome risk)",
+    "avoid": "Propofol infusion syndrome (PRIS) risk with prolonged high-dose infusion (>4 mg/kg/h >48h); soya/egg allergy; avoid in paediatric ICU sedation"
+  },
+  {
+    "rank": 416,
+    "name": "Warfarin",
+    "section": "Section 12: Emergency, Critical Care & Haematology",
+    "category": "Haematology",
+    "schedule": "H",
+    "brand": "Warf / Warfarin Sodium IP / Coumadin",
+    "formation": "Vitamin K antagonist; inhibits hepatic synthesis of clotting factors II, VII, IX, X and proteins C and S",
+    "uses": "AF (non-valvular and valvular), DVT/PE treatment and prevention, mechanical prosthetic heart valves, thrombophilia",
+    "adult": "Individualised dose targeting INR 2–3 (AF/DVT) or 2.5–3.5 (mechanical mitral valve); loading 5–10 mg OD, maintenance 2–10 mg OD",
+    "child": "0.1–0.2 mg/kg OD under haematology guidance; target INR per indication",
+    "avoid": "Active bleeding, pregnancy (teratogenic – Category X; use heparin), uncontrolled hypertension; numerous drug and food (vit K) interactions – check every co-medication"
+  },
+  {
+    "rank": 417,
+    "name": "Heparin (Unfractionated)",
+    "section": "Section 12: Emergency, Critical Care & Haematology",
+    "category": "Haematology",
+    "schedule": "H",
+    "brand": "Heparin Sodium IP / Uniparin / Heplean",
+    "formation": "Sulphated polysaccharide; potentiates antithrombin III; inhibits thrombin (IIa) and Xa; immediate onset IV",
+    "uses": "Acute DVT/PE anticoagulation, STEMI/ACS adjunct, CABG and cardiac catheterisation, haemodialysis circuit, bridging anticoagulation",
+    "adult": "ACS: 60–70 IU/kg IV bolus (max 5000 IU), then 12–15 IU/kg/h infusion; target aPTT 60–100 s; DVT/PE: 80 IU/kg bolus then 18 IU/kg/h",
+    "child": "75 IU/kg IV bolus, then 28 IU/kg/h (<1y) or 20 IU/kg/h (>1y); titrate to aPTT",
+    "avoid": "Active haemorrhage, HIT (heparin-induced thrombocytopenia – monitor platelets), severe thrombocytopenia; protamine sulphate reverses toxicity"
+  },
+  {
+    "rank": 418,
+    "name": "Tranexamic Acid",
+    "section": "Section 12: Emergency, Critical Care & Haematology",
+    "category": "Haematology",
+    "schedule": "H",
+    "brand": "Traxyl / Trenaxa / Cyclokapron / TXA",
+    "formation": "Lysine analogue antifibrinolytic; blocks plasminogen–fibrin binding; prevents clot lysis",
+    "uses": "Trauma haemorrhage (CRASH-2 evidence – give within 3h), PPH, menorrhagia, surgical bleeding, haemophilia haemarthrosis",
+    "adult": "Trauma/PPH: 1 g IV over 10 min, repeat 1 g over 8h; menorrhagia: 1–1.5 g TDS for 3–4 days PO",
+    "child": "10–15 mg/kg IV TDS (max 1 g/dose); or 15–25 mg/kg PO TDS",
+    "avoid": "Active thromboembolic disease, subarachnoid haemorrhage (cerebral oedema risk), haematuria (upper urinary tract – risk of ureteral clot)"
+  },
+  {
+    "rank": 419,
+    "name": "Streptokinase",
+    "section": "Section 12: Emergency, Critical Care & Haematology",
+    "category": "Haematology",
+    "schedule": "H",
+    "brand": "Streptokinase IP / Streptase / Kabikinase",
+    "formation": "Bacterial protein thrombolytic; forms complex with plasminogen to activate plasmin; lysing established thrombi",
+    "uses": "STEMI (thrombolysis when primary PCI unavailable, within 12h), massive PE, acute peripheral arterial occlusion",
+    "adult": "STEMI: 1.5 million IU IV over 60 min (single dose); PE: 250,000 IU loading over 30 min, then 100,000 IU/h × 24h",
+    "child": "3500–4000 IU/kg over 30 min loading, then 1000–1500 IU/kg/h; specialist guidance essential",
+    "avoid": "Recent stroke (<6m), active internal bleeding, recent major surgery/trauma (<2w), uncontrolled hypertension, pregnancy, previous SK therapy within 6–12m (antibody resistance)"
+  },
+  {
+    "rank": 420,
+    "name": "Alteplase (tPA)",
+    "section": "Section 12: Emergency, Critical Care & Haematology",
+    "category": "Haematology",
+    "schedule": "H",
+    "brand": "Actilyse / Alteplase IP",
+    "formation": "Recombinant tissue plasminogen activator (rt-PA); clot-selective fibrinolytic; cleaves plasminogen to plasmin",
+    "uses": "Acute ischaemic stroke (within 4.5h), massive PE, STEMI (accelerated regimen), central venous catheter occlusion",
+    "adult": "Stroke: 0.9 mg/kg IV (max 90 mg); 10% bolus, 90% over 60 min; PE: 100 mg over 2h; STEMI: 15 mg bolus + 0.75 mg/kg over 30 min + 0.5 mg/kg over 60 min",
+    "child": "Stroke <18y: 0.9 mg/kg (max 90 mg) – limited data; CVC occlusion: 0.5–2 mg instilled into catheter",
+    "avoid": "Same as streptokinase plus: blood glucose <50 or >400 mg/dL for stroke; haemorrhagic transformation risk; anticoagulants at full dose; time-window strict"
+  },
+  {
+    "rank": 421,
+    "name": "Oxytocin",
+    "section": "Section 13: Obstetrics & Gynaecology",
+    "category": "Obstetrics",
+    "schedule": "H",
+    "brand": "Syntocinon / Pitocin / Oxyto",
+    "formation": "Synthetic hypothalamic nonapeptide; stimulates myometrial OT receptors causing uterine contractions",
+    "uses": "Induction of labour, augmentation of labour, active management of third stage (PPH prevention and treatment)",
+    "adult": "Labour induction: 1–2 mIU/min IV infusion, titrate by 1–2 mIU every 30 min; PPH: 10 IU IM stat or 40 IU in 500 mL NS over 4h IV",
+    "child": "Not applicable",
+    "avoid": "Cephalopelvic disproportion, abnormal foetal presentation, previous classical CS, foetal distress, hypertonic uterine contractions; water intoxication at high doses"
+  },
+  {
+    "rank": 422,
+    "name": "Mifepristone",
+    "section": "Section 13: Obstetrics & Gynaecology",
+    "category": "Obstetrics",
+    "schedule": "X",
+    "brand": "Mifeprin / Mifegest / Korlym",
+    "formation": "Synthetic antiprogestogen and antiglucocorticoid; competitive PR antagonist; sensitises uterus to prostaglandins",
+    "uses": "Medical termination of pregnancy (MTP) ≤9 weeks (with misoprostol), cervical priming before surgical termination",
+    "adult": "MTP: 200 mg PO single dose, followed by misoprostol 24–48h later; cervical priming: 200 mg 36h before procedure",
+    "child": "Not applicable",
+    "avoid": "Ectopic pregnancy (must be excluded), IUD in situ, chronic adrenal failure (glucocorticoid-dependent), haemorrhagic disorders, long-term corticosteroid therapy"
+  },
+  {
+    "rank": 423,
+    "name": "Misoprostol",
+    "section": "Section 13: Obstetrics & Gynaecology",
+    "category": "Obstetrics",
+    "schedule": "H",
+    "brand": "Cytolog / Misoprost / Cytotec",
+    "formation": "Synthetic PGE1 analogue; stimulates myometrial EP1/EP3 receptors; causes uterine contractions and cervical ripening",
+    "uses": "PPH prevention/treatment, medical MTP (with mifepristone), labour induction (cervical ripening), missed miscarriage",
+    "adult": "PPH: 600 mcg sublingual/buccal or 800 mcg rectal; MTP: 800 mcg vaginal/sublingual 48h after mifepristone; labour induction: 25 mcg PV every 6h",
+    "child": "Not applicable",
+    "avoid": "Previous CS or uterine scar (increased uterine rupture risk with labour induction doses), allergy to prostaglandins; teratogenic if pregnancy continues after failed MTP"
+  },
+  {
+    "rank": 424,
+    "name": "Methylergometrine",
+    "section": "Section 13: Obstetrics & Gynaecology",
+    "category": "Obstetrics",
+    "schedule": "H",
+    "brand": "Methergin / Methylergot / Ergocal",
+    "formation": "Ergot alkaloid; agonist at α-adrenergic and serotonin receptors in uterine smooth muscle; causes sustained tetanic contraction",
+    "uses": "PPH treatment (second-line after oxytocin), subinvolution of uterus",
+    "adult": "0.2 mg IM/IV (slow) stat; may repeat every 2–4h; oral 0.125–0.25 mg TDS × 2–7 days",
+    "child": "Not applicable",
+    "avoid": "Hypertension, pre-eclampsia/eclampsia, Raynaud's phenomenon, peripheral vascular disease, cardiac disease; IV use only in life-threatening haemorrhage (hypertensive crisis risk)"
+  },
+  {
+    "rank": 425,
+    "name": "Medroxyprogesterone Acetate",
+    "section": "Section 13: Obstetrics & Gynaecology",
+    "category": "Obstetrics",
+    "schedule": "H",
+    "brand": "Depo-Provera / Provera / Modus",
+    "formation": "Synthetic progestin; agonist at PR; suppresses LH surge (contraception), stabilises endometrium",
+    "uses": "Contraception (DMPA 3-monthly injection), endometriosis, dysfunctional uterine bleeding, hormone replacement therapy, endometrial cancer",
+    "adult": "Contraception: 150 mg IM every 3 months; DUB: 10 mg OD × 10 days/cycle; cancer: 500–1000 mg IM/week",
+    "child": "Not for contraception <16y; may be used for specific gynaecological indications under specialist care",
+    "avoid": "Undiagnosed vaginal bleeding, active thromboembolic disease, liver disease, known/suspected breast cancer; bone density loss with prolonged contraceptive use – counsel"
+  },
+  {
+    "rank": 426,
+    "name": "Amiodarone",
+    "section": "Section 14: Cardiovascular Extended",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Cordarone / Amiodar / Tachyra",
+    "formation": "Class III antiarrhythmic (Vaughan-Williams); also has Class I, II, IV actions; prolongs action potential and ERP in all cardiac tissues",
+    "uses": "VF/pulseless VT (ACLS), AF/flutter (rate/rhythm control), sustained VT, refractory SVT",
+    "adult": "Cardiac arrest: 300 mg IV bolus; AF cardioversion: 5 mg/kg IV over 20–60 min then 50 mg/h; maintenance: 100–200 mg OD PO",
+    "child": "Cardiac arrest: 5 mg/kg IV bolus; AF/VT: 5 mg/kg IV over 20–60 min; oral 5–10 mg/kg/day",
+    "avoid": "Iodine allergy (contains iodine), thyroid dysfunction, severe sinus node dysfunction, pulmonary toxicity history; multiple interactions; photosensitivity; routine PFT/TFT/LFT monitoring"
+  },
+  {
+    "rank": 427,
+    "name": "Ticagrelor",
+    "section": "Section 14: Cardiovascular Extended",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Brilinta / Ticardia / Ticagrelor Cipla",
+    "formation": "Reversible direct-acting P2Y12 ADP receptor antagonist; faster and more consistent platelet inhibition than clopidogrel",
+    "uses": "ACS (STEMI and NSTEMI) with PCI or medical management, prevention of recurrent MI/stroke/CV death (PLATO trial)",
+    "adult": "Loading: 180 mg PO stat; maintenance: 90 mg BD for 12 months with aspirin; reduce to 60 mg BD after 1 year if continued",
+    "child": "Not established",
+    "avoid": "Active bleeding, history of ICH, severe hepatic impairment; causes dyspnoea (non-dose related) and bradycardia; avoid high-dose aspirin (>100 mg/day reduces efficacy)"
+  },
+  {
+    "rank": 428,
+    "name": "Prasugrel",
+    "section": "Section 14: Cardiovascular Extended",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Effient / Prasugrel Aurobindo",
+    "formation": "Thienopyridine pro-drug; irreversible P2Y12 ADP receptor antagonist; more potent than clopidogrel (TRITON-TIMI 38)",
+    "uses": "ACS managed with PCI (STEMI preferred); reduces MI and stent thrombosis vs clopidogrel",
+    "adult": "Loading: 60 mg PO stat; maintenance: 10 mg OD with aspirin × 12 months; 5 mg OD if <60 kg or ≥75y (use not recommended)",
+    "child": "Not established",
+    "avoid": "Prior stroke/TIA (net harm), active bleeding; avoid in ≥75y (excess bleeding risk unless high-risk patient); weight <60 kg – use 5 mg dose"
+  },
+  {
+    "rank": 429,
+    "name": "Ranolazine",
+    "section": "Section 14: Cardiovascular Extended",
+    "category": "Cardiovascular",
+    "schedule": "H",
+    "brand": "Ranexa / Ranolazine ER / Ranolaz",
+    "formation": "Late sodium current (I-Na late) inhibitor; reduces sodium-calcium overload in ischaemic myocardium; anti-anginal without haemodynamic effects",
+    "uses": "Chronic stable angina (add-on when β-blockers/CCBs insufficient), also anti-arrhythmic property in AF",
+    "adult": "500 mg BD ER, titrate to 1000 mg BD as tolerated; swallow whole",
+    "child": "Not established",
+    "avoid": "Severe hepatic/renal impairment, QTc prolongation; inhibits CYP3A4 and P-gp – check interactions (simvastatin, digoxin levels increase)"
+  },
+  {
+    "rank": 430,
+    "name": "Cotrimoxazole (TMP-SMX)",
+    "section": "Section 15: Anti-Infective & Antiviral Extended",
+    "category": "Anti-Infective",
+    "schedule": "H",
+    "brand": "Bactrim / Septran / Cotrim",
+    "formation": "Fixed combination: Trimethoprim 80mg + Sulfamethoxazole 400mg; sequential blockade of folate synthesis",
+    "uses": "UTI, Pneumocystis jirovecii pneumonia (PCP) treatment and prophylaxis, nocardiosis, toxoplasmosis, MRSA skin infections, Stenotrophomonas",
+    "adult": "UTI: 1 DS tab (160/800 mg) BD × 3–7 days; PCP treatment: 15–20 mg/kg/day TMP IV/PO in 3–4 doses × 21 days",
+    "child": "6–12 mg/kg/day TMP component BD; neonates avoid in first 6 weeks (risk of kernicterus)",
+    "avoid": "Sulfonamide allergy, severe hepatic/renal impairment, G6PD deficiency (haemolysis), pregnancy near term and neonates; can cause hyperkalaemia with ACEi/ARB/potassium-sparing diuretics"
+  },
+  {
+    "rank": 431,
+    "name": "Ampicillin + Cloxacillin",
+    "section": "Section 15: Anti-Infective & Antiviral Extended",
+    "category": "Anti-Infective",
+    "schedule": "H",
+    "brand": "Ampiclox / Clonapen / Ampicloxin",
+    "formation": "Aminopenicillin (Ampicillin) + Isoxazolyl penicillin (Cloxacillin); broad-spectrum with MSSA coverage",
+    "uses": "Respiratory tract infections, skin and soft tissue infections, septicaemia, biliary infections; widely used in Indian hospitals",
+    "adult": "250–500 mg each component QID PO; IV: 500 mg–1 g each BD-QID; 30 min before food",
+    "child": "25–50 mg/kg/day of each component divided QID",
+    "avoid": "Penicillin/β-lactam hypersensitivity, infectious mononucleosis (ampicillin rash); no MRSA coverage – check local antibiogram"
+  },
+  {
+    "rank": 432,
+    "name": "Cefoperazone + Sulbactam",
+    "section": "Section 15: Anti-Infective & Antiviral Extended",
+    "category": "Anti-Infective",
+    "schedule": "H",
+    "brand": "Sulperazone / Cefoperazone-SB / Magnex",
+    "formation": "3rd-gen cephalosporin + β-lactamase inhibitor; extended spectrum covering ESBL and some Acinetobacter",
+    "uses": "Severe nosocomial infections, intra-abdominal infections, MDR gram-negative coverage, Acinetobacter baumannii (in combination)",
+    "adult": "1–2 g IV every 12h (sulbactam 1:1 ratio); up to 4 g/day sulbactam component (max 8 g/day total)",
+    "child": "40–80 mg/kg/day IV divided BD-TID",
+    "avoid": "Cephalosporin allergy; adjust dose in severe hepatic impairment (biliary excretion); can cause disulfiram-like reaction with alcohol (N-methylthiotetrazole side chain)"
+  },
+  {
+    "rank": 433,
+    "name": "Cefazolin",
+    "section": "Section 15: Anti-Infective & Antiviral Extended",
+    "category": "Anti-Infective",
+    "schedule": "H",
+    "brand": "Cefazolin IP / Ancef / Reflin",
+    "formation": "1st-generation cephalosporin; gram-positive coverage (MSSA), limited gram-negative; most commonly used for surgical prophylaxis",
+    "uses": "Surgical prophylaxis (preferred agent – 1 g IV 30–60 min pre-incision), skin/soft tissue infections, MSSA bacteraemia (step-down), UTI",
+    "adult": "Prophylaxis: 1–2 g IV single dose; treatment: 1–2 g IV every 8h",
+    "child": "Prophylaxis: 25–30 mg/kg IV single dose (max 2 g); treatment: 25–50 mg/kg/day divided every 8h",
+    "avoid": "Cephalosporin/penicillin allergy; adjust for renal impairment; not adequate for gram-negative coverage or MRSA"
+  },
+  {
+    "rank": 434,
+    "name": "Valacyclovir",
+    "section": "Section 15: Anti-Infective & Antiviral Extended",
+    "category": "Anti-Infective",
+    "schedule": "H",
+    "brand": "Valcivir / Valtrex / Valcy",
+    "formation": "L-valyl ester pro-drug of acyclovir; 3–5× higher oral bioavailability than acyclovir; inhibits herpes DNA polymerase",
+    "uses": "Herpes zoster (shingles), genital herpes (treatment and suppression), herpes labialis (cold sores), CMV prophylaxis in transplant",
+    "adult": "Zoster: 1000 mg TDS × 7 days; genital herpes (1st episode): 1000 mg BD × 10 days; suppression: 500 mg OD; CMV: 2 g QID",
+    "child": "Chickenpox ≥2y: 20 mg/kg TDS × 5 days (max 1 g/dose); herpes labialis: 2 g BD × 1 day (≥12y)",
+    "avoid": "TTP/HUS (especially at high CMV-prophylaxis doses in transplant patients), severe renal impairment (reduce dose); agitation/hallucinations at high doses – CNS toxicity"
+  },
+  {
+    "rank": 435,
+    "name": "Tigecycline",
+    "section": "Section 15: Anti-Infective & Antiviral Extended",
+    "category": "Anti-Infective",
+    "schedule": "H",
+    "brand": "Tygacil / Tigyke",
+    "formation": "Glycylcycline tetracycline derivative; inhibits 30S ribosomal translation; avoids tetracycline efflux and ribosomal protection resistance",
+    "uses": "Complicated skin/soft tissue infections, intra-abdominal infections, community-acquired pneumonia (CAP), MDR Acinetobacter (combination)",
+    "adult": "100 mg IV loading, then 50 mg IV BD (infuse over 30–60 min); MDR Acinetobacter: higher dose 100 mg BD considered",
+    "child": "8–11y: 1.2 mg/kg BD (max 50 mg); 12–17y: 50 mg BD; avoid <8y (bone/teeth effects as per tetracycline)",
+    "avoid": "Pregnancy (foetal bone and teeth damage), <8y; black-box warning: all-cause mortality higher vs comparators in meta-analysis – use only when no alternatives"
+  },
+  {
+    "rank": 436,
+    "name": "Fosfomycin",
+    "section": "Section 15: Anti-Infective & Antiviral Extended",
+    "category": "Anti-Infective",
+    "schedule": "H",
+    "brand": "Fosfocin / Monurol / Fosfomycin IP",
+    "formation": "Phosphonic acid antibiotic; inhibits MurA enzyme (UDP-N-acetylglucosamine enolpyruvyl transferase) of bacterial cell wall synthesis",
+    "uses": "Uncomplicated UTI (single-dose oral – ESBL E.coli), complicated UTI and pyelonephritis (IV fosfomycin), carbapenem-resistant Enterobacteriaceae (combination)",
+    "adult": "Oral (UTI): 3 g granules single sachet; IV (severe): 12–24 g/day in 3–4 divided doses",
+    "child": "Oral: 2 g single dose (≥12y); IV: 200–400 mg/kg/day divided BD-TID",
+    "avoid": "Severe renal failure (dose adjustment); IV formulation causes sodium load – caution in heart failure; developing resistance when used as monotherapy in serious infections"
+  },
+  {
+    "rank": 437,
+    "name": "Oseltamivir",
+    "section": "Section 15: Anti-Infective & Antiviral Extended",
+    "category": "Anti-Infective",
+    "schedule": "H",
+    "brand": "Tamiflu / Fluvir / Antiflu",
+    "formation": "Pro-drug ethyl ester; active carboxylate inhibits influenza neuraminidase; prevents viral release from infected cells",
+    "uses": "Influenza A and B treatment (within 48h of symptom onset, reduces duration ~1 day), prophylaxis post-exposure, avian influenza H5N1/H1N1",
+    "adult": "Treatment: 75 mg BD × 5 days; prophylaxis: 75 mg OD × 10 days (post-exposure) or × 6 weeks (seasonal)",
+    "child": ">1y: weight-based (≤15 kg: 30 mg; 15–23 kg: 45 mg; 23–40 kg: 60 mg; >40 kg: 75 mg) BD × 5 days",
+    "avoid": "Severe renal failure (reduce dose); neuropsychiatric events (hallucinations, delirium, self-injury – monitor in children); not effective against other respiratory viruses"
+  },
+  {
+    "rank": 438,
+    "name": "Entecavir",
+    "section": "Section 16: Hepatology, Antiviral & Thyroid",
+    "category": "Hepatology",
+    "schedule": "H",
+    "brand": "Baraclude / Entaliv / Entehep",
+    "formation": "Guanosine nucleoside analogue; inhibits HBV polymerase (priming, reverse transcription, DNA synthesis); minimal HIV cross-resistance",
+    "uses": "Chronic hepatitis B (HBeAg-positive and -negative), compensated and decompensated cirrhosis, post-transplant HBV prophylaxis",
+    "adult": "Treatment-naïve: 0.5 mg OD fasting; lamivudine-refractory: 1 mg OD fasting; decompensated cirrhosis: 1 mg OD",
+    "child": "2–<18y: weight-banded oral solution 0.015–0.015 mg/kg OD (max 0.5 mg OD); >30 kg: 0.5 mg tab OD",
+    "avoid": "Lactic acidosis and severe hepatomegaly with steatosis (black-box); do NOT stop abruptly (risk of hepatitis flare); renal dose adjustment; not first-line in HIV co-infection (use TDF/TAF)"
+  },
+  {
+    "rank": 439,
+    "name": "Tenofovir Disoproxil Fumarate (TDF)",
+    "section": "Section 16: Hepatology, Antiviral & Thyroid",
+    "category": "Hepatology",
+    "schedule": "H",
+    "brand": "Viread / Tenvir / Ricovir",
+    "formation": "Nucleotide reverse transcriptase inhibitor (NtRTI); inhibits HIV-1 and HBV reverse transcriptase; incorporated as chain terminator",
+    "uses": "HIV-1 infection (backbone of preferred ART regimens), chronic hepatitis B, PrEP (HIV pre-exposure prophylaxis)",
+    "adult": "300 mg PO OD with food; HIV: part of combination ART; HBV: 300 mg OD (preferred in HIV-HBV co-infection)",
+    "child": "≥2y: 8 mg/kg OD (max 300 mg) with food",
+    "avoid": "Renal impairment (Fanconi syndrome/renal tubular acidosis – monitor creatinine, phosphate); bone density loss with long-term use – supplement calcium/vit D; avoid with didanosine (pancreatitis)"
+  },
+  {
+    "rank": 440,
+    "name": "Sofosbuvir + Velpatasvir",
+    "section": "Section 16: Hepatology, Antiviral & Thyroid",
+    "category": "Hepatology",
+    "schedule": "H",
+    "brand": "Velpanat / Sofosvel / Epclusa",
+    "formation": "Pan-genotypic HCV DAA: Sofosbuvir (NS5B polymerase inhibitor) + Velpatasvir (NS5A inhibitor); 400/100 mg fixed-dose tablet",
+    "uses": "Chronic HCV infection all genotypes (1–6) – SVR rates >95%; compensated and decompensated cirrhosis (add ribavirin)",
+    "adult": "1 tablet OD × 12 weeks (no cirrhosis or compensated cirrhosis); decompensated: + ribavirin 12 weeks",
+    "child": "≥6y or ≥17 kg: 200/50 mg OD (oral pellets); ≥30 kg: 400/100 mg tablet OD",
+    "avoid": "Severe renal impairment (sofosbuvir accumulation – use sofosbuvir-free regimen if eGFR <30); potent P-gp inducers (rifampicin, St John's wort) dramatically reduce levels – avoid; moderate-severe hepatic impairment (decompensated Child-Pugh C – use with ribavirin only)"
+  },
+  {
+    "rank": 441,
+    "name": "Sofosbuvir + Ledipasvir",
+    "section": "Section 16: Hepatology, Antiviral & Thyroid",
+    "category": "Hepatology",
+    "schedule": "H",
+    "brand": "Harvoni / Ledifos / Hepcinat-LP",
+    "formation": "HCV genotype 1 and 4 DAA: Sofosbuvir 400mg (NS5B inhibitor) + Ledipasvir 90mg (NS5A inhibitor); first approved pan-oral HCV regimen",
+    "uses": "HCV genotype 1 (most common in India), genotype 4; treatment-naïve and treatment-experienced; with/without cirrhosis",
+    "adult": "1 tablet OD × 8 weeks (treatment-naïve, no cirrhosis, HCV RNA <6M IU/mL) or 12 weeks (standard); 24 weeks for decompensated cirrhosis",
+    "child": "≥3y: weight-based pellets; ≥17 kg: tab OD",
+    "avoid": "Same as sofosbuvir+velpatasvir; avoid proton pump inhibitors (reduce ledipasvir absorption – separate or avoid omeprazole >20 mg); P-gp inducers contraindicated"
+  },
+  {
+    "rank": 442,
+    "name": "Carbimazole",
+    "section": "Section 16: Hepatology, Antiviral & Thyroid",
+    "category": "Endocrine",
+    "schedule": "H",
+    "brand": "Neomercazole / Thyrocab / Carbimazole IP",
+    "formation": "Thionamide; pro-drug of methimazole; inhibits thyroid peroxidase preventing organification of iodide and thyroid hormone synthesis",
+    "uses": "Hyperthyroidism (Graves' disease, toxic nodular goitre), preparation for thyroidectomy/radioiodine, thyroid storm (high-dose)",
+    "adult": "Initial: 15–40 mg/day in 1–3 divided doses; maintenance 5–15 mg OD once euthyroid; thyroid storm: 20–30 mg every 4h",
+    "child": "0.25–0.5 mg/kg/day in 3 divided doses; monitor TFTs monthly",
+    "avoid": "Agranulocytosis (warn patient to report sore throat/fever – check WBC immediately); aplastic anaemia; crosses placenta (use lowest effective dose); avoid in lactation (use PTU preferred if breastfeeding)"
+  },
+  {
+    "rank": 443,
+    "name": "Propylthiouracil (PTU)",
+    "section": "Section 16: Hepatology, Antiviral & Thyroid",
+    "category": "Endocrine",
+    "schedule": "H",
+    "brand": "Propycil / PTU / Propylthiouracil IP",
+    "formation": "Thionamide; inhibits thyroid peroxidase AND peripheral conversion of T4→T3 (inhibits deiodinase); preferred in pregnancy/thyroid storm",
+    "uses": "Hyperthyroidism (Graves' disease), thyroid storm (first-choice with β-blocker), 1st-trimester pregnancy (preferred over carbimazole)",
+    "adult": "Initial: 100–150 mg TDS; maintenance: 50 mg TDS–BD; thyroid storm: 200–400 mg every 4h",
+    "child": "5–7 mg/kg/day TDS (max 300 mg/day)",
+    "avoid": "Hepatotoxicity (potentially fatal – black-box; avoid for routine use except pregnancy/thyroid storm); agranulocytosis; ANCA-associated vasculitis with long-term use"
+  },
+  {
+    "rank": 444,
+    "name": "Levosulpiride",
+    "section": "Section 17: GI, Nephrology & Ophthalmology Ext",
+    "category": "GI",
+    "schedule": "H",
+    "brand": "Levosulpride / Nexpro / Levbid",
+    "formation": "Left-enantiomer of sulpiride; selective D2/D3 receptor antagonist; prokinetic at gut level, antidopaminergic at CNS level",
+    "uses": "Functional dyspepsia, gastroparesis, GERD (prokinetic), depression (off-label antidepressant in South Asia)",
+    "adult": "25–75 mg TDS before meals (GI); 150–300 mg/day in divided doses (psychiatric)",
+    "child": "Not well established; used cautiously in older children by specialists",
+    "avoid": "Phaeochromocytoma, prolactin-dependent tumours, Parkinson's disease; can cause extrapyramidal symptoms (akathisia, tardive dyskinesia with long-term use); avoid with other antidopaminergics"
+  },
+  {
+    "rank": 445,
+    "name": "Itopride",
+    "section": "Section 17: GI, Nephrology & Ophthalmology Ext",
+    "category": "GI",
+    "schedule": "H",
+    "brand": "Ganaton / Itopride IP / Domstal-IT",
+    "formation": "D2 receptor antagonist + acetylcholinesterase inhibitor (dual mechanism); enhances gastric motility without crossing BBB significantly",
+    "uses": "Functional dyspepsia, gastroparesis, post-prandial bloating, nausea associated with gastric stasis",
+    "adult": "50 mg TDS before meals",
+    "child": "Safety not established for routine use",
+    "avoid": "GI haemorrhage/obstruction/perforation; less QT prolongation risk than domperidone (no significant CYP3A4 metabolism); avoid with anticholinergic drugs (opposing effects)"
+  },
+  {
+    "rank": 446,
+    "name": "Racecadotril",
+    "section": "Section 17: GI, Nephrology & Ophthalmology Ext",
+    "category": "GI",
+    "schedule": "H",
+    "brand": "Redotil / Racecadotril IP / Hidrasec",
+    "formation": "Enkephalinase inhibitor (pro-drug of thiorphan); reduces hypersecretion of water and electrolytes in intestinal lumen; antisecretory (not antimotility)",
+    "uses": "Acute secretory diarrhoea in children (add-on to ORS), travellers' diarrhoea",
+    "adult": "100 mg TDS before meals × 3 days",
+    "child": "1.5 mg/kg TDS (max 100 mg/dose); available as granule/sachet for paediatric use",
+    "avoid": "Do not use as sole treatment – ORS is primary; hepatic/renal impairment (limited data); avoid with ACE inhibitors (increased angioedema risk – neprilysin pathway)"
+  },
+  {
+    "rank": 447,
+    "name": "Pancreatin (Pancreatic Enzyme Replacement)",
+    "section": "Section 17: GI, Nephrology & Ophthalmology Ext",
+    "category": "GI",
+    "schedule": "H",
+    "brand": "Creon / Panzytrat / Pancreatin IP",
+    "formation": "Porcine pancreatic extract containing lipase, amylase, protease (enteric-coated microspheres); replaces exocrine pancreatic function",
+    "uses": "Exocrine pancreatic insufficiency (EPI) from chronic pancreatitis, cystic fibrosis, post-pancreatectomy, pancreatic cancer",
+    "adult": "25,000–75,000 IU lipase with each main meal; 10,000–25,000 IU with snacks; titrate to stool normalisation",
+    "child": "CF: 500–1000 IU lipase/kg/meal (max 10,000 IU/kg/day); titrate carefully to avoid fibrosing colonopathy",
+    "avoid": "Pork allergy; fibrosing colonopathy with excess doses (>10,000 IU lipase/kg/day) – especially in CF children; take with food – NOT on empty stomach"
+  },
+  {
+    "rank": 448,
+    "name": "Erythropoietin (EPO / Darbepoetin)",
+    "section": "Section 17: GI, Nephrology & Ophthalmology Ext",
+    "category": "Nephrology",
+    "schedule": "H",
+    "brand": "Eprex / Wepox / Zyrop / Mircera",
+    "formation": "Recombinant human erythropoietin; stimulates erythroid precursor differentiation via EPOR; EPO alfa/beta and long-acting darbepoetin available",
+    "uses": "Anaemia of chronic kidney disease (CKD/ESRD on dialysis and pre-dialysis), chemotherapy-related anaemia, myelodysplastic syndrome",
+    "adult": "EPO: 50–100 IU/kg SC/IV TIW; target Hb 10–12 g/dL; darbepoetin: 0.45 mcg/kg once weekly SC/IV",
+    "child": "EPO: 50 IU/kg TIW SC/IV; titrate to target Hb; always ensure adequate iron stores before starting",
+    "avoid": "Uncontrolled hypertension (check BP before each dose), pure red cell aplasia (anti-EPO antibodies – rare but serious), haemoglobin >12 g/dL target (increased CV events, stroke risk)"
+  },
+  {
+    "rank": 449,
+    "name": "Calcitriol",
+    "section": "Section 17: GI, Nephrology & Ophthalmology Ext",
+    "category": "Nephrology",
+    "schedule": "H",
+    "brand": "Rocaltrol / Calcirol / Decostriol",
+    "formation": "Active vitamin D3 (1,25-dihydroxycholecalciferol); VDR agonist; requires no renal hydroxylation unlike cholecalciferol",
+    "uses": "Renal osteodystrophy in CKD/dialysis, hypoparathyroidism, vitamin D-dependent rickets type I, hypocalcaemia management",
+    "adult": "CKD dialysis: 0.25–0.5 mcg OD PO initially; adjust by 0.25 mcg every 2–4 weeks targeting PTH; hypoparathyroidism: 0.25–2 mcg OD",
+    "child": "0.01–0.05 mcg/kg/day OD; neonatal hypocalcaemia: 0.25 mcg OD; monitor Ca/P weekly initially",
+    "avoid": "Hypercalcaemia, hyperphosphataemia (correct phosphate first with sevelamer); vitamin D toxicity – monitor serum calcium and phosphate regularly; no value in vitamin D deficiency without renal failure (use cholecalciferol instead)"
+  },
+  {
+    "rank": 450,
+    "name": "Sevelamer",
+    "section": "Section 17: GI, Nephrology & Ophthalmology Ext",
+    "category": "Nephrology",
+    "schedule": "H",
+    "brand": "Renvela / Sevelamer IP / Fosrenol alternative",
+    "formation": "Non-absorbable cationic polymer; binds dietary phosphate in GI tract preventing absorption; calcium-free, aluminium-free",
+    "uses": "Hyperphosphataemia in CKD dialysis patients, also reduces LDL cholesterol (secondary benefit)",
+    "adult": "800 mg TDS with meals initially; adjust by 1–2 tablets per meal every 2 weeks to achieve serum phosphate <1.78 mmol/L",
+    "child": "Adolescents ≥18 kg: 400–800 mg TDS with meals; limited paediatric data",
+    "avoid": "Bowel obstruction; can cause dysphagia/GI upset – take with food; reduces absorption of ciprofloxacin, mycophenolate, levothyroxine – space 2h apart; take with, not before or after meals strictly"
+  },
+  {
+    "rank": 451,
+    "name": "Cinacalcet",
+    "section": "Section 17: GI, Nephrology & Ophthalmology Ext",
+    "category": "Nephrology",
+    "schedule": "H",
+    "brand": "Sensipar / Cinacal / Mimpara",
+    "formation": "Calcimimetic; positive allosteric modulator of calcium-sensing receptor (CaSR) on parathyroid; reduces PTH secretion",
+    "uses": "Secondary hyperparathyroidism (HPT) in CKD dialysis patients, primary HPT in non-surgical candidates, parathyroid carcinoma",
+    "adult": "Start 30 mg OD; titrate every 2–4 weeks to 60 mg, 90 mg, 120 mg, 180 mg OD targeting PTH; take with food",
+    "child": "Not routinely recommended <18y; trials ongoing",
+    "avoid": "Hypocalcaemia (<7.5 mg/dL – hold dose); nausea/vomiting (food reduces); strong CYP3A4 inhibitors increase levels (ketoconazole); do NOT crush – modified release"
+  },
+  {
+    "rank": 452,
+    "name": "Natamycin (Ophthalmic)",
+    "section": "Section 17: GI, Nephrology & Ophthalmology Ext",
+    "category": "Ophthalmology",
+    "schedule": "H",
+    "brand": "Natacyn / Pimaricin / Natamycin Eye Drop",
+    "formation": "Polyene macrolide antifungal; binds ergosterol in fungal cell membrane causing increased permeability and cell death",
+    "uses": "Fungal keratitis (filamentous fungi – Fusarium, Aspergillus; most common cause of corneal ulcer in Indian farmers), fungal blepharitis, conjunctivitis",
+    "adult": "5% ophthalmic suspension: 1 drop every 1–2h for 3–4 days then QID for 14–21 days",
+    "child": "Same dosing as adult; very limited systemic absorption from eye drops",
+    "avoid": "Bacterial/viral keratitis (ineffective); poor penetration into anterior chamber (intrastromal/intracameral voriconazole may be needed for deep stromal disease); co-use with contact lenses contraindicated"
+  },
+  {
+    "rank": 453,
+    "name": "Trihexyphenidyl (Benzhexol)",
+    "section": "Section 18: CNS & Neurology Extended",
+    "category": "Neurology",
+    "schedule": "H",
+    "brand": "Pacitane / Parkin / Trihex",
+    "formation": "Synthetic anticholinergic; muscarinic M1 antagonist; restores dopamine–acetylcholine balance in striatum in Parkinsonism",
+    "uses": "Drug-induced parkinsonism (antipsychotic-induced EPS), idiopathic Parkinson's disease (adjunct for tremor), dystonia",
+    "adult": "Start 1 mg OD; titrate by 2 mg every 3–5 days to 6–10 mg/day in 3–4 divided doses",
+    "child": "Dystonia: 1–2 mg/day, titrate up as tolerated; dystonia doses up to 50 mg/day in children (high-dose dystonia trihexyphenidyl)",
+    "avoid": "Angle-closure glaucoma, prostatic hypertrophy, tardive dyskinesia (worsens), dementia/delirium; elderly – anticholinergic cognitive impairment; may cause dry mouth, constipation, urinary retention"
+  },
+  {
+    "rank": 454,
+    "name": "Amantadine",
+    "section": "Section 18: CNS & Neurology Extended",
+    "category": "Neurology",
+    "schedule": "H",
+    "brand": "Symmetrel / Amantrel / Amanta",
+    "formation": "Adamantane derivative; NMDA receptor antagonist and dopamine-releasing agent; also antiviral (influenza A – largely historical)",
+    "uses": "Parkinson's disease (adjunct, motor fluctuations, levodopa-induced dyskinesia), drug-induced parkinsonism, TBI-related disorders of consciousness",
+    "adult": "Parkinson's: 100 mg BD initially; max 400 mg/day; reduce by 100 mg every 2 weeks if discontinuing (avoid abrupt stop)",
+    "child": "TBI/DOC specialist use only; influenza: 5 mg/kg/day in 2 divided doses (≥12y: 100 mg BD)",
+    "avoid": "Renal impairment (dose reduce – renally cleared), seizure disorder, psychiatric history (psychosis/hallucinations), angle-closure glaucoma; livedo reticularis and ankle oedema (cosmetic – usually benign)"
+  },
+  {
+    "rank": 455,
+    "name": "Baclofen",
+    "section": "Section 18: CNS & Neurology Extended",
+    "category": "Neurology",
+    "schedule": "H",
+    "brand": "Lioresal / Baclof / Lyflex",
+    "formation": "GABA-B receptor agonist at spinal level; inhibits mono- and polysynaptic spinal reflexes; reduces muscle tone and spasm",
+    "uses": "Spasticity from MS, spinal cord injury, cerebral palsy; intrathecal baclofen pump for severe spasticity; alcohol use disorder (off-label)",
+    "adult": "Start 5 mg TDS; titrate by 5 mg per dose every 3 days; max 80–120 mg/day in divided doses",
+    "child": "CP spasticity: start 2.5 mg TDS (>10y: 5 mg TDS); max 60 mg/day in children; adjust for weight",
+    "avoid": "Abrupt withdrawal (life-threatening withdrawal seizures, hyperthermia, rhabdomyolysis – taper slowly); epilepsy (lower seizure threshold); drowsiness; renal impairment (dose reduce)"
+  },
+  {
+    "rank": 456,
+    "name": "Tizanidine",
+    "section": "Section 18: CNS & Neurology Extended",
+    "category": "Neurology",
+    "schedule": "H",
+    "brand": "Sirdalud / Tizan / Tizamel",
+    "formation": "Central α2-adrenergic agonist; inhibits polysynaptic spinal pathways; shorter-acting antispastic than baclofen",
+    "uses": "Spasticity in MS, spinal cord injury, stroke; muscle spasms, tension headache (off-label)",
+    "adult": "2–4 mg TDS/QID; max 36 mg/day; take at consistent times (food significantly alters absorption)",
+    "child": "Limited data; 0.05 mg/kg TDS–QID under neurologist guidance",
+    "avoid": "Hepatotoxicity (monitor LFTs for first 6 months); hypotension (especially with antihypertensives and caffeine withdrawal); drowsiness; CYP1A2 inhibitors (ciprofloxacin, fluvoxamine) dramatically increase levels – contraindicated combination"
+  },
+  {
+    "rank": 457,
+    "name": "Rivastigmine",
+    "section": "Section 18: CNS & Neurology Extended",
+    "category": "Neurology",
+    "schedule": "H",
+    "brand": "Exelon / Rivamer / Reminyl (not confused with galantamine)",
+    "formation": "Pseudo-irreversible carbamate cholinesterase inhibitor; inhibits both AChE and BuChE; CNS-selective via slow dissociation",
+    "uses": "Alzheimer's dementia (mild-moderate), Parkinson's disease dementia (preferred agent), Lewy body dementia",
+    "adult": "Oral: start 1.5 mg BD with food; titrate by 1.5 mg/dose every 4 weeks to max 6 mg BD; transdermal patch: 4.6 mg/24h start, titrate to 9.5–13.3 mg/24h",
+    "child": "Not indicated",
+    "avoid": "Sick sinus syndrome, bradycardia, active GI ulcer (increases acid secretion), obstructive uropathy, seizures; GI adverse effects (nausea/vomiting) are the main tolerability issue – take with food; patch preferred for GI tolerability"
+  },
+  {
+    "rank": 458,
+    "name": "Buspirone",
+    "section": "Section 18: CNS & Neurology Extended",
+    "category": "Psychiatry",
+    "schedule": "H",
+    "brand": "Buspar / Buspimen / Anxipar",
+    "formation": "Azapirone; 5-HT1A partial agonist; does NOT bind GABA-BZD receptor – non-sedating, non-addictive anxiolytic",
+    "uses": "Generalised anxiety disorder (GAD), adjunct in OCD and depression (as augmentation), social anxiety (off-label)",
+    "adult": "Start 5 mg TDS; titrate by 5 mg every 2–3 days to 20–30 mg/day in divided doses; max 60 mg/day; onset 2–4 weeks",
+    "child": "6–17y (GAD): 7.5 mg BD; titrate to max 30 mg/day in divided doses; limited data in very young children",
+    "avoid": "Not effective for acute anxiety (slow onset); MAOIs (serotonin syndrome); hepatic/renal impairment (reduce dose); does not treat BZD withdrawal – cross-taper slowly"
+  },
+  {
+    "rank": 459,
+    "name": "Atomoxetine",
+    "section": "Section 18: CNS & Neurology Extended",
+    "category": "Psychiatry",
+    "schedule": "H1",
+    "brand": "Strattera / Attentrol / Axepta",
+    "formation": "Selective noradrenaline reuptake inhibitor (NRI); increases synaptic NE in prefrontal cortex; non-stimulant ADHD medication",
+    "uses": "ADHD (Attention Deficit Hyperactivity Disorder) in children and adults, especially when stimulants are not preferred (tics, abuse potential, anxiety co-morbidity)",
+    "adult": ">70 kg: 40 mg OD × 4 weeks, then 80 mg OD (max 100 mg OD); <70 kg: 0.5 mg/kg OD × 4 weeks, then 1.2 mg/kg OD (max 1.8 mg/kg or 100 mg/day)",
+    "child": ">6y, <70 kg: 0.5 mg/kg OD × 4 weeks then 1.2 mg/kg OD; full effect takes 4–8 weeks",
+    "avoid": "Narrow-angle glaucoma, MAOIs (14-day washout), pheochromocytoma; black-box: suicidality in paediatric patients – monitor closely; hepatotoxicity (rare but monitor); QTc prolongation risk"
+  },
+  {
+    "rank": 460,
+    "name": "Cisplatin",
+    "section": "Section 19: Oncology Support",
+    "category": "Oncology",
+    "schedule": "H",
+    "brand": "Cisplatin IP / Platinex / Kemoplat",
+    "formation": "Platinum coordination complex; forms intra- and inter-strand DNA crosslinks via alkylation of N7 guanine; cell-cycle non-specific",
+    "uses": "Testicular cancer (curative – BEP regimen), ovarian cancer, cervical cancer, head and neck cancers, NSCLC, bladder cancer, oesophageal cancer",
+    "adult": "Varies by protocol: testicular: 20 mg/m² IV days 1–5 per cycle; H&N: 100 mg/m² every 3 weeks; always with aggressive hydration (1–2 L NS pre/post)",
+    "child": "60–100 mg/m² every 3–4 weeks (medulloblastoma, neuroblastoma, hepatoblastoma protocols)",
+    "avoid": "Pre-existing renal impairment (major nephrotoxicity – monitor creatinine, hold if creatinine clearance <60 mL/min), sensorineural hearing loss (audiometry baseline), severe neuropathy; hydrate aggressively; pre-medicate with antiemetics (granisetron/ondansetron + dexamethasone + aprepitant)"
+  },
+  {
+    "rank": 461,
+    "name": "5-Fluorouracil (5-FU)",
+    "section": "Section 19: Oncology Support",
+    "category": "Oncology",
+    "schedule": "H",
+    "brand": "5-FU IP / Fudara / Fluorouracil",
+    "formation": "Pyrimidine antimetabolite; inhibits thymidylate synthase (TS) disrupting DNA synthesis; also incorporated into RNA causing cytotoxicity",
+    "uses": "Colorectal cancer (FOLFOX/FOLFIRI), gastric cancer, pancreatic cancer, breast cancer, head and neck cancer, oesophageal cancer, hepatocellular carcinoma (HAIC)",
+    "adult": "500–1000 mg/m² IV bolus or 2400–4800 mg/m² by continuous 46h infusion (FOLFOX protocol); topical 5% cream for actinic keratosis",
+    "child": "Oncology protocols: typically 300–600 mg/m²/day × 5 days; specialist guided",
+    "avoid": "DPD (dihydropyrimidine dehydrogenase) deficiency – severe toxicity risk (test DPYD before treatment), severe bone marrow suppression, hand-foot syndrome; palmar-plantar erythrodysaesthesia with infusional 5-FU; mucositis (oral cryotherapy reduces risk)"
+  },
+  {
+    "rank": 462,
+    "name": "Doxorubicin",
+    "section": "Section 19: Oncology Support",
+    "category": "Oncology",
+    "schedule": "H",
+    "brand": "Adriamycin / Doxorubicin IP / Adrim",
+    "formation": "Anthracycline topoisomerase II inhibitor; intercalates DNA strands and stabilises topoisomerase II–DNA cleavage complex; generates free radicals",
+    "uses": "Breast cancer (AC/FAC regimen), Hodgkin's and non-Hodgkin's lymphoma (CHOP/ABVD), acute leukaemia, sarcomas, ovarian cancer, bladder cancer",
+    "adult": "60–75 mg/m² IV every 3 weeks (single agent) or 40–60 mg/m² in combination; cumulative lifetime dose limit: 450–550 mg/m² (cardiotoxicity risk)",
+    "child": "25–75 mg/m² every 3–4 weeks; lifetime dose limit applies equally; MUGA/echo before and during treatment",
+    "avoid": "Cumulative dose limit exceeded (dilated cardiomyopathy – LVEF monitoring mandatory), severe hepatic impairment (reduce dose), prior mediastinal radiotherapy (additive cardiotoxicity); extravasation causes severe tissue necrosis – use central line"
+  },
+  {
+    "rank": 463,
+    "name": "Vincristine",
+    "section": "Section 19: Oncology Support",
+    "category": "Oncology",
+    "schedule": "H",
+    "brand": "Oncovin / Vincristine IP / Cytocristin",
+    "formation": "Vinca alkaloid; binds β-tubulin preventing polymerisation; arrests mitosis at metaphase by disrupting mitotic spindle (M-phase specific)",
+    "uses": "ALL (backbone of VAMP/hyper-CVAD regimen), Hodgkin's and NHL (CHOP), Wilms' tumour, rhabdomyosarcoma, Ewing sarcoma, medulloblastoma",
+    "adult": "1.4 mg/m² IV weekly (max 2 mg cap per dose to limit neurotoxicity); given as IV bolus",
+    "child": "1.5 mg/m² IV weekly (no maximum cap in paediatric protocols typically, or 2 mg); slow push via patency-confirmed IV",
+    "avoid": "FATAL if given intrathecally (mandatory black-box – all vincristine must be labelled and given IV only); peripheral neuropathy (dose-limiting – CIPN); ileus, jaw pain, SIADH; never store with intrathecal medications"
+  },
+  {
+    "rank": 464,
+    "name": "Etoposide",
+    "section": "Section 19: Oncology Support",
+    "category": "Oncology",
+    "schedule": "H",
+    "brand": "VP-16 / Etoposide IP / Vepesid",
+    "formation": "Semisynthetic epipodophyllotoxin; stabilises topoisomerase II–DNA complex at DNA strand break; S/G2 phase specific",
+    "uses": "Testicular cancer (BEP regimen – curative), small cell lung cancer (EP regimen), lymphoma (ESHAP/GDP), leukaemia, HSCT conditioning (high-dose)",
+    "adult": "50–100 mg/m²/day IV × 5 days every 3–4 weeks (IV); 50 mg/m²/day PO (oral bioavailability ~50%); infuse slowly >30 min (hypotension with rapid infusion)",
+    "child": "100–150 mg/m²/day IV × 3–5 days; oral formulation available for maintenance",
+    "avoid": "Severe bone marrow suppression, secondary AML risk with long-term use (treatment-related MDS/AML – topoisomerase II-related); hypotension on rapid infusion; reduce dose in renal/hepatic impairment"
+  },
+  {
+    "rank": 465,
+    "name": "Filgrastim (G-CSF)",
+    "section": "Section 19: Oncology Support",
+    "category": "Oncology",
+    "schedule": "H",
+    "brand": "Neupogen / Grafeel / Zymofil",
+    "formation": "Recombinant G-CSF; stimulates granulocyte-committed progenitor proliferation and differentiation; reduces neutropenia duration",
+    "uses": "Chemotherapy-induced febrile neutropenia prophylaxis and treatment, bone marrow/stem cell transplantation support, severe chronic neutropenia, HSCT mobilisation",
+    "adult": "5 mcg/kg/day SC (start 24–72h post-chemo; continue until ANC >10,000/µL or by protocol); mobilisation: 10 mcg/kg/day × 4–5 days before apheresis",
+    "child": "5 mcg/kg/day SC/IV; same principles as adults; available as biosimilars in India at reduced cost",
+    "avoid": "Sickle cell anaemia (increased crisis risk), myeloid malignancies from myeloid blasts (AML/CML – do not use during induction for AML without specialist guidance); bone pain (manage with paracetamol/antihistamines); splenic rupture (rare – educate patient)"
+  },
+  {
+    "rank": 466,
+    "name": "Granisetron",
+    "section": "Section 19: Oncology Support",
+    "category": "Oncology",
+    "schedule": "H",
+    "brand": "Kytril / Granisetron IP / Emeset-G",
+    "formation": "Selective 5-HT3 receptor antagonist; blocks serotonin-mediated vagal afferent activation of vomiting centre; high potency, long duration",
+    "uses": "Chemotherapy-induced nausea and vomiting (CINV) – prevention and treatment, post-operative nausea and vomiting (PONV), radiation-induced nausea",
+    "adult": "CINV: 1–3 mg IV over 5 min or 1–2 mg PO 60 min before chemotherapy; 2 mg OD PO ongoing; 5-HT3 antagonist patch available",
+    "child": "10–40 mcg/kg IV (max 3 mg/dose) before chemotherapy; oral: 20–40 mcg/kg/dose BD",
+    "avoid": "QTc prolongation (less than ondansetron but monitor in combination with other QT-prolonging drugs); constipation; headache; class effect – similar cautions as ondansetron; no advantage over ondansetron for mild emetogenicity"
+  },
+  {
+    "rank": 467,
+    "name": "Aprepitant",
+    "section": "Section 19: Oncology Support",
+    "category": "Oncology",
+    "schedule": "H",
+    "brand": "Emend / Aprecap / Aprepitant IP",
+    "formation": "Neurokinin-1 (NK1) receptor antagonist; blocks substance P-mediated delayed emesis at CNS level; IV fosaprepitant is pro-drug",
+    "uses": "Highly and moderately emetogenic chemotherapy (CINV) – delayed phase (24–120h post-chemo); combined with 5-HT3 antagonist + dexamethasone (triple antiemetic therapy)",
+    "adult": "Day 1: 125 mg PO 60 min before chemo; Days 2–3: 80 mg OD morning; IV fosaprepitant: 150 mg single dose Day 1",
+    "child": "≥6 months: 3 mg/kg (max 125 mg) Day 1; 2 mg/kg (max 80 mg) Days 2–3; oral suspension available",
+    "avoid": "CYP3A4 substrate AND moderate inhibitor – check drug interactions (warfarin, dexamethasone dose adjustment needed); pimozide, cisapride contraindicated; reduces OCP efficacy – advise barrier contraception for 1 month after course"
   }
 ];
 
@@ -5398,6 +6278,15 @@ const SECTION_CLS = {
   "Section 8: Oncology & Immunology":         "sec-8",
   "Section 9: Respiratory, Allergy & ENT":    "sec-9",
   "Section 10: Specialty & Emerging":         "sec-10",
+  "Section 11: Anti-Tuberculosis & Leprosy":        "sec-11",
+  "Section 12: Emergency, Critical Care & Haematology": "sec-12",
+  "Section 13: Obstetrics & Gynaecology":           "sec-13",
+  "Section 14: Cardiovascular Extended":            "sec-14",
+  "Section 15: Anti-Infective & Antiviral Extended":"sec-15",
+  "Section 16: Hepatology, Antiviral & Thyroid":    "sec-16",
+  "Section 17: GI, Nephrology & Ophthalmology Ext": "sec-17",
+  "Section 18: CNS & Neurology Extended":           "sec-18",
+  "Section 19: Oncology Support":                   "sec-19",
 };
 
 // ═══════════════════════════════════════════════
