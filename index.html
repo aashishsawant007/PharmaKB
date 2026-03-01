@@ -137,6 +137,12 @@
         <div class="flex flex-wrap gap-1.5" id="category-pills"></div>
       </div>
 
+      <!-- Drug Class pills -->
+      <div>
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Drug Class (by Suffix)</p>
+        <div class="flex flex-wrap gap-1.5" id="drugclass-pills"></div>
+      </div>
+
     </div>
   </div>
 
@@ -6290,9 +6296,87 @@ const SECTION_CLS = {
 };
 
 // ═══════════════════════════════════════════════
+//  DRUG CLASS · SUFFIX MAP
+//  Order matters: more specific suffixes first
+// ═══════════════════════════════════════════════
+const SUFFIX_MAP = [
+  // ── RAAS ──────────────────────────────────────────
+  { suffix:"sartan",    label:"ARB",                    bg:"#F3E8FF", text:"#6B21A8", border:"#C084FC" },
+  { suffix:"pril",      label:"ACE Inhibitor",          bg:"#CCFBF1", text:"#0F766E", border:"#5EEAD4" },
+  // ── Lipid ─────────────────────────────────────────
+  { suffix:"statin",    label:"Statin",                 bg:"#DBEAFE", text:"#1D4ED8", border:"#93C5FD" },
+  // ── GI ────────────────────────────────────────────
+  { suffix:"prazole",   label:"PPI",                    bg:"#FEF3C7", text:"#B45309", border:"#FCD34D" },
+  // ── Cardiovascular ────────────────────────────────
+  { suffix:"dipine",    label:"CCB",                    bg:"#DCFCE7", text:"#15803D", border:"#86EFAC" },
+  { suffix:"olol",      label:"Beta-Blocker",           bg:"#F0F9FF", text:"#0369A1", border:"#7DD3FC" },
+  { suffix:"grelor",    label:"Antiplatelet",           bg:"#FFF1F2", text:"#881337", border:"#FECDD3" },
+  { suffix:"grel",      label:"Antiplatelet",           bg:"#FFF1F2", text:"#881337", border:"#FECDD3" },
+  { suffix:"xaban",     label:"Factor Xa Inhibitor",    bg:"#FEE2E2", text:"#7F1D1D", border:"#F87171" },
+  { suffix:"afil",      label:"PDE5 Inhibitor",         bg:"#F5F3FF", text:"#5B21B6", border:"#C4B5FD" },
+  { suffix:"semide",    label:"Loop Diuretic",          bg:"#E6FFFA", text:"#285E61", border:"#81E6D6" },
+  { suffix:"zosin",     label:"Alpha-1 Blocker",        bg:"#F0FDFA", text:"#065F46", border:"#34D399" },
+  { suffix:"dronate",   label:"Bisphosphonate",         bg:"#F1F5F9", text:"#475569", border:"#94A3B8" },
+  // ── Antidiabetic ──────────────────────────────────
+  { suffix:"gliptin",   label:"DPP-4 Inhibitor",       bg:"#FFF7ED", text:"#9A3412", border:"#FDBA74" },
+  { suffix:"flozin",    label:"SGLT2 Inhibitor",       bg:"#ECFEFF", text:"#155E75", border:"#67E8F9" },
+  { suffix:"glutide",   label:"GLP-1 Agonist",         bg:"#F7FEE7", text:"#3F6212", border:"#A3E635" },
+  { suffix:"glitazone", label:"Thiazolidinedione",     bg:"#FEFCE8", text:"#854D0E", border:"#FDE047" },
+  // ── Antibiotics ───────────────────────────────────
+  { suffix:"floxacin",  label:"Fluoroquinolone",        bg:"#FEE2E2", text:"#B91C1C", border:"#FCA5A5" },
+  { suffix:"thromycin", label:"Macrolide",              bg:"#FED7AA", text:"#9A3412", border:"#F97316" },
+  { suffix:"mycin",     label:"Antibiotic",             bg:"#FFF7ED", text:"#C2410C", border:"#FDBA74" },
+  { suffix:"cillin",    label:"Penicillin",             bg:"#ECFDF5", text:"#047857", border:"#6EE7B7" },
+  { suffix:"cycline",   label:"Tetracycline",           bg:"#FDF4FF", text:"#86198F", border:"#E879F9" },
+  // ── Antifungal / Antiprotozoal ────────────────────
+  { suffix:"conazole",  label:"Azole Antifungal",       bg:"#D1FAE5", text:"#064E3B", border:"#34D399" },
+  { suffix:"dazole",    label:"Nitroimidazole",         bg:"#F3F4F6", text:"#374151", border:"#9CA3AF" },
+  // ── Antiviral (specific before general) ───────────
+  { suffix:"tegravir",  label:"Integrase Inhibitor",    bg:"#EFF6FF", text:"#1E3A8A", border:"#93C5FD" },
+  { suffix:"fovir",     label:"NtRTI",                  bg:"#E0F2FE", text:"#0C4A6E", border:"#38BDF8" },
+  { suffix:"vir",       label:"Antiviral",              bg:"#CFFAFE", text:"#0E7490", border:"#22D3EE" },
+  // ── CNS ───────────────────────────────────────────
+  { suffix:"azolam",    label:"Benzodiazepine",         bg:"#E0E7FF", text:"#3730A3", border:"#A5B4FC" },
+  { suffix:"azepam",    label:"Benzodiazepine",         bg:"#E0E7FF", text:"#3730A3", border:"#A5B4FC" },
+  { suffix:"azam",      label:"Benzodiazepine",         bg:"#E0E7FF", text:"#3730A3", border:"#A5B4FC" },
+  { suffix:"apine",     label:"Atypical Antipsychotic", bg:"#EDE9FE", text:"#4C1D95", border:"#8B5CF6" },
+  { suffix:"peridone",  label:"Atypical Antipsychotic", bg:"#EDE9FE", text:"#4C1D95", border:"#8B5CF6" },
+  // ── Biologics ─────────────────────────────────────
+  { suffix:"mab",       label:"Monoclonal Ab",          bg:"#F8FAFC", text:"#334155", border:"#CBD5E1" },
+  { suffix:"cept",      label:"Fusion Protein",         bg:"#F1F5F9", text:"#1E293B", border:"#94A3B8" },
+  { suffix:"limus",     label:"Immunosuppressant",      bg:"#FFF8F1", text:"#7C2D12", border:"#FB923C" },
+  // ── NSAIDs ────────────────────────────────────────
+  { suffix:"coxib",     label:"COX-2 Inhibitor",       bg:"#FFF0F0", text:"#9F1239", border:"#FB7185" },
+  { suffix:"fenac",     label:"NSAID",                  bg:"#FFF1F2", text:"#881337", border:"#FDA4AF" },
+  { suffix:"profen",    label:"NSAID",                  bg:"#FFF1F2", text:"#881337", border:"#FDA4AF" },
+  { suffix:"oxicam",    label:"NSAID",                  bg:"#FFF1F2", text:"#881337", border:"#FDA4AF" },
+  { suffix:"sulide",    label:"NSAID",                  bg:"#FFF1F2", text:"#881337", border:"#FDA4AF" },
+  // ── Corticosteroids ───────────────────────────────
+  { suffix:"olone",     label:"Corticosteroid",         bg:"#FEFCE8", text:"#713F12", border:"#FDE68A" },
+  { suffix:"sone",      label:"Corticosteroid",         bg:"#FEFCE8", text:"#713F12", border:"#FDE68A" },
+  // ── Misc ──────────────────────────────────────────
+  { suffix:"triptan",   label:"Triptan",                bg:"#FEF2F2", text:"#C0392B", border:"#F87171" },
+  { suffix:"lukast",    label:"Leukotriene Antagonist", bg:"#F0F9FF", text:"#075985", border:"#38BDF8" },
+  { suffix:"setron",    label:"5-HT3 Antagonist",      bg:"#FAF5FF", text:"#6D28D9", border:"#A78BFA" },
+  { suffix:"gepant",    label:"CGRP Antagonist",        bg:"#FFF0EB", text:"#9A3412", border:"#FB923C" },
+];
+
+function getSuffixInfo(name){
+  // First component (before " + "), then first word only — handles "Pantoprazole Sodium", "Doxycycline HCl", etc.
+  const raw = name.split(/\s*\+\s*/)[0].trim();
+  const firstWord = raw.split(/[\s(]/)[0].toLowerCase();
+  for(const item of SUFFIX_MAP){
+    if(firstWord.endsWith(item.suffix)){
+      return { ...item, detected:"-"+item.suffix };
+    }
+  }
+  return null;
+}
+
+// ═══════════════════════════════════════════════
 //  STATE
 // ═══════════════════════════════════════════════
-let state = { category:"All", section:"All", schedule:"All", search:"", sort:"rank", liver:false, ped:false };
+let state = { category:"All", section:"All", schedule:"All", drugClass:"All", search:"", sort:"rank", liver:false, ped:false };
 
 // ═══════════════════════════════════════════════
 //  FILTER
@@ -6308,6 +6392,7 @@ function filterData(){
     const matchCat  = state.category==="All" || s.category===state.category;
     const matchSec  = state.section ==="All" || s.section ===state.section;
     const matchSch  = state.schedule==="All" || s.schedule===state.schedule;
+    const matchDC   = state.drugClass==="All" || (()=>{ const info=getSuffixInfo(s.name); return info && info.label===state.drugClass; })();
     let ok = true;
     if(state.liver){
       const av=s.avoid.toLowerCase();
@@ -6317,7 +6402,7 @@ function filterData(){
       const bad=["not recommended","avoid","contraindicated","safety not established","not indicated","not approved"];
       if(bad.some(w=>s.child.toLowerCase().includes(w))) ok=false;
     }
-    return matchSearch&&matchCat&&matchSec&&matchSch&&ok;
+    return matchSearch&&matchCat&&matchSec&&matchSch&&matchDC&&ok;
   });
   if(state.sort==="rank")  d.sort((a,b)=>a.rank-b.rank);
   if(state.sort==="alpha") d.sort((a,b)=>a.name.localeCompare(b.name));
@@ -6352,6 +6437,12 @@ function renderGrid(){
         </div>
         <h3 class="text-base font-bold text-slate-800 leading-tight">${s.name}</h3>
         <p class="text-[11px] text-slate-500 italic mt-0.5 leading-snug">${s.formation}</p>
+        ${(()=>{ const info=getSuffixInfo(s.name); return info ? `<div class="flex items-center gap-1.5 mt-1.5 flex-wrap">
+          <span style="background:${info.bg};color:${info.text};border:1px solid ${info.border}" class="text-[10px] font-bold px-2 py-0.5 rounded-full leading-none">
+            ${info.label}
+          </span>
+          <span class="text-slate-400 text-[10px] font-mono font-semibold">${info.detected}</span>
+        </div>` : ""; })()}
         <div class="flex items-start gap-1 mt-1.5">
           <span class="text-[10px] font-bold text-amber-600 whitespace-nowrap mt-0.5">🏷 Brand:</span>
           <span class="text-[11px] text-amber-700 font-medium leading-snug">${s.brand}</span>
@@ -6412,12 +6503,37 @@ function renderPills(){
       return `<button onclick="setFilter('schedule','${s}')"
         class="px-2.5 py-1 rounded-full text-xs font-medium transition border ${activeCls}">${meta.label}</button>`;
     }).join("");
+
+  // Drug Classes
+  const presentClasses = new Set(saltsData.map(s=>{ const i=getSuffixInfo(s.name); return i?i.label:null; }).filter(Boolean));
+  const dcItems = [null, ...SUFFIX_MAP.filter(m=>presentClasses.has(m.label))];
+  document.getElementById("drugclass-pills").innerHTML =
+    dcItems.map(m=>{
+      if(!m){
+        const active = state.drugClass==="All";
+        return `<button onclick="setFilter('drugClass','All')"
+          class="px-2.5 py-1 rounded-full text-xs font-medium transition border
+          ${active ? "bg-teal-600 text-white border-teal-600 shadow" : "bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200"}">All</button>`;
+      }
+      const active = state.drugClass===m.label;
+      const style = active
+        ? `background:${m.bg};color:${m.text};border:1px solid ${m.border};box-shadow:0 1px 4px rgba(0,0,0,.12)`
+        : "";
+      const baseCls = active
+        ? "font-bold"
+        : "bg-slate-100 text-slate-600 border border-slate-200 hover:bg-slate-200";
+      return `<button onclick="setFilter('drugClass','${m.label}')"
+        style="${style}"
+        class="px-2.5 py-1 rounded-full text-xs font-medium transition ${baseCls}">
+        ${m.label} <span class="font-mono opacity-60">${m.detected||("-"+m.suffix)}</span>
+      </button>`;
+    }).join("");
 }
 
 window.setFilter = (key, val) => { state[key]=val; renderPills(); renderGrid(); };
 
 window.resetFilters = () => {
-  state = { category:"All", section:"All", schedule:"All", search:"", sort:state.sort, liver:false, ped:false };
+  state = { category:"All", section:"All", schedule:"All", drugClass:"All", search:"", sort:state.sort, liver:false, ped:false };
   document.getElementById("searchInput").value = "";
   document.getElementById("btn-liver").classList.remove("bg-rose-100","ring-2","ring-rose-400");
   document.getElementById("btn-pediatric").classList.remove("bg-blue-100","ring-2","ring-blue-400");
