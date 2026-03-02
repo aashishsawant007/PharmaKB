@@ -182,7 +182,7 @@
   </div>
 
   <!-- Grid -->
-  <div id="saltGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5"></div>
+  <div id="saltGrid" class="grid grid-cols-1 gap-5 max-w-4xl mx-auto"></div>
 
   <!-- Empty state -->
   <div id="emptyState" class="hidden text-center py-20">
@@ -21717,45 +21717,58 @@ function renderGrid(){
           <span>🔬 Clinical Details</span>
           <svg class="w-3.5 h-3.5 text-teal-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
         </button>
-        <div class="clinical-panel hidden px-4 pb-4 flex flex-col gap-2">
-          <div class="bg-orange-50 rounded-lg p-2 border border-orange-100">
-            <span class="text-[9px] font-bold text-orange-500 uppercase block mb-1.5">Common Side Effects</span>
-            <div class="flex flex-wrap gap-1">` + seFx + `</div>
-          </div>
-          <div class="bg-red-50 rounded-lg p-2 border border-red-100">
-            <span class="text-[9px] font-bold text-red-500 uppercase block mb-1">⚠️ Serious / Red Flag Risks</span>
-            <ul class="space-y-0.5">` + risks + `</ul>
-          </div>
-          <div class="grid grid-cols-2 gap-2">
-            <div class="bg-amber-50 rounded-lg p-2 border border-amber-100">
-              <span class="text-[9px] font-bold text-amber-500 uppercase block mb-0.5">🦳 Renal Adj.</span>
-              <p class="text-[10px] text-amber-800 leading-snug">` + (s.renalAdj||'—') + `</p>
+        <div class="clinical-panel hidden px-5 pb-5 pt-1 flex flex-col gap-3">
+
+          <!-- Row 1: Side Effects + Serious Risks -->
+          <div class="grid grid-cols-2 gap-3">
+            <div class="bg-orange-50 rounded-xl p-3 border border-orange-100">
+              <span class="text-[10px] font-bold text-orange-500 uppercase tracking-wide block mb-2">Common Side Effects</span>
+              <div class="flex flex-wrap gap-1.5">` + seFx + `</div>
             </div>
-            <div class="bg-rose-50 rounded-lg p-2 border border-rose-100">
-              <span class="text-[9px] font-bold text-rose-500 uppercase block mb-0.5">🫀 Hepatic Adj.</span>
-              <p class="text-[10px] text-rose-700 leading-snug">` + (s.hepaticAdj||'—') + `</p>
+            <div class="bg-red-50 rounded-xl p-3 border border-red-100">
+              <span class="text-[10px] font-bold text-red-500 uppercase tracking-wide block mb-2">⚠️ Serious / Red Flag Risks</span>
+              <ul class="space-y-1">` + risks + `</ul>
             </div>
           </div>
-          <div class="grid grid-cols-2 gap-2">
-            <div class="bg-purple-50 rounded-lg p-2 border border-purple-100">
-              <span class="text-[9px] font-bold text-purple-500 uppercase block mb-0.5">🤰 Pregnancy</span>
-              <p class="text-[10px] text-purple-800 leading-snug">` + (s.pregnancy||'—') + `</p>
+
+          <!-- Row 2: Renal | Hepatic | Pregnancy | Lactation -->
+          <div class="grid grid-cols-4 gap-3">
+            <div class="bg-amber-50 rounded-xl p-3 border border-amber-100">
+              <span class="text-[10px] font-bold text-amber-500 uppercase tracking-wide block mb-1">🦳 Renal</span>
+              <p class="text-xs text-amber-800 leading-snug">` + (s.renalAdj||'—') + `</p>
             </div>
-            <div class="bg-pink-50 rounded-lg p-2 border border-pink-100">
-              <span class="text-[9px] font-bold text-pink-500 uppercase block mb-0.5">🤱 Lactation</span>
-              <p class="text-[10px] text-pink-700 leading-snug">` + (s.lactation||'—') + `</p>
+            <div class="bg-rose-50 rounded-xl p-3 border border-rose-100">
+              <span class="text-[10px] font-bold text-rose-500 uppercase tracking-wide block mb-1">🫀 Hepatic</span>
+              <p class="text-xs text-rose-700 leading-snug">` + (s.hepaticAdj||'—') + `</p>
+            </div>
+            <div class="bg-purple-50 rounded-xl p-3 border border-purple-100">
+              <span class="text-[10px] font-bold text-purple-500 uppercase tracking-wide block mb-1">🤰 Pregnancy</span>
+              <p class="text-xs text-purple-800 leading-snug">` + (s.pregnancy||'—') + `</p>
+            </div>
+            <div class="bg-pink-50 rounded-xl p-3 border border-pink-100">
+              <span class="text-[10px] font-bold text-pink-500 uppercase tracking-wide block mb-1">🤱 Lactation</span>
+              <p class="text-xs text-pink-700 leading-snug">` + (s.lactation||'—') + `</p>
             </div>
           </div>
-          <div class="bg-yellow-50 rounded-lg p-2 border border-yellow-100">
-            <span class="text-[9px] font-bold text-yellow-600 uppercase block mb-1">⚡ Drug Interactions</span>
-            <ul class="space-y-0.5">` + inter + `</ul>
+
+          <!-- Row 3: Drug Interactions + Monitoring -->
+          <div class="grid grid-cols-2 gap-3">
+            <div class="bg-yellow-50 rounded-xl p-3 border border-yellow-100">
+              <span class="text-[10px] font-bold text-yellow-600 uppercase tracking-wide block mb-2">⚡ Drug Interactions</span>
+              <ul class="space-y-1">` + inter + `</ul>
+            </div>
+            <div class="bg-blue-50 rounded-xl p-3 border border-blue-100">
+              <span class="text-[10px] font-bold text-blue-500 uppercase tracking-wide block mb-2">📊 Monitoring Parameters</span>
+              <div class="flex flex-wrap gap-1.5">` + monit + `</div>
+            </div>
           </div>
-          <div class="bg-blue-50 rounded-lg p-2 border border-blue-100">
-            <span class="text-[9px] font-bold text-blue-500 uppercase block mb-1.5">📊 Monitoring</span>
-            <div class="flex flex-wrap gap-1">` + monit + `</div>
+
+          <!-- Row 4: CI Severity + Clinical Pearl -->
+          <div class="flex gap-3 items-stretch">
+            ` + (ciSev ? '<div class="flex-none bg-slate-50 rounded-xl p-3 border border-slate-200 flex flex-col justify-center min-w-[148px]"><span class="text-[10px] font-bold text-slate-400 uppercase tracking-wide block mb-1">Contraindication</span><span class="text-sm font-bold '+ciColor+'">'+ciIcon+' '+ciSev+'</span></div>' : '') + `
+            ` + (s.clinicalPearl ? '<div class="flex-1 bg-teal-600 rounded-xl p-3"><span class="text-[10px] font-bold text-teal-200 uppercase tracking-wide block mb-1">💡 Clinical Pearl</span><p class="text-sm text-white font-medium leading-snug">'+s.clinicalPearl+'</p></div>' : '') + `
           </div>
-          ` + (ciSev ? '<div class="bg-slate-50 rounded-lg p-2 border border-slate-100 flex items-center gap-2"><span class="text-[9px] font-bold text-slate-400 uppercase">Contraindication</span><span class="text-[11px] font-bold '+ciColor+'">'+ciIcon+' '+ciSev+'</span></div>' : '') + `
-          ` + (s.clinicalPearl ? '<div class="bg-teal-600 rounded-lg p-2.5"><span class="text-[9px] font-bold text-teal-200 uppercase block mb-1">💡 Clinical Pearl</span><p class="text-[11px] text-white font-medium leading-snug">'+s.clinicalPearl+'</p></div>' : '') + `
+
         </div>
       </div>`) : '';
     return `
@@ -21770,7 +21783,7 @@ function renderGrid(){
             ${therapyBadge}
           </div>
         </div>
-        <h3 class="text-base font-bold text-slate-800 leading-tight">${s.name}</h3>
+        <h3 class="text-lg font-bold text-slate-800 leading-tight">${s.name}</h3>
         <p class="text-[11px] text-slate-500 italic mt-0.5 leading-snug">${s.formation}</p>
         ${classBadgesHtml}
         <div class="flex items-start gap-1 mt-1.5">
