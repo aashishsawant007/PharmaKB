@@ -73,10 +73,8 @@
 
   <!-- Intro -->
   <section class="mb-6">
-    <p class="text-slate-600 max-w-3xl leading-relaxed text-sm">
-      Complete ranked analysis of 467 pharmaceutical salts dominating the Indian market in 2026.
-      Data from <strong>IQVIA/PharmaTrac</strong>, <strong>NLEM 2022</strong>, and hospital formularies.
-      Each card shows <strong>brand names</strong>, drug <strong>schedule</strong>, section, dosing, and contraindications.
+    <p class="text-slate-600 max-w-7xl leading-relaxed text-sm">
+      Complete ranked analysis of 467 pharmaceutical salts dominating the Indian market in 2026. Each card shows <strong>brand names</strong>, drug <strong>schedule</strong>, section, dosing, and contraindications.
     </p>
   </section>
 
@@ -182,7 +180,7 @@
   </div>
 
   <!-- Grid -->
-  <div id="saltGrid" class="grid grid-cols-1 gap-5 max-w-4xl mx-auto"></div>
+  <div id="saltGrid" class="grid grid-cols-1 gap-5 max-w-5xl mx-auto"></div>
 
   <!-- Empty state -->
   <div id="emptyState" class="hidden text-center py-20">
@@ -21792,9 +21790,9 @@ function renderGrid(){
         </div>
       </div>
       <div class="px-4 py-3 flex flex-col gap-2.5 flex-grow">
-        <div>
-          <span class="text-[10px] font-bold text-slate-400 uppercase block mb-0.5">Indications</span>
-          <p class="text-xs text-slate-700 leading-snug">${s.uses}</p>
+        <div class="bg-green-50 rounded-lg p-2.5 border border-green-100">
+          <span class="text-[9px] font-bold text-green-600 uppercase block mb-0.5">✅ When to Use</span>
+          <p class="text-xs text-green-800 leading-snug">${s.uses}</p>
         </div>
         <div class="grid grid-cols-2 gap-2">
           <div class="bg-slate-50 rounded-lg p-2 border border-slate-100">
